@@ -1,0 +1,4652 @@
+﻿[
+  {
+    "ID": 0,
+    "Perioden": "1963MM01",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 1,
+    "Perioden": "1963MM02",
+    "JaarmutatieCPI_1": "     5.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 2,
+    "Perioden": "1963MM03",
+    "JaarmutatieCPI_1": "     4.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 3,
+    "Perioden": "1963MM04",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 4,
+    "Perioden": "1963MM05",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 5,
+    "Perioden": "1963MM06",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 6,
+    "Perioden": "1963MM07",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 7,
+    "Perioden": "1963MM08",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 8,
+    "Perioden": "1963MM09",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 9,
+    "Perioden": "1963MM10",
+    "JaarmutatieCPI_1": "     3.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 10,
+    "Perioden": "1963MM11",
+    "JaarmutatieCPI_1": "     3.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 11,
+    "Perioden": "1963MM12",
+    "JaarmutatieCPI_1": "     3.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 12,
+    "Perioden": "1963JJ00",
+    "JaarmutatieCPI_1": "     3.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 13,
+    "Perioden": "1964MM01",
+    "JaarmutatieCPI_1": "     4.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 14,
+    "Perioden": "1964MM02",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 15,
+    "Perioden": "1964MM03",
+    "JaarmutatieCPI_1": "     3.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 16,
+    "Perioden": "1964MM04",
+    "JaarmutatieCPI_1": "     7.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 17,
+    "Perioden": "1964MM05",
+    "JaarmutatieCPI_1": "     5.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 18,
+    "Perioden": "1964MM06",
+    "JaarmutatieCPI_1": "     4.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 19,
+    "Perioden": "1964MM07",
+    "JaarmutatieCPI_1": "     7.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 20,
+    "Perioden": "1964MM08",
+    "JaarmutatieCPI_1": "     8.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 21,
+    "Perioden": "1964MM09",
+    "JaarmutatieCPI_1": "     7.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 22,
+    "Perioden": "1964MM10",
+    "JaarmutatieCPI_1": "     6.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 23,
+    "Perioden": "1964MM11",
+    "JaarmutatieCPI_1": "     6.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 24,
+    "Perioden": "1964MM12",
+    "JaarmutatieCPI_1": "     5.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 25,
+    "Perioden": "1964JJ00",
+    "JaarmutatieCPI_1": "     5.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 26,
+    "Perioden": "1965MM01",
+    "JaarmutatieCPI_1": "     3.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 27,
+    "Perioden": "1965MM02",
+    "JaarmutatieCPI_1": "     4.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 28,
+    "Perioden": "1965MM03",
+    "JaarmutatieCPI_1": "     5.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 29,
+    "Perioden": "1965MM04",
+    "JaarmutatieCPI_1": "     3.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 30,
+    "Perioden": "1965MM05",
+    "JaarmutatieCPI_1": "     6.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 31,
+    "Perioden": "1965MM06",
+    "JaarmutatieCPI_1": "     7.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 32,
+    "Perioden": "1965MM07",
+    "JaarmutatieCPI_1": "     6.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 33,
+    "Perioden": "1965MM08",
+    "JaarmutatieCPI_1": "     4.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 34,
+    "Perioden": "1965MM09",
+    "JaarmutatieCPI_1": "     5.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 35,
+    "Perioden": "1965MM10",
+    "JaarmutatieCPI_1": "     4.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 36,
+    "Perioden": "1965MM11",
+    "JaarmutatieCPI_1": "     5.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 37,
+    "Perioden": "1965MM12",
+    "JaarmutatieCPI_1": "     6.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 38,
+    "Perioden": "1965JJ00",
+    "JaarmutatieCPI_1": "     5.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 39,
+    "Perioden": "1966MM01",
+    "JaarmutatieCPI_1": "     6.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 40,
+    "Perioden": "1966MM02",
+    "JaarmutatieCPI_1": "     7.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 41,
+    "Perioden": "1966MM03",
+    "JaarmutatieCPI_1": "     6.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 42,
+    "Perioden": "1966MM04",
+    "JaarmutatieCPI_1": "     7.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 43,
+    "Perioden": "1966MM05",
+    "JaarmutatieCPI_1": "     6.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 44,
+    "Perioden": "1966MM06",
+    "JaarmutatieCPI_1": "     5.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 45,
+    "Perioden": "1966MM07",
+    "JaarmutatieCPI_1": "     4.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 46,
+    "Perioden": "1966MM08",
+    "JaarmutatieCPI_1": "     5.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 47,
+    "Perioden": "1966MM09",
+    "JaarmutatieCPI_1": "     4.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 48,
+    "Perioden": "1966MM10",
+    "JaarmutatieCPI_1": "     5.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 49,
+    "Perioden": "1966MM11",
+    "JaarmutatieCPI_1": "     4.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 50,
+    "Perioden": "1966MM12",
+    "JaarmutatieCPI_1": "     4.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 51,
+    "Perioden": "1966JJ00",
+    "JaarmutatieCPI_1": "     5.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 52,
+    "Perioden": "1967MM01",
+    "JaarmutatieCPI_1": "     3.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 53,
+    "Perioden": "1967MM02",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 54,
+    "Perioden": "1967MM03",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 55,
+    "Perioden": "1967MM04",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 56,
+    "Perioden": "1967MM05",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 57,
+    "Perioden": "1967MM06",
+    "JaarmutatieCPI_1": "     3.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 58,
+    "Perioden": "1967MM07",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 59,
+    "Perioden": "1967MM08",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 60,
+    "Perioden": "1967MM09",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 61,
+    "Perioden": "1967MM10",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 62,
+    "Perioden": "1967MM11",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 63,
+    "Perioden": "1967MM12",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 64,
+    "Perioden": "1967JJ00",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 65,
+    "Perioden": "1968MM01",
+    "JaarmutatieCPI_1": "     4.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 66,
+    "Perioden": "1968MM02",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 67,
+    "Perioden": "1968MM03",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 68,
+    "Perioden": "1968MM04",
+    "JaarmutatieCPI_1": "     3.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 69,
+    "Perioden": "1968MM05",
+    "JaarmutatieCPI_1": "     3.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 70,
+    "Perioden": "1968MM06",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 71,
+    "Perioden": "1968MM07",
+    "JaarmutatieCPI_1": "     3.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 72,
+    "Perioden": "1968MM08",
+    "JaarmutatieCPI_1": "     3.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 73,
+    "Perioden": "1968MM09",
+    "JaarmutatieCPI_1": "     3.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 74,
+    "Perioden": "1968MM10",
+    "JaarmutatieCPI_1": "     3.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 75,
+    "Perioden": "1968MM11",
+    "JaarmutatieCPI_1": "     3.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 76,
+    "Perioden": "1968MM12",
+    "JaarmutatieCPI_1": "     4.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 77,
+    "Perioden": "1968JJ00",
+    "JaarmutatieCPI_1": "     3.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 78,
+    "Perioden": "1969MM01",
+    "JaarmutatieCPI_1": "     7.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 79,
+    "Perioden": "1969MM02",
+    "JaarmutatieCPI_1": "     7.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 80,
+    "Perioden": "1969MM03",
+    "JaarmutatieCPI_1": "     7.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 81,
+    "Perioden": "1969MM04",
+    "JaarmutatieCPI_1": "     8.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 82,
+    "Perioden": "1969MM05",
+    "JaarmutatieCPI_1": "     8.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 83,
+    "Perioden": "1969MM06",
+    "JaarmutatieCPI_1": "     7.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 84,
+    "Perioden": "1969MM07",
+    "JaarmutatieCPI_1": "     7.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 85,
+    "Perioden": "1969MM08",
+    "JaarmutatieCPI_1": "     6.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 86,
+    "Perioden": "1969MM09",
+    "JaarmutatieCPI_1": "     7.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 87,
+    "Perioden": "1969MM10",
+    "JaarmutatieCPI_1": "     7.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 88,
+    "Perioden": "1969MM11",
+    "JaarmutatieCPI_1": "     6.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 89,
+    "Perioden": "1969MM12",
+    "JaarmutatieCPI_1": "     6.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 90,
+    "Perioden": "1969JJ00",
+    "JaarmutatieCPI_1": "     7.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 91,
+    "Perioden": "1970MM01",
+    "JaarmutatieCPI_1": "     3.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 92,
+    "Perioden": "1970MM02",
+    "JaarmutatieCPI_1": "     3.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 93,
+    "Perioden": "1970MM03",
+    "JaarmutatieCPI_1": "     3.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 94,
+    "Perioden": "1970MM04",
+    "JaarmutatieCPI_1": "     3.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 95,
+    "Perioden": "1970MM05",
+    "JaarmutatieCPI_1": "     3.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 96,
+    "Perioden": "1970MM06",
+    "JaarmutatieCPI_1": "     3.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 97,
+    "Perioden": "1970MM07",
+    "JaarmutatieCPI_1": "     5.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 98,
+    "Perioden": "1970MM08",
+    "JaarmutatieCPI_1": "     5.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 99,
+    "Perioden": "1970MM09",
+    "JaarmutatieCPI_1": "     5.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 100,
+    "Perioden": "1970MM10",
+    "JaarmutatieCPI_1": "     5.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 101,
+    "Perioden": "1970MM11",
+    "JaarmutatieCPI_1": "     5.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 102,
+    "Perioden": "1970MM12",
+    "JaarmutatieCPI_1": "     5.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 103,
+    "Perioden": "1970JJ00",
+    "JaarmutatieCPI_1": "     4.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 104,
+    "Perioden": "1971MM01",
+    "JaarmutatieCPI_1": "     6.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 105,
+    "Perioden": "1971MM02",
+    "JaarmutatieCPI_1": "     6.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 106,
+    "Perioden": "1971MM03",
+    "JaarmutatieCPI_1": "     6.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 107,
+    "Perioden": "1971MM04",
+    "JaarmutatieCPI_1": "     7.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 108,
+    "Perioden": "1971MM05",
+    "JaarmutatieCPI_1": "     7.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 109,
+    "Perioden": "1971MM06",
+    "JaarmutatieCPI_1": "     7.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 110,
+    "Perioden": "1971MM07",
+    "JaarmutatieCPI_1": "     7.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 111,
+    "Perioden": "1971MM08",
+    "JaarmutatieCPI_1": "     7.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 112,
+    "Perioden": "1971MM09",
+    "JaarmutatieCPI_1": "     7.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 113,
+    "Perioden": "1971MM10",
+    "JaarmutatieCPI_1": "     8.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 114,
+    "Perioden": "1971MM11",
+    "JaarmutatieCPI_1": "     8.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 115,
+    "Perioden": "1971MM12",
+    "JaarmutatieCPI_1": "     8.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 116,
+    "Perioden": "1971JJ00",
+    "JaarmutatieCPI_1": "     7.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 117,
+    "Perioden": "1972MM01",
+    "JaarmutatieCPI_1": "     8.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 118,
+    "Perioden": "1972MM02",
+    "JaarmutatieCPI_1": "     7.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 119,
+    "Perioden": "1972MM03",
+    "JaarmutatieCPI_1": "     7.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 120,
+    "Perioden": "1972MM04",
+    "JaarmutatieCPI_1": "     8.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 121,
+    "Perioden": "1972MM05",
+    "JaarmutatieCPI_1": "     7.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 122,
+    "Perioden": "1972MM06",
+    "JaarmutatieCPI_1": "     7.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 123,
+    "Perioden": "1972MM07",
+    "JaarmutatieCPI_1": "     7.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 124,
+    "Perioden": "1972MM08",
+    "JaarmutatieCPI_1": "     7.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 125,
+    "Perioden": "1972MM09",
+    "JaarmutatieCPI_1": "     7.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 126,
+    "Perioden": "1972MM10",
+    "JaarmutatieCPI_1": "     8.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 127,
+    "Perioden": "1972MM11",
+    "JaarmutatieCPI_1": "     8.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 128,
+    "Perioden": "1972MM12",
+    "JaarmutatieCPI_1": "     7.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 129,
+    "Perioden": "1972JJ00",
+    "JaarmutatieCPI_1": "     7.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 130,
+    "Perioden": "1973MM01",
+    "JaarmutatieCPI_1": "     7.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 131,
+    "Perioden": "1973MM02",
+    "JaarmutatieCPI_1": "     7.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 132,
+    "Perioden": "1973MM03",
+    "JaarmutatieCPI_1": "     7.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 133,
+    "Perioden": "1973MM04",
+    "JaarmutatieCPI_1": "     8.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 134,
+    "Perioden": "1973MM05",
+    "JaarmutatieCPI_1": "     8.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 135,
+    "Perioden": "1973MM06",
+    "JaarmutatieCPI_1": "     8.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 136,
+    "Perioden": "1973MM07",
+    "JaarmutatieCPI_1": "     8.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 137,
+    "Perioden": "1973MM08",
+    "JaarmutatieCPI_1": "     8.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 138,
+    "Perioden": "1973MM09",
+    "JaarmutatieCPI_1": "     8.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 139,
+    "Perioden": "1973MM10",
+    "JaarmutatieCPI_1": "     7.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 140,
+    "Perioden": "1973MM11",
+    "JaarmutatieCPI_1": "     7.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 141,
+    "Perioden": "1973MM12",
+    "JaarmutatieCPI_1": "     8.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 142,
+    "Perioden": "1973JJ00",
+    "JaarmutatieCPI_1": "     8.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 143,
+    "Perioden": "1974MM01",
+    "JaarmutatieCPI_1": "     8.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 144,
+    "Perioden": "1974MM02",
+    "JaarmutatieCPI_1": "     8.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 145,
+    "Perioden": "1974MM03",
+    "JaarmutatieCPI_1": "     9.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 146,
+    "Perioden": "1974MM04",
+    "JaarmutatieCPI_1": "     8.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 147,
+    "Perioden": "1974MM05",
+    "JaarmutatieCPI_1": "     8.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 148,
+    "Perioden": "1974MM06",
+    "JaarmutatieCPI_1": "     8.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 149,
+    "Perioden": "1974MM07",
+    "JaarmutatieCPI_1": "     9.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 150,
+    "Perioden": "1974MM08",
+    "JaarmutatieCPI_1": "     9.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 151,
+    "Perioden": "1974MM09",
+    "JaarmutatieCPI_1": "    10.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 152,
+    "Perioden": "1974MM10",
+    "JaarmutatieCPI_1": "    10.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 153,
+    "Perioden": "1974MM11",
+    "JaarmutatieCPI_1": "    11.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 154,
+    "Perioden": "1974MM12",
+    "JaarmutatieCPI_1": "    10.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 155,
+    "Perioden": "1974JJ00",
+    "JaarmutatieCPI_1": "     9.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 156,
+    "Perioden": "1975MM01",
+    "JaarmutatieCPI_1": "    11.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 157,
+    "Perioden": "1975MM02",
+    "JaarmutatieCPI_1": "    10.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 158,
+    "Perioden": "1975MM03",
+    "JaarmutatieCPI_1": "    10.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 159,
+    "Perioden": "1975MM04",
+    "JaarmutatieCPI_1": "    10.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 160,
+    "Perioden": "1975MM05",
+    "JaarmutatieCPI_1": "    10.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 161,
+    "Perioden": "1975MM06",
+    "JaarmutatieCPI_1": "    10.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 162,
+    "Perioden": "1975MM07",
+    "JaarmutatieCPI_1": "    10.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 163,
+    "Perioden": "1975MM08",
+    "JaarmutatieCPI_1": "    10.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 164,
+    "Perioden": "1975MM09",
+    "JaarmutatieCPI_1": "    10.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 165,
+    "Perioden": "1975MM10",
+    "JaarmutatieCPI_1": "     9.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 166,
+    "Perioden": "1975MM11",
+    "JaarmutatieCPI_1": "     9.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 167,
+    "Perioden": "1975MM12",
+    "JaarmutatieCPI_1": "     9.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 168,
+    "Perioden": "1975JJ00",
+    "JaarmutatieCPI_1": "    10.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 169,
+    "Perioden": "1976MM01",
+    "JaarmutatieCPI_1": "     8.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 170,
+    "Perioden": "1976MM02",
+    "JaarmutatieCPI_1": "     9.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 171,
+    "Perioden": "1976MM03",
+    "JaarmutatieCPI_1": "     8.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 172,
+    "Perioden": "1976MM04",
+    "JaarmutatieCPI_1": "     9.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 173,
+    "Perioden": "1976MM05",
+    "JaarmutatieCPI_1": "     9.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 174,
+    "Perioden": "1976MM06",
+    "JaarmutatieCPI_1": "     9.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 175,
+    "Perioden": "1976MM07",
+    "JaarmutatieCPI_1": "     8.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 176,
+    "Perioden": "1976MM08",
+    "JaarmutatieCPI_1": "     8.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 177,
+    "Perioden": "1976MM09",
+    "JaarmutatieCPI_1": "     8.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 178,
+    "Perioden": "1976MM10",
+    "JaarmutatieCPI_1": "     8.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 179,
+    "Perioden": "1976MM11",
+    "JaarmutatieCPI_1": "     8.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 180,
+    "Perioden": "1976MM12",
+    "JaarmutatieCPI_1": "     8.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 181,
+    "Perioden": "1976JJ00",
+    "JaarmutatieCPI_1": "     8.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 182,
+    "Perioden": "1977MM01",
+    "JaarmutatieCPI_1": "     7.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 183,
+    "Perioden": "1977MM02",
+    "JaarmutatieCPI_1": "     7.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 184,
+    "Perioden": "1977MM03",
+    "JaarmutatieCPI_1": "     7.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 185,
+    "Perioden": "1977MM04",
+    "JaarmutatieCPI_1": "     6.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 186,
+    "Perioden": "1977MM05",
+    "JaarmutatieCPI_1": "     7.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 187,
+    "Perioden": "1977MM06",
+    "JaarmutatieCPI_1": "     7.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 188,
+    "Perioden": "1977MM07",
+    "JaarmutatieCPI_1": "     7.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 189,
+    "Perioden": "1977MM08",
+    "JaarmutatieCPI_1": "     6.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 190,
+    "Perioden": "1977MM09",
+    "JaarmutatieCPI_1": "     6.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 191,
+    "Perioden": "1977MM10",
+    "JaarmutatieCPI_1": "     5.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 192,
+    "Perioden": "1977MM11",
+    "JaarmutatieCPI_1": "     5.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 193,
+    "Perioden": "1977MM12",
+    "JaarmutatieCPI_1": "     5.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 194,
+    "Perioden": "1977JJ00",
+    "JaarmutatieCPI_1": "     6.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 195,
+    "Perioden": "1978MM01",
+    "JaarmutatieCPI_1": "     4.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 196,
+    "Perioden": "1978MM02",
+    "JaarmutatieCPI_1": "     4.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 197,
+    "Perioden": "1978MM03",
+    "JaarmutatieCPI_1": "     4.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 198,
+    "Perioden": "1978MM04",
+    "JaarmutatieCPI_1": "     3.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 199,
+    "Perioden": "1978MM05",
+    "JaarmutatieCPI_1": "     3.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 200,
+    "Perioden": "1978MM06",
+    "JaarmutatieCPI_1": "     3.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 201,
+    "Perioden": "1978MM07",
+    "JaarmutatieCPI_1": "     4.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 202,
+    "Perioden": "1978MM08",
+    "JaarmutatieCPI_1": "     4.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 203,
+    "Perioden": "1978MM09",
+    "JaarmutatieCPI_1": "     4.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 204,
+    "Perioden": "1978MM10",
+    "JaarmutatieCPI_1": "     4.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 205,
+    "Perioden": "1978MM11",
+    "JaarmutatieCPI_1": "     4.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 206,
+    "Perioden": "1978MM12",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 207,
+    "Perioden": "1978JJ00",
+    "JaarmutatieCPI_1": "     4.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 208,
+    "Perioden": "1979MM01",
+    "JaarmutatieCPI_1": "     4.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 209,
+    "Perioden": "1979MM02",
+    "JaarmutatieCPI_1": "     4.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 210,
+    "Perioden": "1979MM03",
+    "JaarmutatieCPI_1": "     4.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 211,
+    "Perioden": "1979MM04",
+    "JaarmutatieCPI_1": "     4.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 212,
+    "Perioden": "1979MM05",
+    "JaarmutatieCPI_1": "     4.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 213,
+    "Perioden": "1979MM06",
+    "JaarmutatieCPI_1": "     4.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 214,
+    "Perioden": "1979MM07",
+    "JaarmutatieCPI_1": "     3.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 215,
+    "Perioden": "1979MM08",
+    "JaarmutatieCPI_1": "     3.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 216,
+    "Perioden": "1979MM09",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 217,
+    "Perioden": "1979MM10",
+    "JaarmutatieCPI_1": "     4.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 218,
+    "Perioden": "1979MM11",
+    "JaarmutatieCPI_1": "     4.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 219,
+    "Perioden": "1979MM12",
+    "JaarmutatieCPI_1": "     4.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 220,
+    "Perioden": "1979JJ00",
+    "JaarmutatieCPI_1": "     4.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 221,
+    "Perioden": "1980MM01",
+    "JaarmutatieCPI_1": "     5.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 222,
+    "Perioden": "1980MM02",
+    "JaarmutatieCPI_1": "     5.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 223,
+    "Perioden": "1980MM03",
+    "JaarmutatieCPI_1": "     5.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 224,
+    "Perioden": "1980MM04",
+    "JaarmutatieCPI_1": "     6.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 225,
+    "Perioden": "1980MM05",
+    "JaarmutatieCPI_1": "     6.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 226,
+    "Perioden": "1980MM06",
+    "JaarmutatieCPI_1": "     6.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 227,
+    "Perioden": "1980MM07",
+    "JaarmutatieCPI_1": "     7.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 228,
+    "Perioden": "1980MM08",
+    "JaarmutatieCPI_1": "     7.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 229,
+    "Perioden": "1980MM09",
+    "JaarmutatieCPI_1": "     7.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 230,
+    "Perioden": "1980MM10",
+    "JaarmutatieCPI_1": "     6.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 231,
+    "Perioden": "1980MM11",
+    "JaarmutatieCPI_1": "     6.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 232,
+    "Perioden": "1980MM12",
+    "JaarmutatieCPI_1": "     6.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 233,
+    "Perioden": "1980JJ00",
+    "JaarmutatieCPI_1": "     6.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 234,
+    "Perioden": "1981MM01",
+    "JaarmutatieCPI_1": "     6.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 235,
+    "Perioden": "1981MM02",
+    "JaarmutatieCPI_1": "     6.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 236,
+    "Perioden": "1981MM03",
+    "JaarmutatieCPI_1": "     6.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 237,
+    "Perioden": "1981MM04",
+    "JaarmutatieCPI_1": "     6.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 238,
+    "Perioden": "1981MM05",
+    "JaarmutatieCPI_1": "     6.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 239,
+    "Perioden": "1981MM06",
+    "JaarmutatieCPI_1": "     6.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 240,
+    "Perioden": "1981MM07",
+    "JaarmutatieCPI_1": "     6.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 241,
+    "Perioden": "1981MM08",
+    "JaarmutatieCPI_1": "     6.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 242,
+    "Perioden": "1981MM09",
+    "JaarmutatieCPI_1": "     6.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 243,
+    "Perioden": "1981MM10",
+    "JaarmutatieCPI_1": "     7.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 244,
+    "Perioden": "1981MM11",
+    "JaarmutatieCPI_1": "     7.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 245,
+    "Perioden": "1981MM12",
+    "JaarmutatieCPI_1": "     7.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 246,
+    "Perioden": "1981JJ00",
+    "JaarmutatieCPI_1": "     6.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 247,
+    "Perioden": "1982MM01",
+    "JaarmutatieCPI_1": "     7.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 248,
+    "Perioden": "1982MM02",
+    "JaarmutatieCPI_1": "     6.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 249,
+    "Perioden": "1982MM03",
+    "JaarmutatieCPI_1": "     6.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 250,
+    "Perioden": "1982MM04",
+    "JaarmutatieCPI_1": "     6.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 251,
+    "Perioden": "1982MM05",
+    "JaarmutatieCPI_1": "     6.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 252,
+    "Perioden": "1982MM06",
+    "JaarmutatieCPI_1": "     6.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 253,
+    "Perioden": "1982MM07",
+    "JaarmutatieCPI_1": "     6.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 254,
+    "Perioden": "1982MM08",
+    "JaarmutatieCPI_1": "     5.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 255,
+    "Perioden": "1982MM09",
+    "JaarmutatieCPI_1": "     5.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 256,
+    "Perioden": "1982MM10",
+    "JaarmutatieCPI_1": "     4.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 257,
+    "Perioden": "1982MM11",
+    "JaarmutatieCPI_1": "     4.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 258,
+    "Perioden": "1982MM12",
+    "JaarmutatieCPI_1": "     4.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 259,
+    "Perioden": "1982JJ00",
+    "JaarmutatieCPI_1": "     6.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 260,
+    "Perioden": "1983MM01",
+    "JaarmutatieCPI_1": "     3.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 261,
+    "Perioden": "1983MM02",
+    "JaarmutatieCPI_1": "     3.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 262,
+    "Perioden": "1983MM03",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 263,
+    "Perioden": "1983MM04",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 264,
+    "Perioden": "1983MM05",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 265,
+    "Perioden": "1983MM06",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 266,
+    "Perioden": "1983MM07",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 267,
+    "Perioden": "1983MM08",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 268,
+    "Perioden": "1983MM09",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 269,
+    "Perioden": "1983MM10",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 270,
+    "Perioden": "1983MM11",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 271,
+    "Perioden": "1983MM12",
+    "JaarmutatieCPI_1": "     3.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 272,
+    "Perioden": "1983JJ00",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 273,
+    "Perioden": "1984MM01",
+    "JaarmutatieCPI_1": "     3.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 274,
+    "Perioden": "1984MM02",
+    "JaarmutatieCPI_1": "     3.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 275,
+    "Perioden": "1984MM03",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 276,
+    "Perioden": "1984MM04",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 277,
+    "Perioden": "1984MM05",
+    "JaarmutatieCPI_1": "     3.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 278,
+    "Perioden": "1984MM06",
+    "JaarmutatieCPI_1": "     3.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 279,
+    "Perioden": "1984MM07",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 280,
+    "Perioden": "1984MM08",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 281,
+    "Perioden": "1984MM09",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 282,
+    "Perioden": "1984MM10",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 283,
+    "Perioden": "1984MM11",
+    "JaarmutatieCPI_1": "     3.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 284,
+    "Perioden": "1984MM12",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 285,
+    "Perioden": "1984JJ00",
+    "JaarmutatieCPI_1": "     3.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 286,
+    "Perioden": "1985MM01",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 287,
+    "Perioden": "1985MM02",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 288,
+    "Perioden": "1985MM03",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 289,
+    "Perioden": "1985MM04",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 290,
+    "Perioden": "1985MM05",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 291,
+    "Perioden": "1985MM06",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 292,
+    "Perioden": "1985MM07",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 293,
+    "Perioden": "1985MM08",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 294,
+    "Perioden": "1985MM09",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 295,
+    "Perioden": "1985MM10",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 296,
+    "Perioden": "1985MM11",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 297,
+    "Perioden": "1985MM12",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 298,
+    "Perioden": "1985JJ00",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 299,
+    "Perioden": "1986MM01",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 300,
+    "Perioden": "1986MM02",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 301,
+    "Perioden": "1986MM03",
+    "JaarmutatieCPI_1": "     0.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 302,
+    "Perioden": "1986MM04",
+    "JaarmutatieCPI_1": "     0.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 303,
+    "Perioden": "1986MM05",
+    "JaarmutatieCPI_1": "     0.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 304,
+    "Perioden": "1986MM06",
+    "JaarmutatieCPI_1": "     0.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 305,
+    "Perioden": "1986MM07",
+    "JaarmutatieCPI_1": "    -0.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 306,
+    "Perioden": "1986MM08",
+    "JaarmutatieCPI_1": "    -0.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 307,
+    "Perioden": "1986MM09",
+    "JaarmutatieCPI_1": "    -0.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 308,
+    "Perioden": "1986MM10",
+    "JaarmutatieCPI_1": "    -0.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 309,
+    "Perioden": "1986MM11",
+    "JaarmutatieCPI_1": "    -0.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 310,
+    "Perioden": "1986MM12",
+    "JaarmutatieCPI_1": "    -0.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 311,
+    "Perioden": "1986JJ00",
+    "JaarmutatieCPI_1": "     0.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 312,
+    "Perioden": "1987MM01",
+    "JaarmutatieCPI_1": "    -1.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 313,
+    "Perioden": "1987MM02",
+    "JaarmutatieCPI_1": "    -1.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 314,
+    "Perioden": "1987MM03",
+    "JaarmutatieCPI_1": "    -1.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 315,
+    "Perioden": "1987MM04",
+    "JaarmutatieCPI_1": "    -1.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 316,
+    "Perioden": "1987MM05",
+    "JaarmutatieCPI_1": "    -1.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 317,
+    "Perioden": "1987MM06",
+    "JaarmutatieCPI_1": "    -0.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 318,
+    "Perioden": "1987MM07",
+    "JaarmutatieCPI_1": "     0.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 319,
+    "Perioden": "1987MM08",
+    "JaarmutatieCPI_1": "     0.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 320,
+    "Perioden": "1987MM09",
+    "JaarmutatieCPI_1": "     0.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 321,
+    "Perioden": "1987MM10",
+    "JaarmutatieCPI_1": "     0.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 322,
+    "Perioden": "1987MM11",
+    "JaarmutatieCPI_1": "    -0.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 323,
+    "Perioden": "1987MM12",
+    "JaarmutatieCPI_1": "    -0.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 324,
+    "Perioden": "1987JJ00",
+    "JaarmutatieCPI_1": "    -0.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 325,
+    "Perioden": "1988MM01",
+    "JaarmutatieCPI_1": "     0.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 326,
+    "Perioden": "1988MM02",
+    "JaarmutatieCPI_1": "     0.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 327,
+    "Perioden": "1988MM03",
+    "JaarmutatieCPI_1": "     0.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 328,
+    "Perioden": "1988MM04",
+    "JaarmutatieCPI_1": "     0.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 329,
+    "Perioden": "1988MM05",
+    "JaarmutatieCPI_1": "     0.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 330,
+    "Perioden": "1988MM06",
+    "JaarmutatieCPI_1": "     0.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 331,
+    "Perioden": "1988MM07",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 332,
+    "Perioden": "1988MM08",
+    "JaarmutatieCPI_1": "     0.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 333,
+    "Perioden": "1988MM09",
+    "JaarmutatieCPI_1": "     0.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 334,
+    "Perioden": "1988MM10",
+    "JaarmutatieCPI_1": "     0.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 335,
+    "Perioden": "1988MM11",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 336,
+    "Perioden": "1988MM12",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 337,
+    "Perioden": "1988JJ00",
+    "JaarmutatieCPI_1": "     0.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 338,
+    "Perioden": "1989MM01",
+    "JaarmutatieCPI_1": "     0.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 339,
+    "Perioden": "1989MM02",
+    "JaarmutatieCPI_1": "     0.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 340,
+    "Perioden": "1989MM03",
+    "JaarmutatieCPI_1": "     0.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 341,
+    "Perioden": "1989MM04",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 342,
+    "Perioden": "1989MM05",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 343,
+    "Perioden": "1989MM06",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 344,
+    "Perioden": "1989MM07",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 345,
+    "Perioden": "1989MM08",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 346,
+    "Perioden": "1989MM09",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 347,
+    "Perioden": "1989MM10",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 348,
+    "Perioden": "1989MM11",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 349,
+    "Perioden": "1989MM12",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 350,
+    "Perioden": "1989JJ00",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 351,
+    "Perioden": "1990MM01",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 352,
+    "Perioden": "1990MM02",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 353,
+    "Perioden": "1990MM03",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 354,
+    "Perioden": "1990MM04",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 355,
+    "Perioden": "1990MM05",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 356,
+    "Perioden": "1990MM06",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 357,
+    "Perioden": "1990MM07",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 358,
+    "Perioden": "1990MM08",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 359,
+    "Perioden": "1990MM09",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 360,
+    "Perioden": "1990MM10",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 361,
+    "Perioden": "1990MM11",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 362,
+    "Perioden": "1990MM12",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 363,
+    "Perioden": "1990JJ00",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 364,
+    "Perioden": "1991MM01",
+    "JaarmutatieCPI_1": "     3.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 365,
+    "Perioden": "1991MM02",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 366,
+    "Perioden": "1991MM03",
+    "JaarmutatieCPI_1": "     3.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 367,
+    "Perioden": "1991MM04",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 368,
+    "Perioden": "1991MM05",
+    "JaarmutatieCPI_1": "     3.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 369,
+    "Perioden": "1991MM06",
+    "JaarmutatieCPI_1": "     3.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 370,
+    "Perioden": "1991MM07",
+    "JaarmutatieCPI_1": "     4.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 371,
+    "Perioden": "1991MM08",
+    "JaarmutatieCPI_1": "     4.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 372,
+    "Perioden": "1991MM09",
+    "JaarmutatieCPI_1": "     4.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 373,
+    "Perioden": "1991MM10",
+    "JaarmutatieCPI_1": "     4.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 374,
+    "Perioden": "1991MM11",
+    "JaarmutatieCPI_1": "     4.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 375,
+    "Perioden": "1991MM12",
+    "JaarmutatieCPI_1": "     4.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 376,
+    "Perioden": "1991JJ00",
+    "JaarmutatieCPI_1": "     3.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 377,
+    "Perioden": "1992MM01",
+    "JaarmutatieCPI_1": "     4.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 378,
+    "Perioden": "1992MM02",
+    "JaarmutatieCPI_1": "     4.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 379,
+    "Perioden": "1992MM03",
+    "JaarmutatieCPI_1": "     4.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 380,
+    "Perioden": "1992MM04",
+    "JaarmutatieCPI_1": "     4.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 381,
+    "Perioden": "1992MM05",
+    "JaarmutatieCPI_1": "     4.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 382,
+    "Perioden": "1992MM06",
+    "JaarmutatieCPI_1": "     4.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 383,
+    "Perioden": "1992MM07",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 384,
+    "Perioden": "1992MM08",
+    "JaarmutatieCPI_1": "     3.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 385,
+    "Perioden": "1992MM09",
+    "JaarmutatieCPI_1": "     3.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 386,
+    "Perioden": "1992MM10",
+    "JaarmutatieCPI_1": "     3.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 387,
+    "Perioden": "1992MM11",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 388,
+    "Perioden": "1992MM12",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 389,
+    "Perioden": "1992JJ00",
+    "JaarmutatieCPI_1": "     3.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 390,
+    "Perioden": "1993MM01",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 391,
+    "Perioden": "1993MM02",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 392,
+    "Perioden": "1993MM03",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 393,
+    "Perioden": "1993MM04",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 394,
+    "Perioden": "1993MM05",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 395,
+    "Perioden": "1993MM06",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 396,
+    "Perioden": "1993MM07",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 397,
+    "Perioden": "1993MM08",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 398,
+    "Perioden": "1993MM09",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 399,
+    "Perioden": "1993MM10",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 400,
+    "Perioden": "1993MM11",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 401,
+    "Perioden": "1993MM12",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 402,
+    "Perioden": "1993JJ00",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 403,
+    "Perioden": "1994MM01",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": ""
+  },
+  {
+    "ID": 404,
+    "Perioden": "1994MM02",
+    "JaarmutatieCPI_1": "     3.0",
+    "JaarmutatieCPIAfgeleid_2": "     2.5"
+  },
+  {
+    "ID": 405,
+    "Perioden": "1994MM03",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": "     2.5"
+  },
+  {
+    "ID": 406,
+    "Perioden": "1994MM04",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": "     2.3"
+  },
+  {
+    "ID": 407,
+    "Perioden": "1994MM05",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": "     2.5"
+  },
+  {
+    "ID": 408,
+    "Perioden": "1994MM06",
+    "JaarmutatieCPI_1": "     3.0",
+    "JaarmutatieCPIAfgeleid_2": "     2.6"
+  },
+  {
+    "ID": 409,
+    "Perioden": "1994MM07",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": "     2.3"
+  },
+  {
+    "ID": 410,
+    "Perioden": "1994MM08",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 411,
+    "Perioden": "1994MM09",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": "     2.4"
+  },
+  {
+    "ID": 412,
+    "Perioden": "1994MM10",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": "     2.4"
+  },
+  {
+    "ID": 413,
+    "Perioden": "1994MM11",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 414,
+    "Perioden": "1994MM12",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 415,
+    "Perioden": "1994JJ00",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": "     2.4"
+  },
+  {
+    "ID": 416,
+    "Perioden": "1995MM01",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     2.3"
+  },
+  {
+    "ID": 417,
+    "Perioden": "1995MM02",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 418,
+    "Perioden": "1995MM03",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 419,
+    "Perioden": "1995MM04",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 420,
+    "Perioden": "1995MM05",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 421,
+    "Perioden": "1995MM06",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 422,
+    "Perioden": "1995MM07",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 423,
+    "Perioden": "1995MM08",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 424,
+    "Perioden": "1995MM09",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 425,
+    "Perioden": "1995MM10",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 426,
+    "Perioden": "1995MM11",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 427,
+    "Perioden": "1995MM12",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 428,
+    "Perioden": "1995JJ00",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 429,
+    "Perioden": "1996MM01",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 430,
+    "Perioden": "1996MM02",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 431,
+    "Perioden": "1996MM03",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 432,
+    "Perioden": "1996MM04",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 433,
+    "Perioden": "1996MM05",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 434,
+    "Perioden": "1996MM06",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 435,
+    "Perioden": "1996MM07",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 436,
+    "Perioden": "1996MM08",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 437,
+    "Perioden": "1996MM09",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 438,
+    "Perioden": "1996MM10",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 439,
+    "Perioden": "1996MM11",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 440,
+    "Perioden": "1996MM12",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 441,
+    "Perioden": "1996JJ00",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 442,
+    "Perioden": "1997MM01",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.3"
+  },
+  {
+    "ID": 443,
+    "Perioden": "1997MM02",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 444,
+    "Perioden": "1997MM03",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 445,
+    "Perioden": "1997MM04",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 446,
+    "Perioden": "1997MM05",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 447,
+    "Perioden": "1997MM06",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 448,
+    "Perioden": "1997MM07",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 449,
+    "Perioden": "1997MM08",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     2.5"
+  },
+  {
+    "ID": 450,
+    "Perioden": "1997MM09",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     2.4"
+  },
+  {
+    "ID": 451,
+    "Perioden": "1997MM10",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 452,
+    "Perioden": "1997MM11",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": "     2.3"
+  },
+  {
+    "ID": 453,
+    "Perioden": "1997MM12",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 454,
+    "Perioden": "1997JJ00",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 455,
+    "Perioden": "1998MM01",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 456,
+    "Perioden": "1998MM02",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 457,
+    "Perioden": "1998MM03",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 458,
+    "Perioden": "1998MM04",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 459,
+    "Perioden": "1998MM05",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 460,
+    "Perioden": "1998MM06",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 461,
+    "Perioden": "1998MM07",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 462,
+    "Perioden": "1998MM08",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 463,
+    "Perioden": "1998MM09",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 464,
+    "Perioden": "1998MM10",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 465,
+    "Perioden": "1998MM11",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 466,
+    "Perioden": "1998MM12",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 467,
+    "Perioden": "1998JJ00",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 468,
+    "Perioden": "1999MM01",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 469,
+    "Perioden": "1999MM02",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 470,
+    "Perioden": "1999MM03",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 471,
+    "Perioden": "1999MM04",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 472,
+    "Perioden": "1999MM05",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 473,
+    "Perioden": "1999MM06",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 474,
+    "Perioden": "1999MM07",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 475,
+    "Perioden": "1999MM08",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 476,
+    "Perioden": "1999MM09",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 477,
+    "Perioden": "1999MM10",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 478,
+    "Perioden": "1999MM11",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 479,
+    "Perioden": "1999MM12",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 480,
+    "Perioden": "1999JJ00",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 481,
+    "Perioden": "2000MM01",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 482,
+    "Perioden": "2000MM02",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 483,
+    "Perioden": "2000MM03",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 484,
+    "Perioden": "2000MM04",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 485,
+    "Perioden": "2000MM05",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 486,
+    "Perioden": "2000MM06",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": "     2.3"
+  },
+  {
+    "ID": 487,
+    "Perioden": "2000MM07",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": "     2.4"
+  },
+  {
+    "ID": 488,
+    "Perioden": "2000MM08",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 489,
+    "Perioden": "2000MM09",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": "     2.6"
+  },
+  {
+    "ID": 490,
+    "Perioden": "2000MM10",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": "     2.9"
+  },
+  {
+    "ID": 491,
+    "Perioden": "2000MM11",
+    "JaarmutatieCPI_1": "     3.0",
+    "JaarmutatieCPIAfgeleid_2": "     2.8"
+  },
+  {
+    "ID": 492,
+    "Perioden": "2000MM12",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": "     2.5"
+  },
+  {
+    "ID": 493,
+    "Perioden": "2000JJ00",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 494,
+    "Perioden": "2001MM01",
+    "JaarmutatieCPI_1": "     4.2",
+    "JaarmutatieCPIAfgeleid_2": "     3.3"
+  },
+  {
+    "ID": 495,
+    "Perioden": "2001MM02",
+    "JaarmutatieCPI_1": "     4.5",
+    "JaarmutatieCPIAfgeleid_2": "     3.3"
+  },
+  {
+    "ID": 496,
+    "Perioden": "2001MM03",
+    "JaarmutatieCPI_1": "     4.6",
+    "JaarmutatieCPIAfgeleid_2": "     3.5"
+  },
+  {
+    "ID": 497,
+    "Perioden": "2001MM04",
+    "JaarmutatieCPI_1": "     4.9",
+    "JaarmutatieCPIAfgeleid_2": "     3.9"
+  },
+  {
+    "ID": 498,
+    "Perioden": "2001MM05",
+    "JaarmutatieCPI_1": "     4.9",
+    "JaarmutatieCPIAfgeleid_2": "     3.9"
+  },
+  {
+    "ID": 499,
+    "Perioden": "2001MM06",
+    "JaarmutatieCPI_1": "     4.5",
+    "JaarmutatieCPIAfgeleid_2": "     3.5"
+  },
+  {
+    "ID": 500,
+    "Perioden": "2001MM07",
+    "JaarmutatieCPI_1": "     4.6",
+    "JaarmutatieCPIAfgeleid_2": "     3.7"
+  },
+  {
+    "ID": 501,
+    "Perioden": "2001MM08",
+    "JaarmutatieCPI_1": "     4.7",
+    "JaarmutatieCPIAfgeleid_2": "     3.7"
+  },
+  {
+    "ID": 502,
+    "Perioden": "2001MM09",
+    "JaarmutatieCPI_1": "     4.7",
+    "JaarmutatieCPIAfgeleid_2": "     3.7"
+  },
+  {
+    "ID": 503,
+    "Perioden": "2001MM10",
+    "JaarmutatieCPI_1": "     4.3",
+    "JaarmutatieCPIAfgeleid_2": "     3.3"
+  },
+  {
+    "ID": 504,
+    "Perioden": "2001MM11",
+    "JaarmutatieCPI_1": "     4.2",
+    "JaarmutatieCPIAfgeleid_2": "     3.1"
+  },
+  {
+    "ID": 505,
+    "Perioden": "2001MM12",
+    "JaarmutatieCPI_1": "     4.4",
+    "JaarmutatieCPIAfgeleid_2": "     3.4"
+  },
+  {
+    "ID": 506,
+    "Perioden": "2001JJ00",
+    "JaarmutatieCPI_1": "     4.5",
+    "JaarmutatieCPIAfgeleid_2": "     3.6"
+  },
+  {
+    "ID": 507,
+    "Perioden": "2002MM01",
+    "JaarmutatieCPI_1": "     4.0",
+    "JaarmutatieCPIAfgeleid_2": "     4.1"
+  },
+  {
+    "ID": 508,
+    "Perioden": "2002MM02",
+    "JaarmutatieCPI_1": "     3.8",
+    "JaarmutatieCPIAfgeleid_2": "     3.9"
+  },
+  {
+    "ID": 509,
+    "Perioden": "2002MM03",
+    "JaarmutatieCPI_1": "     3.6",
+    "JaarmutatieCPIAfgeleid_2": "     3.7"
+  },
+  {
+    "ID": 510,
+    "Perioden": "2002MM04",
+    "JaarmutatieCPI_1": "     3.6",
+    "JaarmutatieCPIAfgeleid_2": "     3.6"
+  },
+  {
+    "ID": 511,
+    "Perioden": "2002MM05",
+    "JaarmutatieCPI_1": "     3.3",
+    "JaarmutatieCPIAfgeleid_2": "     3.3"
+  },
+  {
+    "ID": 512,
+    "Perioden": "2002MM06",
+    "JaarmutatieCPI_1": "     3.4",
+    "JaarmutatieCPIAfgeleid_2": "     3.4"
+  },
+  {
+    "ID": 513,
+    "Perioden": "2002MM07",
+    "JaarmutatieCPI_1": "     3.4",
+    "JaarmutatieCPIAfgeleid_2": "     3.4"
+  },
+  {
+    "ID": 514,
+    "Perioden": "2002MM08",
+    "JaarmutatieCPI_1": "     3.3",
+    "JaarmutatieCPIAfgeleid_2": "     3.3"
+  },
+  {
+    "ID": 515,
+    "Perioden": "2002MM09",
+    "JaarmutatieCPI_1": "     3.3",
+    "JaarmutatieCPIAfgeleid_2": "     3.3"
+  },
+  {
+    "ID": 516,
+    "Perioden": "2002MM10",
+    "JaarmutatieCPI_1": "     3.2",
+    "JaarmutatieCPIAfgeleid_2": "     3.1"
+  },
+  {
+    "ID": 517,
+    "Perioden": "2002MM11",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": "     3.2"
+  },
+  {
+    "ID": 518,
+    "Perioden": "2002MM12",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": "     3.1"
+  },
+  {
+    "ID": 519,
+    "Perioden": "2002JJ00",
+    "JaarmutatieCPI_1": "     3.4",
+    "JaarmutatieCPIAfgeleid_2": "     3.4"
+  },
+  {
+    "ID": 520,
+    "Perioden": "2003MM01",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 521,
+    "Perioden": "2003MM02",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 522,
+    "Perioden": "2003MM03",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     2.3"
+  },
+  {
+    "ID": 523,
+    "Perioden": "2003MM04",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 524,
+    "Perioden": "2003MM05",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 525,
+    "Perioden": "2003MM06",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 526,
+    "Perioden": "2003MM07",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 527,
+    "Perioden": "2003MM08",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 528,
+    "Perioden": "2003MM09",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 529,
+    "Perioden": "2003MM10",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 530,
+    "Perioden": "2003MM11",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 531,
+    "Perioden": "2003MM12",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 532,
+    "Perioden": "2003JJ00",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 533,
+    "Perioden": "2004MM01",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.2"
+  },
+  {
+    "ID": 534,
+    "Perioden": "2004MM02",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 535,
+    "Perioden": "2004MM03",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     0.8"
+  },
+  {
+    "ID": 536,
+    "Perioden": "2004MM04",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": "     0.9"
+  },
+  {
+    "ID": 537,
+    "Perioden": "2004MM05",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.2"
+  },
+  {
+    "ID": 538,
+    "Perioden": "2004MM06",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 539,
+    "Perioden": "2004MM07",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 540,
+    "Perioden": "2004MM08",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 541,
+    "Perioden": "2004MM09",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.5"
+  },
+  {
+    "ID": 542,
+    "Perioden": "2004MM10",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": "     0.8"
+  },
+  {
+    "ID": 543,
+    "Perioden": "2004MM11",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     0.8"
+  },
+  {
+    "ID": 544,
+    "Perioden": "2004MM12",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 545,
+    "Perioden": "2004JJ00",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": "     0.9"
+  },
+  {
+    "ID": 546,
+    "Perioden": "2005MM01",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 547,
+    "Perioden": "2005MM02",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.2"
+  },
+  {
+    "ID": 548,
+    "Perioden": "2005MM03",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 549,
+    "Perioden": "2005MM04",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 550,
+    "Perioden": "2005MM05",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 551,
+    "Perioden": "2005MM06",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 552,
+    "Perioden": "2005MM07",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 553,
+    "Perioden": "2005MM08",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 554,
+    "Perioden": "2005MM09",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 555,
+    "Perioden": "2005MM10",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 556,
+    "Perioden": "2005MM11",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 557,
+    "Perioden": "2005MM12",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 558,
+    "Perioden": "2005JJ00",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 559,
+    "Perioden": "2006MM01",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 560,
+    "Perioden": "2006MM02",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 561,
+    "Perioden": "2006MM03",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 562,
+    "Perioden": "2006MM04",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 563,
+    "Perioden": "2006MM05",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 564,
+    "Perioden": "2006MM06",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 565,
+    "Perioden": "2006MM07",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 566,
+    "Perioden": "2006MM08",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 567,
+    "Perioden": "2006MM09",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 568,
+    "Perioden": "2006MM10",
+    "JaarmutatieCPI_1": "     0.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 569,
+    "Perioden": "2006MM11",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 570,
+    "Perioden": "2006MM12",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 571,
+    "Perioden": "2006JJ00",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 572,
+    "Perioden": "2007MM01",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": "     1.2"
+  },
+  {
+    "ID": 573,
+    "Perioden": "2007MM02",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 574,
+    "Perioden": "2007MM03",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 575,
+    "Perioden": "2007MM04",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 576,
+    "Perioden": "2007MM05",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 577,
+    "Perioden": "2007MM06",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 578,
+    "Perioden": "2007MM07",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 579,
+    "Perioden": "2007MM08",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 580,
+    "Perioden": "2007MM09",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.2"
+  },
+  {
+    "ID": 581,
+    "Perioden": "2007MM10",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 582,
+    "Perioden": "2007MM11",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 583,
+    "Perioden": "2007MM12",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 584,
+    "Perioden": "2007JJ00",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 585,
+    "Perioden": "2008MM01",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 586,
+    "Perioden": "2008MM02",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 587,
+    "Perioden": "2008MM03",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 588,
+    "Perioden": "2008MM04",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 589,
+    "Perioden": "2008MM05",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 590,
+    "Perioden": "2008MM06",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     2.4"
+  },
+  {
+    "ID": 591,
+    "Perioden": "2008MM07",
+    "JaarmutatieCPI_1": "     3.2",
+    "JaarmutatieCPIAfgeleid_2": "     2.9"
+  },
+  {
+    "ID": 592,
+    "Perioden": "2008MM08",
+    "JaarmutatieCPI_1": "     3.2",
+    "JaarmutatieCPIAfgeleid_2": "     3.0"
+  },
+  {
+    "ID": 593,
+    "Perioden": "2008MM09",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": "     2.8"
+  },
+  {
+    "ID": 594,
+    "Perioden": "2008MM10",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": "     2.5"
+  },
+  {
+    "ID": 595,
+    "Perioden": "2008MM11",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 596,
+    "Perioden": "2008MM12",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 597,
+    "Perioden": "2008JJ00",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 598,
+    "Perioden": "2009MM01",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 599,
+    "Perioden": "2009MM02",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 600,
+    "Perioden": "2009MM03",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 601,
+    "Perioden": "2009MM04",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 602,
+    "Perioden": "2009MM05",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.2"
+  },
+  {
+    "ID": 603,
+    "Perioden": "2009MM06",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": "     1.1"
+  },
+  {
+    "ID": 604,
+    "Perioden": "2009MM07",
+    "JaarmutatieCPI_1": "     0.2",
+    "JaarmutatieCPIAfgeleid_2": "    -0.1"
+  },
+  {
+    "ID": 605,
+    "Perioden": "2009MM08",
+    "JaarmutatieCPI_1": "     0.3",
+    "JaarmutatieCPIAfgeleid_2": "     0.0"
+  },
+  {
+    "ID": 606,
+    "Perioden": "2009MM09",
+    "JaarmutatieCPI_1": "     0.4",
+    "JaarmutatieCPIAfgeleid_2": "     0.1"
+  },
+  {
+    "ID": 607,
+    "Perioden": "2009MM10",
+    "JaarmutatieCPI_1": "     0.7",
+    "JaarmutatieCPIAfgeleid_2": "     0.4"
+  },
+  {
+    "ID": 608,
+    "Perioden": "2009MM11",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.8"
+  },
+  {
+    "ID": 609,
+    "Perioden": "2009MM12",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 610,
+    "Perioden": "2009JJ00",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": "     0.9"
+  },
+  {
+    "ID": 611,
+    "Perioden": "2010MM01",
+    "JaarmutatieCPI_1": "     0.8",
+    "JaarmutatieCPIAfgeleid_2": "     0.7"
+  },
+  {
+    "ID": 612,
+    "Perioden": "2010MM02",
+    "JaarmutatieCPI_1": "     0.8",
+    "JaarmutatieCPIAfgeleid_2": "     0.7"
+  },
+  {
+    "ID": 613,
+    "Perioden": "2010MM03",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.8"
+  },
+  {
+    "ID": 614,
+    "Perioden": "2010MM04",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     0.9"
+  },
+  {
+    "ID": 615,
+    "Perioden": "2010MM05",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.7"
+  },
+  {
+    "ID": 616,
+    "Perioden": "2010MM06",
+    "JaarmutatieCPI_1": "     0.8",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 617,
+    "Perioden": "2010MM07",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 618,
+    "Perioden": "2010MM08",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 619,
+    "Perioden": "2010MM09",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 620,
+    "Perioden": "2010MM10",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 621,
+    "Perioden": "2010MM11",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 622,
+    "Perioden": "2010MM12",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 623,
+    "Perioden": "2010JJ00",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.1"
+  },
+  {
+    "ID": 624,
+    "Perioden": "2011MM01",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 625,
+    "Perioden": "2011MM02",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 626,
+    "Perioden": "2011MM03",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 627,
+    "Perioden": "2011MM04",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 628,
+    "Perioden": "2011MM05",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 629,
+    "Perioden": "2011MM06",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 630,
+    "Perioden": "2011MM07",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     2.4"
+  },
+  {
+    "ID": 631,
+    "Perioden": "2011MM08",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     2.4"
+  },
+  {
+    "ID": 632,
+    "Perioden": "2011MM09",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": "     2.5"
+  },
+  {
+    "ID": 633,
+    "Perioden": "2011MM10",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     2.3"
+  },
+  {
+    "ID": 634,
+    "Perioden": "2011MM11",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     2.3"
+  },
+  {
+    "ID": 635,
+    "Perioden": "2011MM12",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 636,
+    "Perioden": "2011JJ00",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 637,
+    "Perioden": "2012MM01",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 638,
+    "Perioden": "2012MM02",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 639,
+    "Perioden": "2012MM03",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": "     2.2"
+  },
+  {
+    "ID": 640,
+    "Perioden": "2012MM04",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 641,
+    "Perioden": "2012MM05",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 642,
+    "Perioden": "2012MM06",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 643,
+    "Perioden": "2012MM07",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 644,
+    "Perioden": "2012MM08",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 645,
+    "Perioden": "2012MM09",
+    "JaarmutatieCPI_1": "     2.3",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 646,
+    "Perioden": "2012MM10",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 647,
+    "Perioden": "2012MM11",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 648,
+    "Perioden": "2012MM12",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 649,
+    "Perioden": "2012JJ00",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": "     2.1"
+  },
+  {
+    "ID": 650,
+    "Perioden": "2013MM01",
+    "JaarmutatieCPI_1": "     3.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 651,
+    "Perioden": "2013MM02",
+    "JaarmutatieCPI_1": "     3.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 652,
+    "Perioden": "2013MM03",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 653,
+    "Perioden": "2013MM04",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.2"
+  },
+  {
+    "ID": 654,
+    "Perioden": "2013MM05",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 655,
+    "Perioden": "2013MM06",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 656,
+    "Perioden": "2013MM07",
+    "JaarmutatieCPI_1": "     3.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 657,
+    "Perioden": "2013MM08",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 658,
+    "Perioden": "2013MM09",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     1.1"
+  },
+  {
+    "ID": 659,
+    "Perioden": "2013MM10",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     0.9"
+  },
+  {
+    "ID": 660,
+    "Perioden": "2013MM11",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     0.8"
+  },
+  {
+    "ID": 661,
+    "Perioden": "2013MM12",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 662,
+    "Perioden": "2013JJ00",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 663,
+    "Perioden": "2014MM01",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 664,
+    "Perioden": "2014MM02",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     0.7"
+  },
+  {
+    "ID": 665,
+    "Perioden": "2014MM03",
+    "JaarmutatieCPI_1": "     0.8",
+    "JaarmutatieCPIAfgeleid_2": "     0.4"
+  },
+  {
+    "ID": 666,
+    "Perioden": "2014MM04",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": "     0.8"
+  },
+  {
+    "ID": 667,
+    "Perioden": "2014MM05",
+    "JaarmutatieCPI_1": "     0.8",
+    "JaarmutatieCPIAfgeleid_2": "     0.5"
+  },
+  {
+    "ID": 668,
+    "Perioden": "2014MM06",
+    "JaarmutatieCPI_1": "     0.9",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 669,
+    "Perioden": "2014MM07",
+    "JaarmutatieCPI_1": "     0.9",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 670,
+    "Perioden": "2014MM08",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 671,
+    "Perioden": "2014MM09",
+    "JaarmutatieCPI_1": "     0.9",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 672,
+    "Perioden": "2014MM10",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     0.7"
+  },
+  {
+    "ID": 673,
+    "Perioden": "2014MM11",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 674,
+    "Perioden": "2014MM12",
+    "JaarmutatieCPI_1": "     0.7",
+    "JaarmutatieCPIAfgeleid_2": "     0.4"
+  },
+  {
+    "ID": 675,
+    "Perioden": "2014JJ00",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 676,
+    "Perioden": "2015MM01",
+    "JaarmutatieCPI_1": "     0.0",
+    "JaarmutatieCPIAfgeleid_2": "    -0.1"
+  },
+  {
+    "ID": 677,
+    "Perioden": "2015MM02",
+    "JaarmutatieCPI_1": "     0.2",
+    "JaarmutatieCPIAfgeleid_2": "     0.0"
+  },
+  {
+    "ID": 678,
+    "Perioden": "2015MM03",
+    "JaarmutatieCPI_1": "     0.4",
+    "JaarmutatieCPIAfgeleid_2": "     0.2"
+  },
+  {
+    "ID": 679,
+    "Perioden": "2015MM04",
+    "JaarmutatieCPI_1": "     0.6",
+    "JaarmutatieCPIAfgeleid_2": "     0.4"
+  },
+  {
+    "ID": 680,
+    "Perioden": "2015MM05",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 681,
+    "Perioden": "2015MM06",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.8"
+  },
+  {
+    "ID": 682,
+    "Perioden": "2015MM07",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.8"
+  },
+  {
+    "ID": 683,
+    "Perioden": "2015MM08",
+    "JaarmutatieCPI_1": "     0.8",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 684,
+    "Perioden": "2015MM09",
+    "JaarmutatieCPI_1": "     0.6",
+    "JaarmutatieCPIAfgeleid_2": "     0.4"
+  },
+  {
+    "ID": 685,
+    "Perioden": "2015MM10",
+    "JaarmutatieCPI_1": "     0.6",
+    "JaarmutatieCPIAfgeleid_2": "     0.4"
+  },
+  {
+    "ID": 686,
+    "Perioden": "2015MM11",
+    "JaarmutatieCPI_1": "     0.7",
+    "JaarmutatieCPIAfgeleid_2": "     0.4"
+  },
+  {
+    "ID": 687,
+    "Perioden": "2015MM12",
+    "JaarmutatieCPI_1": "     0.7",
+    "JaarmutatieCPIAfgeleid_2": "     0.5"
+  },
+  {
+    "ID": 688,
+    "Perioden": "2015JJ00",
+    "JaarmutatieCPI_1": "     0.6",
+    "JaarmutatieCPIAfgeleid_2": "     0.5"
+  },
+  {
+    "ID": 689,
+    "Perioden": "2016MM01",
+    "JaarmutatieCPI_1": "     0.6",
+    "JaarmutatieCPIAfgeleid_2": "     0.5"
+  },
+  {
+    "ID": 690,
+    "Perioden": "2016MM02",
+    "JaarmutatieCPI_1": "     0.6",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 691,
+    "Perioden": "2016MM03",
+    "JaarmutatieCPI_1": "     0.6",
+    "JaarmutatieCPIAfgeleid_2": "     0.5"
+  },
+  {
+    "ID": 692,
+    "Perioden": "2016MM04",
+    "JaarmutatieCPI_1": "     0.0",
+    "JaarmutatieCPIAfgeleid_2": "    -0.1"
+  },
+  {
+    "ID": 693,
+    "Perioden": "2016MM05",
+    "JaarmutatieCPI_1": "     0.0",
+    "JaarmutatieCPIAfgeleid_2": "    -0.1"
+  },
+  {
+    "ID": 694,
+    "Perioden": "2016MM06",
+    "JaarmutatieCPI_1": "     0.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.0"
+  },
+  {
+    "ID": 695,
+    "Perioden": "2016MM07",
+    "JaarmutatieCPI_1": "    -0.2",
+    "JaarmutatieCPIAfgeleid_2": "    -0.3"
+  },
+  {
+    "ID": 696,
+    "Perioden": "2016MM08",
+    "JaarmutatieCPI_1": "     0.2",
+    "JaarmutatieCPIAfgeleid_2": "     0.1"
+  },
+  {
+    "ID": 697,
+    "Perioden": "2016MM09",
+    "JaarmutatieCPI_1": "     0.1",
+    "JaarmutatieCPIAfgeleid_2": "     0.0"
+  },
+  {
+    "ID": 698,
+    "Perioden": "2016MM10",
+    "JaarmutatieCPI_1": "     0.4",
+    "JaarmutatieCPIAfgeleid_2": "     0.4"
+  },
+  {
+    "ID": 699,
+    "Perioden": "2016MM11",
+    "JaarmutatieCPI_1": "     0.6",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 700,
+    "Perioden": "2016MM12",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.9"
+  },
+  {
+    "ID": 701,
+    "Perioden": "2016JJ00",
+    "JaarmutatieCPI_1": "     0.3",
+    "JaarmutatieCPIAfgeleid_2": "     0.3"
+  },
+  {
+    "ID": 702,
+    "Perioden": "2017MM01",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 703,
+    "Perioden": "2017MM02",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 704,
+    "Perioden": "2017MM03",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.1"
+  },
+  {
+    "ID": 705,
+    "Perioden": "2017MM04",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 706,
+    "Perioden": "2017MM05",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 707,
+    "Perioden": "2017MM06",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.1"
+  },
+  {
+    "ID": 708,
+    "Perioden": "2017MM07",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 709,
+    "Perioden": "2017MM08",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 710,
+    "Perioden": "2017MM09",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 711,
+    "Perioden": "2017MM10",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 712,
+    "Perioden": "2017MM11",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 713,
+    "Perioden": "2017MM12",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.2"
+  },
+  {
+    "ID": 714,
+    "Perioden": "2017JJ00",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 715,
+    "Perioden": "2018MM01",
+    "JaarmutatieCPI_1": "     1.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 716,
+    "Perioden": "2018MM02",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 717,
+    "Perioden": "2018MM03",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.8"
+  },
+  {
+    "ID": 718,
+    "Perioden": "2018MM04",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     0.8"
+  },
+  {
+    "ID": 719,
+    "Perioden": "2018MM05",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 720,
+    "Perioden": "2018MM06",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 721,
+    "Perioden": "2018MM07",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 722,
+    "Perioden": "2018MM08",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 723,
+    "Perioden": "2018MM09",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 724,
+    "Perioden": "2018MM10",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 725,
+    "Perioden": "2018MM11",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 726,
+    "Perioden": "2018MM12",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 727,
+    "Perioden": "2018JJ00",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 728,
+    "Perioden": "2019MM01",
+    "JaarmutatieCPI_1": "     2.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 729,
+    "Perioden": "2019MM02",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 730,
+    "Perioden": "2019MM03",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 731,
+    "Perioden": "2019MM04",
+    "JaarmutatieCPI_1": "     2.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 732,
+    "Perioden": "2019MM05",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 733,
+    "Perioden": "2019MM06",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 734,
+    "Perioden": "2019MM07",
+    "JaarmutatieCPI_1": "     2.5",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 735,
+    "Perioden": "2019MM08",
+    "JaarmutatieCPI_1": "     2.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.8"
+  },
+  {
+    "ID": 736,
+    "Perioden": "2019MM09",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 737,
+    "Perioden": "2019MM10",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 738,
+    "Perioden": "2019MM11",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 739,
+    "Perioden": "2019MM12",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 740,
+    "Perioden": "2019JJ00",
+    "JaarmutatieCPI_1": "     2.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 741,
+    "Perioden": "2020MM01",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     2.0"
+  },
+  {
+    "ID": 742,
+    "Perioden": "2020MM02",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.7"
+  },
+  {
+    "ID": 743,
+    "Perioden": "2020MM03",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 744,
+    "Perioden": "2020MM04",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 745,
+    "Perioden": "2020MM05",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.1"
+  },
+  {
+    "ID": 746,
+    "Perioden": "2020MM06",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.4"
+  },
+  {
+    "ID": 747,
+    "Perioden": "2020MM07",
+    "JaarmutatieCPI_1": "     1.7",
+    "JaarmutatieCPIAfgeleid_2": "     1.6"
+  },
+  {
+    "ID": 748,
+    "Perioden": "2020MM08",
+    "JaarmutatieCPI_1": "     0.7",
+    "JaarmutatieCPIAfgeleid_2": "     0.6"
+  },
+  {
+    "ID": 749,
+    "Perioden": "2020MM09",
+    "JaarmutatieCPI_1": "     1.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.0"
+  },
+  {
+    "ID": 750,
+    "Perioden": "2020MM10",
+    "JaarmutatieCPI_1": "     1.2",
+    "JaarmutatieCPIAfgeleid_2": "     1.1"
+  },
+  {
+    "ID": 751,
+    "Perioden": "2020MM11",
+    "JaarmutatieCPI_1": "     0.8",
+    "JaarmutatieCPIAfgeleid_2": "     0.7"
+  },
+  {
+    "ID": 752,
+    "Perioden": "2020MM12",
+    "JaarmutatieCPI_1": "     1.0",
+    "JaarmutatieCPIAfgeleid_2": "     0.9"
+  },
+  {
+    "ID": 753,
+    "Perioden": "2020JJ00",
+    "JaarmutatieCPI_1": "     1.3",
+    "JaarmutatieCPIAfgeleid_2": "     1.2"
+  },
+  {
+    "ID": 754,
+    "Perioden": "2021MM01",
+    "JaarmutatieCPI_1": "     1.6",
+    "JaarmutatieCPIAfgeleid_2": "     1.2"
+  },
+  {
+    "ID": 755,
+    "Perioden": "2021MM02",
+    "JaarmutatieCPI_1": "     1.8",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 756,
+    "Perioden": "2021MM03",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 757,
+    "Perioden": "2021MM04",
+    "JaarmutatieCPI_1": "     1.9",
+    "JaarmutatieCPIAfgeleid_2": "     1.5"
+  },
+  {
+    "ID": 758,
+    "Perioden": "2021MM05",
+    "JaarmutatieCPI_1": "     2.1",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 759,
+    "Perioden": "2021MM06",
+    "JaarmutatieCPI_1": "     2.0",
+    "JaarmutatieCPIAfgeleid_2": "     1.9"
+  },
+  {
+    "ID": 760,
+    "Perioden": "2021MM07",
+    "JaarmutatieCPI_1": "     1.4",
+    "JaarmutatieCPIAfgeleid_2": "     1.3"
+  },
+  {
+    "ID": 761,
+    "Perioden": "2021MM08",
+    "JaarmutatieCPI_1": "     2.4",
+    "JaarmutatieCPIAfgeleid_2": "     2.3"
+  },
+  {
+    "ID": 762,
+    "Perioden": "2021MM09",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": "     2.6"
+  },
+  {
+    "ID": 763,
+    "Perioden": "2021MM10",
+    "JaarmutatieCPI_1": "     3.4",
+    "JaarmutatieCPIAfgeleid_2": "     3.3"
+  },
+  {
+    "ID": 764,
+    "Perioden": "2021MM11",
+    "JaarmutatieCPI_1": "     5.2",
+    "JaarmutatieCPIAfgeleid_2": "     5.0"
+  },
+  {
+    "ID": 765,
+    "Perioden": "2021MM12",
+    "JaarmutatieCPI_1": "     5.7",
+    "JaarmutatieCPIAfgeleid_2": "     5.6"
+  },
+  {
+    "ID": 766,
+    "Perioden": "2021JJ00",
+    "JaarmutatieCPI_1": "     2.7",
+    "JaarmutatieCPIAfgeleid_2": "     2.5"
+  },
+  {
+    "ID": 767,
+    "Perioden": "2022MM01",
+    "JaarmutatieCPI_1": "     6.4",
+    "JaarmutatieCPIAfgeleid_2": "     7.4"
+  },
+  {
+    "ID": 768,
+    "Perioden": "2022MM02",
+    "JaarmutatieCPI_1": "     6.2",
+    "JaarmutatieCPIAfgeleid_2": "     7.1"
+  },
+  {
+    "ID": 769,
+    "Perioden": "2022MM03",
+    "JaarmutatieCPI_1": "     9.7",
+    "JaarmutatieCPIAfgeleid_2": "    10.7"
+  },
+  {
+    "ID": 770,
+    "Perioden": "2022MM04",
+    "JaarmutatieCPI_1": "     9.6",
+    "JaarmutatieCPIAfgeleid_2": "    10.9"
+  },
+  {
+    "ID": 771,
+    "Perioden": "2022MM05",
+    "JaarmutatieCPI_1": "     8.8",
+    "JaarmutatieCPIAfgeleid_2": "    10.1"
+  },
+  {
+    "ID": 772,
+    "Perioden": "2022MM06",
+    "JaarmutatieCPI_1": "     8.6",
+    "JaarmutatieCPIAfgeleid_2": "     9.9"
+  },
+  {
+    "ID": 773,
+    "Perioden": "2022MM07",
+    "JaarmutatieCPI_1": "    10.3",
+    "JaarmutatieCPIAfgeleid_2": "    12.4"
+  },
+  {
+    "ID": 774,
+    "Perioden": "2022MM08",
+    "JaarmutatieCPI_1": "    12.0",
+    "JaarmutatieCPIAfgeleid_2": "    14.3"
+  }
+]
