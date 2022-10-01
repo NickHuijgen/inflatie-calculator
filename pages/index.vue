@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ data.find(x => x.ID === 1).Perioden }}
+    {{ data }}
   </div>
 </template>
 
@@ -14,11 +14,42 @@ export default class index extends Vue {
 
  mounted() {
     console.log(this.getItemByDate('2022MM05'))
+    console.log(this.calculateInflation(100, '2005JJ00', '2021JJ00'))
  }
 
- getItemByDate(period: string): object {
-    return this.data.find(object => object.Perioden === period)
+ calculateInflation(value: number, period1: string, period2: string) {
+    const yearMutationCpi = this.calculateYearMutationCPI(period1, period2)
+
+    return (Math.round((value * (yearMutationCpi / 100) * 100) / 100))
  }
+
+ calculateYearMutationCPI(period1: string, period2: string): number {
+   let item1 = this.getItemByDate(period1)
+   let item2 = this.getItemByDate(period2)
+
+   if (!item1 || !item2) {
+     return 100;
+   }
+
+   const year1 = parseInt(period1.substring(0,4))
+   const year2 = parseInt(period2.substring(0,4))
+
+   const yearDifference = year2 - year1
+
+   let yearMutationCPI = 100
+
+   for (let i = 0; i <= yearDifference; i++) {
+     let yearData = this.getItemByDate((year1+i) + 'JJ00')
+
+     yearMutationCPI = (Math.round((yearMutationCPI * ((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * 100) / 100)
+   }
+
+   return yearMutationCPI
+ }
+
+  getItemByDate(period: string) {
+    return this.data.find(object => object.Perioden === period)
+  }
 }
 </script>
 
