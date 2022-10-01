@@ -6,11 +6,11 @@
           <h1 class="text-center text-2xl font-semibold text-gray-600">Bereken inflatie</h1>
           <div>
             <label class="mb-1 text-gray-600 font-semibold">Aantal</label>
-            <input v-model="input" type="number" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
+            <input v-model="input" type="number" :max="10000" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
           </div>
           <div>
             <label class="block mb-1 text-gray-600 font-semibold">Jaar</label>
-            <input v-model="inputYear" type="number" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
+            <input v-model="inputYear" type="number" :maxlength="2" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
           </div>
 
           <div>
@@ -54,49 +54,37 @@ export default class index extends Vue {
 
   outputYear: string = '2021'
 
- mounted() {
-   // this.output = this.calculateInflation(this.input, (this.inputYear + this.yearOrMonth + this.inputMonth), (this.outputYear + this.yearOrMonth + this.inputMonth))
- }
+  get output() {
+    return this.calculateInflation(this.input, (this.inputYear + this.inputMonth), (this.outputYear + this.inputMonth))
+  }
 
- get output() {
-   return this.calculateInflation(this.input, (this.inputYear + this.inputMonth), (this.outputYear + this.inputMonth))
-
- }
-
- calculateInflation(value: number, period1: string, period2: string) {
+  calculateInflation(value: number, period1: string, period2: string) {
     const yearMutationCpi = this.calculateYearMutationCPI(period1, period2)
 
     return (Math.round(value * (yearMutationCpi / 100) * 100) / 100)
+  }
+
+  calculateYearMutationCPI(period1: string, period2: string): number {
+    const item1 = this.getItemByDate(period1)
+    const item2 = this.getItemByDate(period2)
+    if (!item1 || !item2) {
+      return 100;
+    }
+    const year1 = parseInt(period1.substring(0,4))
+    const year2 = parseInt(period2.substring(0,4))
+
+    const timePeriod = period1.substring(4,8)
+
+    const yearDifference = year2 - year1
+    let yearMutationCPI = 100
+    for (let i = 0; i <= yearDifference; i++) {
+      let yearData = this.getItemByDate((year1+i) + timePeriod)
+
+      yearMutationCPI = (Math.round((yearMutationCPI * ((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * 100) / 100)
+    }
+    return yearMutationCPI
  }
-
- calculateYearMutationCPI(period1: string, period2: string): number {
-   const item1 = this.getItemByDate(period1)
-   const item2 = this.getItemByDate(period2)
-
-   if (!item1 || !item2) {
-     return 100;
-   }
-
-   const year1 = parseInt(period1.substring(0,4))
-   const year2 = parseInt(period2.substring(0,4))
-
-   const timePeriod = period1.substring(4,6)
-   const month = period1.substring(6,8)
-
-   const yearDifference = year2 - year1
-
-   let yearMutationCPI = 100
-
-   for (let i = 0; i <= yearDifference; i++) {
-     let yearData = this.getItemByDate((year1+i) + timePeriod + month)
-
-     yearMutationCPI = (Math.round((yearMutationCPI * ((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * 100) / 100)
-   }
-
-   return yearMutationCPI
- }
-
-  getItemByDate(period: string) {
+ getItemByDate(period: string) {
     return this.data.find(object => object.Perioden === period)
   }
 }
