@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ data }}
+    {{ output }}
   </div>
 </template>
 
@@ -12,15 +12,23 @@ import inflationData from '~/static/data.json'
 export default class index extends Vue {
   data: any[] = inflationData
 
+  input: number = 100
+  inputYear: string = '2005'
+  inputMonth: string = '00'
+
+  yearOrMonth: string = 'JJ'
+
+  output: number = 0
+  outputYear: string = '2021'
+
  mounted() {
-    // console.log(this.calculateInflation(100, '2005MM06', '2021JJ00'))
-    console.log(this.calculateYearMutationCPI( '2005JJ00', '2021JJ00'))
+   this.output = this.calculateInflation(this.input, (this.inputYear + this.yearOrMonth + this.inputMonth), (this.outputYear + this.yearOrMonth + this.inputMonth))
  }
 
  calculateInflation(value: number, period1: string, period2: string) {
     const yearMutationCpi = this.calculateYearMutationCPI(period1, period2)
 
-    return (Math.round((value * (yearMutationCpi / 100) * 100) / 100))
+    return ((value * (yearMutationCpi / 100) * 100) / 100)
  }
 
  calculateYearMutationCPI(period1: string, period2: string): number {
