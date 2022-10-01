@@ -13,8 +13,8 @@ export default class index extends Vue {
   data: any[] = inflationData
 
  mounted() {
-    console.log(this.getItemByDate('2022MM05'))
-    console.log(this.calculateInflation(100, '2005JJ00', '2021JJ00'))
+    // console.log(this.calculateInflation(100, '2005MM06', '2021JJ00'))
+    console.log(this.calculateYearMutationCPI( '2005JJ00', '2021JJ00'))
  }
 
  calculateInflation(value: number, period1: string, period2: string) {
@@ -24,8 +24,8 @@ export default class index extends Vue {
  }
 
  calculateYearMutationCPI(period1: string, period2: string): number {
-   let item1 = this.getItemByDate(period1)
-   let item2 = this.getItemByDate(period2)
+   const item1 = this.getItemByDate(period1)
+   const item2 = this.getItemByDate(period2)
 
    if (!item1 || !item2) {
      return 100;
@@ -34,12 +34,15 @@ export default class index extends Vue {
    const year1 = parseInt(period1.substring(0,4))
    const year2 = parseInt(period2.substring(0,4))
 
+   const timePeriod = period1.substring(4,6)
+   const month = period1.substring(6,8)
+
    const yearDifference = year2 - year1
 
    let yearMutationCPI = 100
 
    for (let i = 0; i <= yearDifference; i++) {
-     let yearData = this.getItemByDate((year1+i) + 'JJ00')
+     let yearData = this.getItemByDate((year1+i) + timePeriod + month)
 
      yearMutationCPI = (Math.round((yearMutationCPI * ((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * 100) / 100)
    }
