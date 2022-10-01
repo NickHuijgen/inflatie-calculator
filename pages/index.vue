@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="h-screen flex justify-center items-center w-full">
-      <div class="bg-white px-10 py-8 bg-blue-200 rounded-xl w-screen shadow-md max-w-sm">
+      <div class="bg-white px-10 py-8 bg-blue-200 rounded-xl w-screen shadow-md max-w-lg">
         <div class="space-y-4">
           <h1 class="text-center text-2xl font-semibold text-gray-600">Bereken inflatie</h1>
           <div>
@@ -16,7 +16,7 @@
           <div>
             <label class="block mb-1 text-gray-600 font-semibold">Maand</label>
             <select v-model="inputMonth" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full">
-              <option value="JJ00">Einde jaar</option>
+              <option value="JJ00">Gemiddelde</option>
               <option value="MM01">Januari</option>
               <option value="MM02">Februari</option>
               <option value="MM03">Maart</option>
@@ -52,8 +52,6 @@ export default class index extends Vue {
   input: number = 100
   inputYear: string = '2005'
   inputMonth: string = 'JJ00'
-
-  yearOrMonth: string = 'JJ'
 
   outputYear: string = '2021'
 
