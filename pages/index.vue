@@ -10,7 +10,7 @@
           </div>
           <div>
             <label class="block mb-1 text-gray-600 font-semibold">Jaar</label>
-            <input v-model="inputYear" type="number" :maxlength="2" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
+            <input v-model="inputYear" type="number" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
           </div>
 
           <div>
@@ -32,7 +32,10 @@
             </select>
           </div>
         </div>
-        <p class="mt-4 w-full py-2 rounded-md text-lg tracking-wide text-center">{{ input }}$ in {{ inputYear }} is {{ output }}$ in {{ outputYear }}</p>
+        <div class="mt-4 w-full py-2 rounded-md text-lg tracking-wide text-center">
+          <p v-if="output !== -1">{{ input }}$ in {{ inputYear }} is {{ output }}$ in {{ outputYear }}</p>
+          <p v-else>Vul alstublieft een geldig getal in</p>
+        </div>
       </div>
     </div>
   </div>
@@ -54,11 +57,15 @@ export default class index extends Vue {
 
   outputYear: string = '2021'
 
-  get output() {
+  get output():number {
     return this.calculateInflation(this.input, (this.inputYear + this.inputMonth), (this.outputYear + this.inputMonth))
   }
 
-  calculateInflation(value: number, period1: string, period2: string) {
+  calculateInflation(value: number, period1: string, period2: string): number {
+    if (value > 9999999 || value <= 0) {
+      return -1
+    }
+
     const yearMutationCpi = this.calculateYearMutationCPI(period1, period2)
 
     return (Math.round(value * (yearMutationCpi / 100) * 100) / 100)
@@ -68,7 +75,7 @@ export default class index extends Vue {
     const item1 = this.getItemByDate(period1)
     const item2 = this.getItemByDate(period2)
     if (!item1 || !item2) {
-      return 100;
+      return -1;
     }
     const year1 = parseInt(period1.substring(0,4))
     const year2 = parseInt(period2.substring(0,4))
