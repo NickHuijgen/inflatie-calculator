@@ -6,10 +6,12 @@
           <h1 class="text-center text-2xl font-semibold text-gray-600">Bereken inflatie</h1>
           <div>
             <label class="mb-1 text-gray-600 font-semibold">Aantal</label>
+<!--            TODO reset to 100 if an invalid result is entered-->
             <input v-model="input" type="number" :max="10000" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
           </div>
           <div>
             <label class="block mb-1 text-gray-600 font-semibold">Jaar</label>
+<!--            TODO reset to 1963 if an invalid result is entered-->
             <input v-model="inputYear" type="number" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
           </div>
 
@@ -33,7 +35,8 @@
           </div>
         </div>
         <div class="mt-4 w-full py-2 rounded-md text-lg tracking-wide text-center">
-          <p v-if="output !== -1">{{ input }}$ in {{ inputYear }} is {{ output }}$ in {{ outputYear }}</p>
+<!--          TODO display gulden instead of € if input year is < 2002-->
+          <p v-if="output !== -1">{{ input }}€ in {{ inputYear }} is {{ output }}€ in {{ outputYear }}</p>
           <p v-else>Vul alstublieft een geldig getal in</p>
         </div>
       </div>
@@ -50,12 +53,12 @@ export default class index extends Vue {
   data: any[] = inflationData
 
   input: number = 100
-  inputYear: string = '2005'
+  inputYear: number = 2005
   inputMonth: string = 'JJ00'
 
-  outputYear: string = '2021'
+  outputYear: number = 2021
 
-  get output():number {
+  get output(): number {
     return this.calculateInflation(this.input, (this.inputYear + this.inputMonth), (this.outputYear + this.inputMonth))
   }
 
@@ -77,29 +80,43 @@ export default class index extends Vue {
       return -1;
     }
 
-    const year1 = parseInt(period1.substring(0,4))
-    const year2 = parseInt(period2.substring(0,4))
-
-    const timePeriod = period1.substring(4,8)
-
-    const yearDifference = year2 - year1
+    const yearDifference = this.outputYear - this.inputYear
     let yearMutationCPI = 100
 
-    for (let i = 0; i <= yearDifference; i++) {
-      let yearData = this.getItemByDate((year1+i) + timePeriod)
+    if (yearDifference > 0) {
+      for (let i = 1; i <= yearDifference; i++) {
+        let yearData = this.getItemByDate((this.inputYear+i) + this.inputMonth)
 
-      if (parseInt(yearData.Perioden.substring(0,4)) === 2002) {
-        yearMutationCPI = (Math.round((yearMutationCPI * 0.453780) * 1000) / 1000)
+        if (parseInt(yearData.Perioden.substring(0,4)) === 2002) {
+          yearMutationCPI = (Math.round((yearMutationCPI * 0.453780) * 1000) / 1000)
+        }
+
+        yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
       }
+    } else {
+      //TODO fix this.
+      for (let i = 1; i <= Math.abs(yearDifference); i++) {
+        let yearData = this.getItemByDate((this.inputYear-i) + this.inputMonth)
 
-      yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
+        if (parseInt(yearData.Perioden.substring(0,4)) === 2002) {
+          //TODO this will most likely not give the intended result, might have to do the conversion the other way around
+          yearMutationCPI = (Math.round((yearMutationCPI * 0.453780) * 1000) / 1000)
+        }
+
+        console.log(yearMutationCPI)
+
+        //TODO probably invert the result to get the negative inflation
+        yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
+      }
     }
 
     return yearMutationCPI
  }
+
+ //TODO add return type, returning object causes errors when getting properties
  getItemByDate(period: string) {
     return this.data.find(object => object.Perioden === period)
-  }
+ }
 }
 </script>
 
