@@ -89,11 +89,10 @@ export default class index extends Vue {
       let yearData = this.getItemByDate((year1+i) + timePeriod)
 
       if (parseInt(yearData.Perioden.substring(0,4)) === 2002) {
-        console.log('gulden')
-        yearMutationCPI = yearMutationCPI * 0.45
+        yearMutationCPI = (Math.round((yearMutationCPI * 0.45) * 1000) / 1000)
       }
-      
-      yearMutationCPI = (Math.round((yearMutationCPI * ((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * 10000) / 10000)
+
+      yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
     }
 
     return yearMutationCPI
