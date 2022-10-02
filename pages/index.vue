@@ -102,9 +102,7 @@ export default class index extends Vue {
           //TODO this will most likely not give the intended result, might have to do the conversion the other way around
           yearMutationCPI = (Math.round((yearMutationCPI * 0.453780) * 1000) / 1000)
         }
-
-        console.log(yearMutationCPI)
-
+        
         //TODO probably invert the result to get the negative inflation
         yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
       }
