@@ -72,9 +72,11 @@ export default class index extends Vue {
   calculateYearMutationCPI(period1: string, period2: string): number {
     const item1 = this.getItemByDate(period1)
     const item2 = this.getItemByDate(period2)
+
     if (!item1 || !item2) {
       return -1;
     }
+
     const year1 = parseInt(period1.substring(0,4))
     const year2 = parseInt(period2.substring(0,4))
 
@@ -82,11 +84,18 @@ export default class index extends Vue {
 
     const yearDifference = year2 - year1
     let yearMutationCPI = 100
+
     for (let i = 0; i <= yearDifference; i++) {
       let yearData = this.getItemByDate((year1+i) + timePeriod)
 
-      yearMutationCPI = (Math.round((yearMutationCPI * ((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * 100) / 100)
+      if (parseInt(yearData.Perioden.substring(0,4)) === 2002) {
+        console.log('gulden')
+        yearMutationCPI = yearMutationCPI * 0.45
+      }
+      
+      yearMutationCPI = (Math.round((yearMutationCPI * ((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * 10000) / 10000)
     }
+
     return yearMutationCPI
  }
  getItemByDate(period: string) {
