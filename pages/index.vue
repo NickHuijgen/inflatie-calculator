@@ -150,8 +150,6 @@ export default class index extends Vue {
   guilderToEuroConversionRate: number = 0.453780
   euroToGuilderConversionRate: number = 2.20371
 
-  rounding: number = 10000
-
   get output(): number {
     if (this.input > 9999999 || this.input <= 0) {
       return -1
@@ -161,7 +159,7 @@ export default class index extends Vue {
 
     this.CPIMutation = CPIMutation
 
-    return parseFloat((Math.round(this.input * (CPIMutation / 100) * 100) / 100).toFixed(2))
+    return parseFloat(this.round(this.input * (CPIMutation / 100)).toFixed(2))
   }
 
   get inflationPercentage(): number {
@@ -192,10 +190,10 @@ export default class index extends Vue {
         let yearData: YearData|undefined = this.getItemByDate((year1+i) + this.inputMonth)
 
         if (parseInt(yearData!.Perioden.substring(0,4)) === 2002) {
-          CPIMutation = (Math.round((CPIMutation * this.guilderToEuroConversionRate) * this.rounding) / this.rounding)
+          CPIMutation = this.round(CPIMutation * this.guilderToEuroConversionRate)
         }
 
-        CPIMutation = (Math.round((CPIMutation * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * this.rounding) / this.rounding)
+        CPIMutation = this.round(CPIMutation * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1))
       }
     } else {
       for (let i: number = 0; i < Math.abs(yearDifference); i++) {
@@ -203,14 +201,18 @@ export default class index extends Vue {
 
         if (parseInt(yearData!.Perioden.substring(0,4)) === 2001) {
           console.log(' aa')
-          CPIMutation = (Math.round((CPIMutation * this.euroToGuilderConversionRate) * this.rounding) / this.rounding)
+          CPIMutation = this.round((CPIMutation * this.euroToGuilderConversionRate))
         }
 
-        CPIMutation = (Math.round((CPIMutation * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * this.rounding) / this.rounding)
+        CPIMutation = this.round(CPIMutation * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1))
       }
     }
 
     return CPIMutation
+  }
+
+  round(number: number, decimals: number = 2) {
+    return parseFloat((Math.round((number) * 10000) / 10000).toFixed(decimals))
   }
 
   getItemByDate(period: string): YearData|undefined {
