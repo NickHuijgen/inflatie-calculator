@@ -61,7 +61,9 @@ export default class index extends Vue {
 
   guilderToEuroConversionRate: number = 0.453780
   euroToGuilderConversionRate: number = 2.20371
-  
+
+  rounding: number = 10000
+
   get output(): number {
     return this.calculateInflation(this.input, (this.inputYear + this.inputMonth), (this.outputYear + this.inputMonth))
   }
@@ -96,20 +98,20 @@ export default class index extends Vue {
         let yearData: YearData|undefined = this.getItemByDate((year1+i) + this.inputMonth)
 
         if (parseInt(yearData!.Perioden.substring(0,4)) === 2002) {
-          yearMutationCPI = (Math.round((yearMutationCPI * this.guilderToEuroConversionRate) * 1000) / 1000)
+          yearMutationCPI = (Math.round((yearMutationCPI * this.guilderToEuroConversionRate) * this.rounding) / this.rounding)
         }
 
-        yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
+        yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * this.rounding) / this.rounding)
       }
     } else {
       for (let i = 1; i <= Math.abs(yearDifference); i++) {
         let yearData: YearData|undefined = this.getItemByDate((this.inputYear-i) + this.inputMonth)
 
         if (parseInt(yearData!.Perioden.substring(0,4)) === 2002) {
-          yearMutationCPI = (Math.round((yearMutationCPI * this.euroToGuilderConversionRate) * 1000) / 1000)
+          yearMutationCPI = (Math.round((yearMutationCPI * this.euroToGuilderConversionRate) * this.rounding) / this.rounding)
         }
 
-        yearMutationCPI = (Math.round((yearMutationCPI * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * 10000) / 10000)
+        yearMutationCPI = (Math.round((yearMutationCPI * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * this.rounding) / this.rounding)
       }
     }
 
