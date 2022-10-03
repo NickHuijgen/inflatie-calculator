@@ -75,7 +75,7 @@ export default class index extends Vue {
 
     const yearMutationCpi: number = this.calculateYearMutationCPI(period1, period2)
 
-    return (Math.round(value * (yearMutationCpi / 100) * 100) / 100)
+    return (Math.round(value * (yearMutationCpi / 100) * 100) / 100).toFixed(2)
   }
 
   calculateYearMutationCPI(period1: string, period2: string): number {
