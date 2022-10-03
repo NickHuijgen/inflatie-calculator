@@ -145,8 +145,7 @@ export default class index extends Vue {
 
   outputYear: number = 2022
 
-  inflationPercentage: number = 1
-  averageInflation: number = 1
+  CPIMutation: number = 1
 
   guilderToEuroConversionRate: number = 0.453780
   euroToGuilderConversionRate: number = 2.20371
@@ -154,21 +153,23 @@ export default class index extends Vue {
   rounding: number = 10000
 
   get output(): number {
-    return this.calculateInflation(this.input, (this.inputYear + this.inputMonth), (this.outputYear + this.inputMonth))
-  }
-
-  calculateInflation(input: number, period1: string, period2: string): number {
-    if (input > 9999999 || input <= 0) {
+    if (this.input > 9999999 || this.input <= 0) {
       return -1
     }
 
-    const yearMutationCpi: number = this.calculateCPIMutation(period1, period2)
+    const CPIMutation: number = this.calculateCPIMutation((this.inputYear + this.inputMonth), (this.outputYear + this.inputMonth))
 
-    this.inflationPercentage = parseFloat((yearMutationCpi - 100).toFixed(2))
+    this.CPIMutation = CPIMutation
 
-    this.averageInflation = parseFloat((this.inflationPercentage / Math.abs(this.outputYear - this.inputYear)).toFixed(2))
+    return parseFloat((Math.round(this.input * (CPIMutation / 100) * 100) / 100).toFixed(2))
+  }
 
-    return parseFloat((Math.round(input * (yearMutationCpi / 100) * 100) / 100).toFixed(2))
+  get inflationPercentage(): number {
+    return parseFloat((this.CPIMutation - 100).toFixed(2))
+  }
+
+  get averageInflation(): number {
+    return parseFloat((this.inflationPercentage / Math.abs(this.outputYear - this.inputYear)).toFixed(2))
   }
 
   calculateCPIMutation(period1: string, period2: string): number {
