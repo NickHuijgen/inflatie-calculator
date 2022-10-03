@@ -7,7 +7,6 @@
           <div class="mt-2">
             <div class="p-2">
               <label class="mb-1 text-gray-600 font-semibold">Aantal</label>
-  <!--            TODO reset to 100 if an invalid result is entered-->
               <input
                 v-model="input"
                 @blur="resetBadData"
@@ -18,7 +17,6 @@
 
             <div class="p-2">
               <label class="block mb-1 text-gray-600 font-semibold">Beginjaar</label>
-              <!--            TODO reset to 1963 if an invalid result is entered-->
               <input
                 v-model="inputYear"
                 @blur="resetBadData"
@@ -43,7 +41,6 @@
 
             <div class="p-2">
               <label class="block mb-1 text-gray-600 font-semibold">Eindjaar</label>
-              <!--            TODO reset to 2021 if an invalid result is entered-->
               <input
                 v-model="outputYear"
                 @blur="resetBadData"
@@ -213,11 +210,11 @@ export default class index extends Vue {
       this.input = 100
     }
 
-    if (this.inputYear > 2022 || this.inputYear <= 1963) {
+    if (this.inputYear > 2022 || this.inputYear < 1963) {
       this.inputYear = 2015
     }
 
-    if (this.outputYear > 2022 || this.outputYear <= 1963) {
+    if (this.outputYear > 2022 || this.outputYear < 1963) {
       this.outputYear = 2021
     }
   }
