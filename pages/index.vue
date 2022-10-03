@@ -74,7 +74,9 @@
         <div class="flex-1 p-10">
           <h3 class="text-xl font-medium">Over deze site</h3>
           <p class="mt-2">
-            placeholder
+            Inflatie is de laatste tijd steeds meer te merken, ons geld word razendsnel minder waard. Maar precies hoeveel minder waard is het geworden? Dat kan je hier berekenen!
+            Voor de berekening is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-400">deze</a> dataset van het CBS.
+            De code staat online op <a href="https://github.com/NickHuijgen01/inflatie-calculator" class="text-blue-400">GitHub</a>.
           </p>
           <a href="" class="mt-2 inline-flex">Read More →</a>
         </div>
