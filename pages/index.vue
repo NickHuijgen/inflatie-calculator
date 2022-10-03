@@ -76,49 +76,50 @@ export default class index extends Vue {
   }
 
   calculateYearMutationCPI(period1: string, period2: string): number {
-    const item1: YearData = this.getItemByDate(period1)
-    const item2: YearData = this.getItemByDate(period2)
+    const item1: YearData|undefined = this.getItemByDate(period1)
+    const item2: YearData|undefined = this.getItemByDate(period2)
 
     if (!item1 || !item2) {
-      return -1;
+      return -1
     }
 
-    //TODO attempt to work this away, replacing this with this.inputYear currently does not work in the for loop
-    const year1: number = parseInt(period1.substring(0,4))
-
-    const yearDifference: number = this.outputYear - this.inputYear
+    const year1: number = parseInt(item1.Perioden.substring(0,4))
+    const year2: number = parseInt(item2.Perioden.substring(0,4))
     
+    const yearDifference: number = year2 - year1
+
     let yearMutationCPI: number = 100
 
     if (yearDifference > 0) {
       for (let i: number = 1; i <= yearDifference; i++) {
-        let yearData: YearData = this.getItemByDate((year1+i) + this.inputMonth)
+        let yearData: YearData|undefined = this.getItemByDate((year1+i) + this.inputMonth)
 
-        if (parseInt(yearData.Perioden.substring(0,4)) === 2002) {
+        if (parseInt(yearData!.Perioden.substring(0,4)) === 2002) {
           yearMutationCPI = (Math.round((yearMutationCPI * this.guilderConversionRate) * 1000) / 1000)
         }
 
-        yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
+        yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
       }
     } else {
+      console.log('Taking the bad path')
       //TODO fix this.
       for (let i = 1; i <= Math.abs(yearDifference); i++) {
-        let yearData: YearData = this.getItemByDate((this.inputYear+i) + this.inputMonth)
+        let yearData: YearData|undefined = this.getItemByDate((this.inputYear+i) + this.inputMonth)
 
-        if (parseInt(yearData.Perioden.substring(0,4)) === 2002) {
+        if (parseInt(yearData!.Perioden.substring(0,4)) === 2002) {
           //TODO this will most likely not give the intended result, might have to do the conversion the other way around
           yearMutationCPI = (Math.round((yearMutationCPI * 0.453780) * 1000) / 1000)
         }
 
         //TODO probably invert the result to get the negative inflation
-        yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
+        yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
       }
     }
 
     return yearMutationCPI
  }
 
- getItemByDate(period: string): YearData {
+ getItemByDate(period: string): YearData|undefined {
     return this.data.find(object => object.Perioden === period)
  }
 }
