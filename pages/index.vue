@@ -8,19 +8,34 @@
             <div class="p-2">
               <label class="mb-1 text-gray-600 font-semibold">Aantal</label>
   <!--            TODO reset to 100 if an invalid result is entered-->
-              <input v-model="input" type="number" :max="10000" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
+              <input v-model="input"
+                     type="number"
+                     class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
+              />
             </div>
 
             <div class="p-2">
               <label class="block mb-1 text-gray-600 font-semibold">Beginjaar</label>
               <!--            TODO reset to 1963 if an invalid result is entered-->
-              <input v-model="inputYear" type="number" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
+              <input
+                v-model="inputYear"
+                type="number"
+                class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
+              />
+            </div>
+
+            <div @click="switchInputAndOutput">
+              switch
             </div>
 
             <div class="p-2">
               <label class="block mb-1 text-gray-600 font-semibold">Eindjaar</label>
               <!--            TODO reset to 2021 if an invalid result is entered-->
-              <input v-model="outputYear" type="number" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
+              <input
+                v-model="outputYear"
+                type="number"
+                class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
+              />
             </div>
 
             <div class="p-2">
@@ -49,18 +64,20 @@
           <h3 class="text-xl font-medium">Inflatie</h3>
           <div class="mt-2">
             <div v-if="output !== -1">
-              <p v-if="inputYear < 2002">
+              <p v-if="inputYear < 2002 && outputYear > 2002">
                 ƒ{{ input }} had in {{ inputYear }} dezelfde koopkracht als €{{ output }} in {{ outputYear }}
               </p>
               <p v-else-if="inputYear > 2002 && outputYear < 2002">
                 €{{ input }} had in {{ inputYear }} dezelfde koopkracht als ƒ{{ output }} in {{ outputYear }}
               </p>
               <p v-else-if="inputYear < 2002 && outputYear < 2002">
-                {{ input }} gulden had in {{ inputYear }} dezelfde koopkracht als {{ output }} gulden in {{ outputYear }}
+                ƒ{{ input }} had in {{ inputYear }} dezelfde koopkracht als ƒ{{ output }} in {{ outputYear }}
               </p>
               <p v-else>
                 €{{ input }} had in {{ inputYear }} dezelfde koopkracht als €{{ output }} in {{ outputYear }}
               </p>
+
+<!--              TODO melkberekening voor perspectief-->
             </div>
             <div v-else>
               <p>
@@ -73,12 +90,17 @@
       <div class="flex rounded-md border border-blue-200">
         <div class="flex-1 p-10">
           <h3 class="text-xl font-medium">Over deze site</h3>
-          <p class="mt-2">
-            Inflatie is de laatste tijd steeds meer te merken, ons geld word razendsnel minder waard. Maar precies hoeveel minder waard is het geworden? Dat kan je hier berekenen!
-            Voor de berekening is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-400">deze</a> dataset van het CBS.
-            De code staat online op <a href="https://github.com/NickHuijgen01/inflatie-calculator" class="text-blue-400">GitHub</a>.
-          </p>
-          <a href="" class="mt-2 inline-flex">Read More →</a>
+          <div class="mt-2">
+            <p class="mb-2">
+              Inflatie is de laatste tijd steeds meer te merken, ons geld wordt razendsnel minder waard. Maar precies hoeveel minder waard is het geworden?
+            </p>
+            <p class="mb-2">
+              Voor de berekening is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-400">deze</a> dataset van het CBS.
+            </p>
+            <p>
+              De code (inclusief berekening) staat op <a href="https://github.com/NickHuijgen01/inflatie-calculator" class="text-blue-400">GitHub</a>.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -96,7 +118,7 @@ export default class index extends Vue {
 
   input: number = 100
   inputYear: number = 2015
-  inputMonth: string = 'MM08'
+  inputMonth: string = 'MM09'
 
   outputYear: number = 2022
 
@@ -145,10 +167,11 @@ export default class index extends Vue {
         yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * this.rounding) / this.rounding)
       }
     } else {
-      for (let i = 1; i <= Math.abs(yearDifference); i++) {
+      for (let i: number = 0; i < Math.abs(yearDifference); i++) {
         let yearData: YearData|undefined = this.getItemByDate((this.inputYear-i) + this.inputMonth)
 
-        if (parseInt(yearData!.Perioden.substring(0,4)) === 2002) {
+        if (parseInt(yearData!.Perioden.substring(0,4)) === 2001) {
+          console.log(' aa')
           yearMutationCPI = (Math.round((yearMutationCPI * this.euroToGuilderConversionRate) * this.rounding) / this.rounding)
         }
 
@@ -161,6 +184,12 @@ export default class index extends Vue {
 
   getItemByDate(period: string): YearData|undefined {
     return this.data.find(object => object.Perioden === period)
+  }
+
+  switchInputAndOutput() {
+    const inputYear: number = this.inputYear
+    this.inputYear = this.outputYear
+    this.outputYear = inputYear
   }
 }
 </script>
