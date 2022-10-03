@@ -8,9 +8,11 @@
             <div class="p-2">
               <label class="mb-1 text-gray-600 font-semibold">Aantal</label>
   <!--            TODO reset to 100 if an invalid result is entered-->
-              <input v-model="input"
-                     type="number"
-                     class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
+              <input
+                v-model="input"
+                @blur="resetBadData"
+                type="number"
+                class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
               />
             </div>
 
@@ -19,13 +21,22 @@
               <!--            TODO reset to 1963 if an invalid result is entered-->
               <input
                 v-model="inputYear"
+                @blur="resetBadData"
                 type="number"
                 class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
               />
             </div>
 
             <div class="p-2 ml-4">
-              <svg @click="switchInputAndOutput" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <svg
+                @click="switchInputAndOutput"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
               </svg>
             </div>
@@ -35,6 +46,7 @@
               <!--            TODO reset to 2021 if an invalid result is entered-->
               <input
                 v-model="outputYear"
+                @blur="resetBadData"
                 type="number"
                 class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
               />
@@ -61,6 +73,7 @@
           </div>
         </div>
       </div>
+
       <div class="flex rounded-md border border-blue-200">
         <div class="flex-1 p-10">
           <h3 class="text-xl font-medium">Inflatie</h3>
@@ -89,6 +102,7 @@
           </div>
         </div>
       </div>
+
       <div class="flex rounded-md border border-blue-200">
         <div class="flex-1 p-10">
           <h3 class="text-xl font-medium">Over deze site</h3>
@@ -188,10 +202,24 @@ export default class index extends Vue {
     return this.data.find(object => object.Perioden === period)
   }
 
-  switchInputAndOutput() {
+  switchInputAndOutput(): void {
     const inputYear: number = this.inputYear
     this.inputYear = this.outputYear
     this.outputYear = inputYear
+  }
+
+  resetBadData(): void {
+    if (this.input > 9999999 || this.input <= 0) {
+      this.input = 100
+    }
+
+    if (this.inputYear > 2022 || this.inputYear <= 1963) {
+      this.inputYear = 2015
+    }
+
+    if (this.outputYear > 2022 || this.outputYear <= 1963) {
+      this.outputYear = 2021
+    }
   }
 }
 </script>
