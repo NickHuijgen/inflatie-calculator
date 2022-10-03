@@ -47,16 +47,19 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
 import inflationData from '~/static/data.json'
+import YearData from "~/models/YearData";
 
 @Component
 export default class index extends Vue {
-  data: any[] = inflationData
+  data: YearData[] = inflationData
 
   input: number = 100
   inputYear: number = 2005
   inputMonth: string = 'JJ00'
 
   outputYear: number = 2021
+
+  guilderConversionRate: number = 0.453780
 
   get output(): number {
     return this.calculateInflation(this.input, (this.inputYear + this.inputMonth), (this.outputYear + this.inputMonth))
@@ -67,28 +70,32 @@ export default class index extends Vue {
       return -1
     }
 
-    const yearMutationCpi = this.calculateYearMutationCPI(period1, period2)
+    const yearMutationCpi: number = this.calculateYearMutationCPI(period1, period2)
 
     return (Math.round(value * (yearMutationCpi / 100) * 100) / 100)
   }
 
   calculateYearMutationCPI(period1: string, period2: string): number {
-    const item1 = this.getItemByDate(period1)
-    const item2 = this.getItemByDate(period2)
+    const item1: YearData = this.getItemByDate(period1)
+    const item2: YearData = this.getItemByDate(period2)
 
     if (!item1 || !item2) {
       return -1;
     }
 
-    const yearDifference = this.outputYear - this.inputYear
-    let yearMutationCPI = 100
+    //TODO attempt to work this away, replacing this with this.inputYear currently does not work in the for loop
+    const year1: number = parseInt(period1.substring(0,4))
+
+    const yearDifference: number = this.outputYear - this.inputYear
+    
+    let yearMutationCPI: number = 100
 
     if (yearDifference > 0) {
-      for (let i = 1; i <= yearDifference; i++) {
-        let yearData = this.getItemByDate((this.inputYear+i) + this.inputMonth)
+      for (let i: number = 1; i <= yearDifference; i++) {
+        let yearData: YearData = this.getItemByDate((year1+i) + this.inputMonth)
 
         if (parseInt(yearData.Perioden.substring(0,4)) === 2002) {
-          yearMutationCPI = (Math.round((yearMutationCPI * 0.453780) * 1000) / 1000)
+          yearMutationCPI = (Math.round((yearMutationCPI * this.guilderConversionRate) * 1000) / 1000)
         }
 
         yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
@@ -96,13 +103,13 @@ export default class index extends Vue {
     } else {
       //TODO fix this.
       for (let i = 1; i <= Math.abs(yearDifference); i++) {
-        let yearData = this.getItemByDate((this.inputYear-i) + this.inputMonth)
+        let yearData: YearData = this.getItemByDate((this.inputYear+i) + this.inputMonth)
 
         if (parseInt(yearData.Perioden.substring(0,4)) === 2002) {
           //TODO this will most likely not give the intended result, might have to do the conversion the other way around
           yearMutationCPI = (Math.round((yearMutationCPI * 0.453780) * 1000) / 1000)
         }
-        
+
         //TODO probably invert the result to get the negative inflation
         yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
       }
@@ -111,8 +118,7 @@ export default class index extends Vue {
     return yearMutationCPI
  }
 
- //TODO add return type, returning object causes errors when getting properties
- getItemByDate(period: string) {
+ getItemByDate(period: string): YearData {
     return this.data.find(object => object.Perioden === period)
  }
 }
