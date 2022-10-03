@@ -1,43 +1,82 @@
 <template>
-  <div>
-    <div class="h-screen flex justify-center items-center w-full">
-      <div class="bg-white px-10 py-8 bg-blue-200 rounded-xl w-screen shadow-md max-w-lg">
-        <div class="space-y-4">
-          <h1 class="text-center text-2xl font-semibold text-gray-600">Bereken inflatie</h1>
-          <div>
-            <label class="mb-1 text-gray-600 font-semibold">Aantal</label>
-<!--            TODO reset to 100 if an invalid result is entered-->
-            <input v-model="input" type="number" :max="10000" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
-          </div>
-          <div>
-            <label class="block mb-1 text-gray-600 font-semibold">Jaar</label>
-<!--            TODO reset to 1963 if an invalid result is entered-->
-            <input v-model="inputYear" type="number" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
-          </div>
+  <div class="flex min-h-screen items-center justify-center p-10">
+    <div class="container grid max-w-screen-xl gap-8 lg:grid-cols-2 lg:grid-rows-2">
+      <div class="row-span-2 flex flex-col rounded-md border border-blue-200">
+        <div class="p-10">
+          <h3 class="text-xl font-medium text-gray-700">Bereken inflatie</h3>
+          <div class="mt-2">
+            <div class="p-2">
+              <label class="mb-1 text-gray-600 font-semibold">Aantal</label>
+  <!--            TODO reset to 100 if an invalid result is entered-->
+              <input v-model="input" type="number" :max="10000" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
+            </div>
 
-          <div>
-            <label class="block mb-1 text-gray-600 font-semibold">Maand</label>
-            <select v-model="inputMonth" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full">
-              <option value="JJ00">Gemiddelde</option>
-              <option value="MM01">Januari</option>
-              <option value="MM02">Februari</option>
-              <option value="MM03">Maart</option>
-              <option value="MM04">April</option>
-              <option value="MM05">Mei</option>
-              <option value="MM06">Juni</option>
-              <option value="MM07">Juli</option>
-              <option value="MM08">Augustus</option>
-              <option value="MM09">September</option>
-              <option value="MM10">Oktober</option>
-              <option value="MM11">November</option>
-              <option value="MM12">December</option>
-            </select>
+            <div class="p-2">
+              <label class="block mb-1 text-gray-600 font-semibold">Beginjaar</label>
+              <!--            TODO reset to 1963 if an invalid result is entered-->
+              <input v-model="inputYear" type="number" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
+            </div>
+
+            <div class="p-2">
+              <label class="block mb-1 text-gray-600 font-semibold">Eindjaar</label>
+              <!--            TODO reset to 2021 if an invalid result is entered-->
+              <input v-model="outputYear" type="number" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full" />
+            </div>
+
+            <div class="p-2">
+              <label class="block mb-1 text-gray-600 font-semibold">Maand</label>
+              <select v-model="inputMonth" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full">
+                <option value="JJ00">Jaargemiddelde</option>
+                <option value="MM01">Januari</option>
+                <option value="MM02">Februari</option>
+                <option value="MM03">Maart</option>
+                <option value="MM04">April</option>
+                <option value="MM05">Mei</option>
+                <option value="MM06">Juni</option>
+                <option value="MM07">Juli</option>
+                <option value="MM08">Augustus</option>
+                <option value="MM09">September</option>
+                <option value="MM10">Oktober</option>
+                <option value="MM11">November</option>
+                <option value="MM12">December</option>
+              </select>
+            </div>
           </div>
         </div>
-        <div class="mt-4 w-full py-2 rounded-md text-lg tracking-wide text-center">
-<!--          TODO display gulden instead of € if input year is < 2002-->
-          <p v-if="output !== -1">{{ input }}€ in {{ inputYear }} is {{ output }}€ in {{ outputYear }}</p>
-          <p v-else>Vul alstublieft een geldig getal in</p>
+      </div>
+      <div class="flex rounded-md border border-blue-200">
+        <div class="flex-1 p-10">
+          <h3 class="text-xl font-medium">Inflatie</h3>
+          <div class="mt-2">
+            <div v-if="output !== -1">
+              <p v-if="inputYear < 2002">
+                ƒ{{ input }} had in {{ inputYear }} dezelfde koopkracht als €{{ output }} in {{ outputYear }}
+              </p>
+              <p v-else-if="inputYear > 2002 && outputYear < 2002">
+                €{{ input }} had in {{ inputYear }} dezelfde koopkracht als ƒ{{ output }} in {{ outputYear }}
+              </p>
+              <p v-else-if="inputYear < 2002 && outputYear < 2002">
+                {{ input }} gulden had in {{ inputYear }} dezelfde koopkracht als {{ output }} gulden in {{ outputYear }}
+              </p>
+              <p v-else>
+                €{{ input }} had in {{ inputYear }} dezelfde koopkracht als €{{ output }} in {{ outputYear }}
+              </p>
+            </div>
+            <div v-else>
+              <p>
+                Vul alstublieft geldige waarden in
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex rounded-md border border-blue-200">
+        <div class="flex-1 p-10">
+          <h3 class="text-xl font-medium">Over deze site</h3>
+          <p class="mt-2">
+            placeholder
+          </p>
+          <a href="" class="mt-2 inline-flex">Read More →</a>
         </div>
       </div>
     </div>
@@ -55,9 +94,9 @@ export default class index extends Vue {
 
   input: number = 100
   inputYear: number = 2015
-  inputMonth: string = 'JJ00'
+  inputMonth: string = 'MM08'
 
-  outputYear: number = 2021
+  outputYear: number = 2022
 
   guilderToEuroConversionRate: number = 0.453780
   euroToGuilderConversionRate: number = 2.20371
