@@ -54,13 +54,14 @@ export default class index extends Vue {
   data: YearData[] = inflationData
 
   input: number = 100
-  inputYear: number = 2005
+  inputYear: number = 2015
   inputMonth: string = 'JJ00'
 
   outputYear: number = 2021
 
-  guilderConversionRate: number = 0.453780
-
+  guilderToEuroConversionRate: number = 0.453780
+  euroToGuilderConversionRate: number = 2.20371
+  
   get output(): number {
     return this.calculateInflation(this.input, (this.inputYear + this.inputMonth), (this.outputYear + this.inputMonth))
   }
@@ -85,7 +86,7 @@ export default class index extends Vue {
 
     const year1: number = parseInt(item1.Perioden.substring(0,4))
     const year2: number = parseInt(item2.Perioden.substring(0,4))
-    
+
     const yearDifference: number = year2 - year1
 
     let yearMutationCPI: number = 100
@@ -95,33 +96,29 @@ export default class index extends Vue {
         let yearData: YearData|undefined = this.getItemByDate((year1+i) + this.inputMonth)
 
         if (parseInt(yearData!.Perioden.substring(0,4)) === 2002) {
-          yearMutationCPI = (Math.round((yearMutationCPI * this.guilderConversionRate) * 1000) / 1000)
+          yearMutationCPI = (Math.round((yearMutationCPI * this.guilderToEuroConversionRate) * 1000) / 1000)
         }
 
         yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
       }
     } else {
-      console.log('Taking the bad path')
-      //TODO fix this.
       for (let i = 1; i <= Math.abs(yearDifference); i++) {
-        let yearData: YearData|undefined = this.getItemByDate((this.inputYear+i) + this.inputMonth)
+        let yearData: YearData|undefined = this.getItemByDate((this.inputYear-i) + this.inputMonth)
 
         if (parseInt(yearData!.Perioden.substring(0,4)) === 2002) {
-          //TODO this will most likely not give the intended result, might have to do the conversion the other way around
-          yearMutationCPI = (Math.round((yearMutationCPI * 0.453780) * 1000) / 1000)
+          yearMutationCPI = (Math.round((yearMutationCPI * this.euroToGuilderConversionRate) * 1000) / 1000)
         }
 
-        //TODO probably invert the result to get the negative inflation
-        yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * 10000) / 10000)
+        yearMutationCPI = (Math.round((yearMutationCPI * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * 10000) / 10000)
       }
     }
 
     return yearMutationCPI
- }
+  }
 
- getItemByDate(period: string): YearData|undefined {
+  getItemByDate(period: string): YearData|undefined {
     return this.data.find(object => object.Perioden === period)
- }
+  }
 }
 </script>
 
