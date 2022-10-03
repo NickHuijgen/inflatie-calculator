@@ -73,7 +73,7 @@
 
       <div class="flex rounded-md border border-blue-200">
         <div class="flex-1 p-10">
-          <h3 class="text-xl font-medium">Inflatie</h3>
+          <h3 class="text-xl font-medium">Resultaten</h3>
           <div class="mt-2">
             <div v-if="output !== -1">
               <p v-if="inputYear < 2002 && outputYear > 2002">
@@ -109,6 +109,7 @@
             </p>
             <p class="mb-2">
               Voor de berekening is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-400">deze</a> dataset van het CBS.
+              Data is beschikbaar vanaf Januari 1963 tot September 2022
             </p>
             <p>
               De code (inclusief berekening) staat op <a href="https://github.com/NickHuijgen01/inflatie-calculator" class="text-blue-400">GitHub</a>.
@@ -167,17 +168,17 @@ export default class index extends Vue {
 
     const yearDifference: number = year2 - year1
 
-    let yearMutationCPI: number = 100
+    let CPIMutation: number = 100
 
     if (yearDifference > 0) {
       for (let i: number = 1; i <= yearDifference; i++) {
         let yearData: YearData|undefined = this.getItemByDate((year1+i) + this.inputMonth)
 
         if (parseInt(yearData!.Perioden.substring(0,4)) === 2002) {
-          yearMutationCPI = (Math.round((yearMutationCPI * this.guilderToEuroConversionRate) * this.rounding) / this.rounding)
+          CPIMutation = (Math.round((CPIMutation * this.guilderToEuroConversionRate) * this.rounding) / this.rounding)
         }
 
-        yearMutationCPI = (Math.round((yearMutationCPI * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * this.rounding) / this.rounding)
+        CPIMutation = (Math.round((CPIMutation * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1)) * this.rounding) / this.rounding)
       }
     } else {
       for (let i: number = 0; i < Math.abs(yearDifference); i++) {
@@ -185,14 +186,14 @@ export default class index extends Vue {
 
         if (parseInt(yearData!.Perioden.substring(0,4)) === 2001) {
           console.log(' aa')
-          yearMutationCPI = (Math.round((yearMutationCPI * this.euroToGuilderConversionRate) * this.rounding) / this.rounding)
+          CPIMutation = (Math.round((CPIMutation * this.euroToGuilderConversionRate) * this.rounding) / this.rounding)
         }
 
-        yearMutationCPI = (Math.round((yearMutationCPI * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * this.rounding) / this.rounding)
+        CPIMutation = (Math.round((CPIMutation * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1)) * this.rounding) / this.rounding)
       }
     }
 
-    return yearMutationCPI
+    return CPIMutation
   }
 
   getItemByDate(period: string): YearData|undefined {
