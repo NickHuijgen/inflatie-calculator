@@ -76,17 +76,26 @@
           <h3 class="text-xl font-medium">Resultaten</h3>
           <div class="mt-2">
             <div v-if="output !== -1">
-              <p v-if="inputYear < 2002 && outputYear > 2002">
-                ƒ{{ input }} had in {{ inputYear }} dezelfde koopkracht als €{{ output }} in {{ outputYear }}
+              <div class="mb-2">
+                <p v-if="inputYear < 2002 && outputYear > 2002">
+                  ƒ{{ input }} had in {{ inputYear }} dezelfde koopkracht als €{{ output }} in {{ outputYear }}
+                </p>
+                <p v-else-if="inputYear > 2002 && outputYear < 2002">
+                  €{{ input }} had in {{ inputYear }} dezelfde koopkracht als ƒ{{ output }} in {{ outputYear }}
+                </p>
+                <p v-else-if="inputYear < 2002 && outputYear < 2002">
+                  ƒ{{ input }} had in {{ inputYear }} dezelfde koopkracht als ƒ{{ output }} in {{ outputYear }}
+                </p>
+                <p v-else>
+                  €{{ input }} had in {{ inputYear }} dezelfde koopkracht als €{{ output }} in {{ outputYear }}
+                </p>
+              </div>
+
+              <p>
+                Dat is een totale inflatie van {{ inflationPercentage }}%
               </p>
-              <p v-else-if="inputYear > 2002 && outputYear < 2002">
-                €{{ input }} had in {{ inputYear }} dezelfde koopkracht als ƒ{{ output }} in {{ outputYear }}
-              </p>
-              <p v-else-if="inputYear < 2002 && outputYear < 2002">
-                ƒ{{ input }} had in {{ inputYear }} dezelfde koopkracht als ƒ{{ output }} in {{ outputYear }}
-              </p>
-              <p v-else>
-                €{{ input }} had in {{ inputYear }} dezelfde koopkracht als €{{ output }} in {{ outputYear }}
+              <p>
+                Gemiddeld {{ averageInflation }}% per jaar
               </p>
 
 <!--              TODO melkberekening voor perspectief-->
@@ -136,6 +145,9 @@ export default class index extends Vue {
 
   outputYear: number = 2022
 
+  inflationPercentage: number = 1
+  averageInflation: number = 1
+
   guilderToEuroConversionRate: number = 0.453780
   euroToGuilderConversionRate: number = 2.20371
 
@@ -145,17 +157,21 @@ export default class index extends Vue {
     return this.calculateInflation(this.input, (this.inputYear + this.inputMonth), (this.outputYear + this.inputMonth))
   }
 
-  calculateInflation(value: number, period1: string, period2: string): number {
-    if (value > 9999999 || value <= 0) {
+  calculateInflation(input: number, period1: string, period2: string): number {
+    if (input > 9999999 || input <= 0) {
       return -1
     }
 
-    const yearMutationCpi: number = this.calculateYearMutationCPI(period1, period2)
+    const yearMutationCpi: number = this.calculateCPIMutation(period1, period2)
 
-    return parseFloat((Math.round(value * (yearMutationCpi / 100) * 100) / 100).toFixed(2))
+    this.inflationPercentage = parseFloat((yearMutationCpi - 100).toFixed(2))
+
+    this.averageInflation = parseFloat((this.inflationPercentage / Math.abs(this.outputYear - this.inputYear)).toFixed(2))
+
+    return parseFloat((Math.round(input * (yearMutationCpi / 100) * 100) / 100).toFixed(2))
   }
 
-  calculateYearMutationCPI(period1: string, period2: string): number {
+  calculateCPIMutation(period1: string, period2: string): number {
     const item1: YearData|undefined = this.getItemByDate(period1)
     const item2: YearData|undefined = this.getItemByDate(period2)
 
