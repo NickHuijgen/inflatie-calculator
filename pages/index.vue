@@ -3,10 +3,10 @@
     <div class="container grid max-w-screen-xl gap-8 lg:grid-cols-2 lg:grid-rows-2">
       <div class="row-span-2 flex flex-col rounded-md border border-blue-200">
         <div class="p-10">
-          <h3 class="text-xl font-medium text-gray-700">Bereken inflatie</h3>
+          <h3 class="text-xl font-bold">Bereken inflatie</h3>
           <div class="mt-2">
             <div class="p-2">
-              <label class="mb-1 text-gray-600 font-semibold">Aantal</label>
+              <label class="mb-1 font-semibold text-gray-700">Bedrag</label>
               <input
                 v-model="input"
                 @blur="resetBadInputs"
@@ -16,7 +16,7 @@
             </div>
 
             <div class="p-2">
-              <label class="block mb-1 text-gray-600 font-semibold">Beginjaar</label>
+              <label class="block mb-1 font-semibold text-gray-700">Beginjaar</label>
               <input
                 v-model="inputYear"
                 @blur="resetBadInputs"
@@ -40,7 +40,7 @@
             </div>
 
             <div class="p-2">
-              <label class="block mb-1 text-gray-600 font-semibold">Eindjaar</label>
+              <label class="block mb-1 font-semibold text-gray-700">Eindjaar</label>
               <input
                 v-model="outputYear"
                 @blur="resetBadInputs"
@@ -50,7 +50,7 @@
             </div>
 
             <div class="p-2">
-              <label class="block mb-1 text-gray-600 font-semibold">Maand</label>
+              <label class="block mb-1 font-semibold text-gray-700">Maand</label>
               <select v-model="inputMonth" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full">
                 <option value="JJ00">Jaargemiddelde</option>
                 <option value="MM01">Januari</option>
@@ -73,30 +73,30 @@
 
       <div class="flex rounded-md border border-blue-200">
         <div class="flex-1 p-10">
-          <h3 class="text-xl font-medium">Resultaten</h3>
+          <h3 class="text-xl font-bold">Resultaten</h3>
           <div class="mt-2">
             <div v-if="output !== -1">
               <div class="mb-2">
                 <p v-if="inputYear < 2002 && outputYear >= 2002">
-                  ƒ{{ input }} had in {{ inputYear }} dezelfde koopkracht als €{{ output }} in {{ outputYear }}
+                  <strong>ƒ{{ input }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ output }}</strong> in {{ outputYear }}
                 </p>
                 <p v-else-if="inputYear >= 2002 && outputYear < 2002">
-                  €{{ input }} had in {{ inputYear }} dezelfde koopkracht als ƒ{{ output }} in {{ outputYear }}
+                  <strong>€{{ input }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>ƒ{{ output }}</strong> in {{ outputYear }}
                 </p>
                 <p v-else-if="inputYear < 2002 && outputYear < 2002">
-                  ƒ{{ input }} had in {{ inputYear }} dezelfde koopkracht als ƒ{{ output }} in {{ outputYear }}
+                  <strong>ƒ{{ input }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>ƒ{{ output }}</strong> in {{ outputYear }}
                 </p>
                 <p v-else>
-                  €{{ input }} had in {{ inputYear }} dezelfde koopkracht als €{{ output }} in {{ outputYear }}
+                  <strong>€{{ input }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ output }}</strong> in {{ outputYear }}
                 </p>
               </div>
 
               <p class="mb-2">
-                Dat is een totale inflatie van {{ inflationPercentage }}%
+                Dat is een totale inflatie van <strong>{{ inflationPercentage }}%</strong>
               </p>
 
               <p>
-                Gemiddeld {{ averageInflation }}% per jaar
+                Gemiddeld <strong>{{ averageInflation }}%</strong> per jaar
               </p>
             </div>
             <div v-else>
@@ -110,14 +110,14 @@
 
       <div class="flex rounded-md border border-blue-200">
         <div class="flex-1 p-10">
-          <h3 class="text-xl font-medium">Over deze site</h3>
+          <h3 class="text-xl font-bold">Over deze site</h3>
           <div class="mt-2">
             <p class="mb-2">
               Inflatie is de laatste tijd steeds meer te merken, ons geld wordt razendsnel minder waard. Maar precies hoeveel minder waard is het geworden?
             </p>
             <p class="mb-2">
               Voor de berekening is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-400">deze</a> dataset van het CBS.
-              Data is beschikbaar vanaf Januari 1963 tot September 2022
+              Data is beschikbaar vanaf janurai 1963 tot en met september 2022.
             </p>
             <p>
               De code (inclusief berekening) staat op <a href="https://github.com/NickHuijgen01/inflatie-calculator" class="text-blue-400">GitHub</a>.
