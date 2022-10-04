@@ -171,7 +171,7 @@ export default class index extends Vue {
     let year: number = this.inputYear
 
     if (yearDifference > 0) {
-      for (let i: number = 1; i <= yearDifference; i++) {
+      for (let i: number = 0; i < yearDifference; i++) {
         year++
 
         let yearData: YearData|undefined = this.getItemByDate(year + this.inputMonth)
