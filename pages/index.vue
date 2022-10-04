@@ -115,12 +115,18 @@
             <p class="mb-2">
               Inflatie is de laatste tijd steeds meer te merken, ons geld wordt razendsnel minder waard. Maar precies hoeveel minder waard is het geworden?
             </p>
+
             <p class="mb-2">
-              Voor de berekening is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-400">deze</a> dataset van het CBS.
+              Voor de berekening is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-500">deze</a> dataset van het CBS.
               Data is beschikbaar vanaf janurai 1963 tot en met september 2022.
             </p>
-            <p>
-              De code (inclusief berekening) staat op <a href="https://github.com/NickHuijgen01/inflatie-calculator" class="text-blue-400">GitHub</a>.
+
+            <p class="mb-4">
+              De code (inclusief berekening) staat op <a href="https://github.com/NickHuijgen01/inflatie-calculator" class="text-blue-500">GitHub</a>.
+            </p>
+
+            <p class="text-gray-400">
+              Gemaakt door Nick Huijgen
             </p>
           </div>
         </div>
