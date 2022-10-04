@@ -118,7 +118,7 @@
 
             <p class="mb-2">
               Voor de berekening is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-500">deze</a> dataset van het CBS.
-              Data is beschikbaar vanaf janurai 1963 tot en met september 2022.
+              Data is beschikbaar vanaf januari 1963 tot en met september 2022.
             </p>
 
             <p class="mb-4">
