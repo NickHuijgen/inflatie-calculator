@@ -91,14 +91,13 @@
                 </p>
               </div>
 
-              <p>
+              <p class="mb-2">
                 Dat is een totale inflatie van {{ inflationPercentage }}%
               </p>
+
               <p>
                 Gemiddeld {{ averageInflation }}% per jaar
               </p>
-
-<!--              TODO melkberekening voor perspectief-->
             </div>
             <div v-else>
               <p>
