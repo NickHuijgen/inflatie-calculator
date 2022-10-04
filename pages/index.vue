@@ -77,10 +77,10 @@
           <div class="mt-2">
             <div v-if="output !== -1">
               <div class="mb-2">
-                <p v-if="inputYear < 2002 && outputYear > 2002">
+                <p v-if="inputYear < 2002 && outputYear >= 2002">
                   ƒ{{ input }} had in {{ inputYear }} dezelfde koopkracht als €{{ output }} in {{ outputYear }}
                 </p>
-                <p v-else-if="inputYear > 2002 && outputYear < 2002">
+                <p v-else-if="inputYear >= 2002 && outputYear < 2002">
                   €{{ input }} had in {{ inputYear }} dezelfde koopkracht als ƒ{{ output }} in {{ outputYear }}
                 </p>
                 <p v-else-if="inputYear < 2002 && outputYear < 2002">
@@ -176,7 +176,7 @@ export default class index extends Vue {
 
         let yearData: YearData|undefined = this.getItemByDate(year + this.inputMonth)
 
-        if (parseInt(yearData!.period.substring(0,4)) === 2002) {
+        if (year === 2002) {
           CPIMutation = this.round(CPIMutation * this.guilderToEuroConversionRate)
         }
 
@@ -186,13 +186,13 @@ export default class index extends Vue {
       for (let i: number = 0; i < Math.abs(yearDifference); i++) {
         let yearData: YearData|undefined = this.getItemByDate((year) + this.inputMonth)
 
-        year--
-
-        if (parseInt(yearData!.period.substring(0,4)) === 2001) {
+        if (year == 2002) {
           CPIMutation = this.round((CPIMutation * this.euroToGuilderConversionRate))
         }
 
         CPIMutation = this.round(CPIMutation * (-Math.abs(parseFloat(yearData!.yearmutation_cpi.replace(/\s/g, '')) / 100) + 1))
+
+        year--
       }
     }
 
