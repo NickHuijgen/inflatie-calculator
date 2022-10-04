@@ -156,6 +156,14 @@ export default class index extends Vue {
     return parseFloat(this.round(this.input * (this.calculateCPIMutation() / 100)).toFixed(2))
   }
 
+  get inflationPercentage(): number {
+    return parseFloat((this.calculateCPIMutation(false) - 100).toFixed(2))
+  }
+
+  get averageInflation(): number {
+    return parseFloat((this.inflationPercentage / Math.abs(this.outputYear - this.inputYear)).toFixed(2))
+  }
+
   calculateCPIMutation(conversion: boolean = true): number {
     const inputYearData: YearData|undefined = this.getItemByDate(this.inputYear + this.inputMonth)
     const outputYearData: YearData|undefined = this.getItemByDate(this.outputYear + this.inputMonth)
@@ -197,14 +205,6 @@ export default class index extends Vue {
     }
 
     return CPIMutation
-  }
-
-  get inflationPercentage(): number {
-    return parseFloat((this.calculateCPIMutation(false) - 100).toFixed(2))
-  }
-
-  get averageInflation(): number {
-    return parseFloat((this.inflationPercentage / Math.abs(this.outputYear - this.inputYear)).toFixed(2))
   }
 
   round(number: number, decimals: number = 2) {
