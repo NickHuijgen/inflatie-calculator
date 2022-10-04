@@ -9,7 +9,7 @@
               <label class="mb-1 text-gray-600 font-semibold">Aantal</label>
               <input
                 v-model="input"
-                @blur="resetBadData"
+                @blur="resetBadInputs"
                 type="number"
                 class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
               />
@@ -19,7 +19,7 @@
               <label class="block mb-1 text-gray-600 font-semibold">Beginjaar</label>
               <input
                 v-model="inputYear"
-                @blur="resetBadData"
+                @blur="resetBadInputs"
                 type="number"
                 class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
               />
@@ -43,7 +43,7 @@
               <label class="block mb-1 text-gray-600 font-semibold">Eindjaar</label>
               <input
                 v-model="outputYear"
-                @blur="resetBadData"
+                @blur="resetBadInputs"
                 type="number"
                 class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
               />
@@ -169,24 +169,24 @@ export default class index extends Vue {
     return parseFloat((this.inflationPercentage / Math.abs(this.outputYear - this.inputYear)).toFixed(2))
   }
 
-  calculateCPIMutation(period1: string, period2: string): number {
-    const item1: YearData|undefined = this.getItemByDate(period1)
-    const item2: YearData|undefined = this.getItemByDate(period2)
+  calculateCPIMutation(inputPeriod: string, outputPeriod: string): number {
+    const inputYearData: YearData|undefined = this.getItemByDate(inputPeriod)
+    const outputYearData: YearData|undefined = this.getItemByDate(outputPeriod)
 
-    if (!item1 || !item2) {
+    if (!inputYearData || !outputYearData) {
       return -1
     }
 
-    const year1: number = parseInt(item1.Perioden.substring(0,4))
-    const year2: number = parseInt(item2.Perioden.substring(0,4))
+    const inputYear: number = parseInt(inputYearData.Perioden.substring(0,4))
+    const outputYear: number = parseInt(outputYearData.Perioden.substring(0,4))
 
-    const yearDifference: number = year2 - year1
+    const yearDifference: number = outputYear - inputYear
 
     let CPIMutation: number = 100
 
     if (yearDifference > 0) {
       for (let i: number = 1; i <= yearDifference; i++) {
-        let yearData: YearData|undefined = this.getItemByDate((year1+i) + this.inputMonth)
+        let yearData: YearData|undefined = this.getItemByDate((inputYear+i) + this.inputMonth)
 
         if (parseInt(yearData!.Perioden.substring(0,4)) === 2002) {
           CPIMutation = this.round(CPIMutation * this.guilderToEuroConversionRate)
@@ -196,7 +196,7 @@ export default class index extends Vue {
       }
     } else {
       for (let i: number = 0; i < Math.abs(yearDifference); i++) {
-        let yearData: YearData|undefined = this.getItemByDate((this.inputYear-i) + this.inputMonth)
+        let yearData: YearData|undefined = this.getItemByDate((inputYear-i) + this.inputMonth)
 
         if (parseInt(yearData!.Perioden.substring(0,4)) === 2001) {
           console.log(' aa')
@@ -224,7 +224,7 @@ export default class index extends Vue {
     this.outputYear = inputYear
   }
 
-  resetBadData(): void {
+  resetBadInputs(): void {
     if (this.input > 9999999 || this.input <= 0) {
       this.input = 100
     }
