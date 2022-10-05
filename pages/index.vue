@@ -75,7 +75,7 @@
         <div class="flex-1 p-10">
           <h3 class="text-xl font-bold">Resultaten</h3>
           <div class="mt-2">
-            <div v-if="output !== -1">
+            <div v-if="output > 0">
               <div class="mb-2">
                 <p v-if="inputYear < 2002 && outputYear >= 2002">
                   <strong>ƒ{{ input }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ output }}</strong> in {{ outputYear }}
