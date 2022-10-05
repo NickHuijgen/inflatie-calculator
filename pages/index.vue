@@ -159,11 +159,11 @@ export default class index extends Vue {
       return -1
     }
 
-    return parseFloat(this.round(this.input * (this.calculateCPIMutation() / 100)).toFixed(2))
+    return parseFloat(this.round(this.input * (this.calculateCPIMutation(this.inputYear, this.outputYear, this.inputMonth) / 100)).toFixed(2))
   }
 
   get inflationPercentage(): number {
-    return parseFloat((this.calculateCPIMutation(false) - 100).toFixed(2))
+    return parseFloat((this.calculateCPIMutation(this.inputYear, this.outputYear, this.inputMonth, false) - 100).toFixed(2))
   }
 
   get averageInflation(): number {
@@ -176,25 +176,25 @@ export default class index extends Vue {
     return averageInflation
   }
 
-  calculateCPIMutation(conversion: boolean = true): number {
-    const inputYearData: YearData|undefined = this.getItemByDate(this.inputYear + this.inputMonth)
-    const outputYearData: YearData|undefined = this.getItemByDate(this.outputYear + this.inputMonth)
+  calculateCPIMutation(beginYear: number, endYear: number, month: string, conversion: boolean = true): number {
+    const inputYearData: YearData|undefined = this.getItemByDate(beginYear + month)
+    const outputYearData: YearData|undefined = this.getItemByDate(endYear + month)
 
     if (!inputYearData || !outputYearData) {
       return -1
     }
 
-    const yearDifference: number = this.outputYear - this.inputYear
+    const yearDifference: number = endYear - beginYear
 
     let CPIMutation: number = 100
 
-    let year: number = this.inputYear
+    let year: number = beginYear
 
     if (yearDifference > 0) {
       for (let i: number = 0; i < yearDifference; i++) {
         year++
 
-        let yearData: YearData|undefined = this.getItemByDate(year + this.inputMonth)
+        let yearData: YearData|undefined = this.getItemByDate(year + month)
 
         if (year === 2002 && conversion) {
           CPIMutation = this.round(CPIMutation * this.guilderToEuroConversionRate)
@@ -204,7 +204,7 @@ export default class index extends Vue {
       }
     } else {
       for (let i: number = 0; i < Math.abs(yearDifference); i++) {
-        let yearData: YearData|undefined = this.getItemByDate((year) + this.inputMonth)
+        let yearData: YearData|undefined = this.getItemByDate(year + month)
 
         if (year == 2002 && conversion) {
           CPIMutation = this.round((CPIMutation * this.euroToGuilderConversionRate))
