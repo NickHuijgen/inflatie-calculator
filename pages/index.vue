@@ -234,16 +234,34 @@ export default class index extends Vue {
   }
 
   resetBadInputs(): void {
+    const latestYearData: YearData = this.data[this.data.length -1]
+
     if (this.input > 9999999 || this.input <= 0) {
       this.input = 100
     }
 
-    if (this.inputYear > 2022 || this.inputYear < 1963) {
-      this.inputYear = 2015
+    if (this.inputYear >= parseInt(latestYearData.period.substring(0,4))) {
+      this.inputYear = parseInt(latestYearData.period.substring(0,4))
+
+      if (!this.getItemByDate(this.inputYear + this.inputMonth)) {
+        this.inputMonth = latestYearData.period.substring(4,8)
+      }
     }
 
-    if (this.outputYear > 2022 || this.outputYear < 1963) {
-      this.outputYear = 2021
+    if (this.inputYear < 1963) {
+      this.inputYear = 1963
+    }
+
+    if (this.outputYear >= parseInt(latestYearData.period.substring(0,4))) {
+      this.outputYear = parseInt(latestYearData.period.substring(0,4))
+
+      if (!this.getItemByDate(this.outputYear + this.inputMonth)) {
+        this.inputMonth = latestYearData.period.substring(4,8)
+      }
+    }
+
+    if (this.outputYear < 1963) {
+      this.outputYear = 1963
     }
   }
 }
