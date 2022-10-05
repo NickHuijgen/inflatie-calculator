@@ -75,7 +75,7 @@
         <div class="flex-1 p-10">
           <h3 class="text-xl font-bold">Resultaten</h3>
           <div class="mt-2">
-            <div v-if="output !== -1">
+            <div v-if="output > 0">
               <div class="mb-2">
                 <p v-if="inputYear < 2002 && outputYear >= 2002">
                   <strong>ƒ{{ input }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ output }}</strong> in {{ outputYear }}
@@ -159,11 +159,11 @@ export default class index extends Vue {
       return -1
     }
 
-    return parseFloat(this.round(this.input * (this.calculateCPIMutation() / 100)).toFixed(2))
+    return parseFloat(this.round(this.input * (this.calculateCPIMutation(this.inputYear, this.outputYear, this.inputMonth) / 100)).toFixed(2))
   }
 
   get inflationPercentage(): number {
-    return parseFloat((this.calculateCPIMutation(false) - 100).toFixed(2))
+    return parseFloat((this.calculateCPIMutation(this.inputYear, this.outputYear, this.inputMonth, false) - 100).toFixed(2))
   }
 
   get averageInflation(): number {
@@ -176,25 +176,25 @@ export default class index extends Vue {
     return averageInflation
   }
 
-  calculateCPIMutation(conversion: boolean = true): number {
-    const inputYearData: YearData|undefined = this.getItemByDate(this.inputYear + this.inputMonth)
-    const outputYearData: YearData|undefined = this.getItemByDate(this.outputYear + this.inputMonth)
+  calculateCPIMutation(beginYear: number, endYear: number, month: string, conversion: boolean = true): number {
+    const inputYearData: YearData|undefined = this.getItemByDate(beginYear + month)
+    const outputYearData: YearData|undefined = this.getItemByDate(endYear + month)
 
     if (!inputYearData || !outputYearData) {
       return -1
     }
 
-    const yearDifference: number = this.outputYear - this.inputYear
+    const yearDifference: number = endYear - beginYear
 
     let CPIMutation: number = 100
 
-    let year: number = this.inputYear
+    let year: number = beginYear
 
     if (yearDifference > 0) {
       for (let i: number = 0; i < yearDifference; i++) {
         year++
 
-        let yearData: YearData|undefined = this.getItemByDate(year + this.inputMonth)
+        let yearData: YearData|undefined = this.getItemByDate(year + month)
 
         if (year === 2002 && conversion) {
           CPIMutation = this.round(CPIMutation * this.guilderToEuroConversionRate)
@@ -204,7 +204,7 @@ export default class index extends Vue {
       }
     } else {
       for (let i: number = 0; i < Math.abs(yearDifference); i++) {
-        let yearData: YearData|undefined = this.getItemByDate((year) + this.inputMonth)
+        let yearData: YearData|undefined = this.getItemByDate(year + month)
 
         if (year == 2002 && conversion) {
           CPIMutation = this.round((CPIMutation * this.euroToGuilderConversionRate))
@@ -234,16 +234,34 @@ export default class index extends Vue {
   }
 
   resetBadInputs(): void {
+    const latestYearData: YearData = this.data[this.data.length -1]
+
     if (this.input > 9999999 || this.input <= 0) {
       this.input = 100
     }
 
-    if (this.inputYear > 2022 || this.inputYear < 1963) {
-      this.inputYear = 2015
+    if (this.inputYear >= parseInt(latestYearData.period.substring(0,4))) {
+      this.inputYear = parseInt(latestYearData.period.substring(0,4))
+
+      if (!this.getItemByDate(this.inputYear + this.inputMonth)) {
+        this.inputMonth = latestYearData.period.substring(4,8)
+      }
     }
 
-    if (this.outputYear > 2022 || this.outputYear < 1963) {
-      this.outputYear = 2021
+    if (this.inputYear < 1963) {
+      this.inputYear = 1963
+    }
+
+    if (this.outputYear >= parseInt(latestYearData.period.substring(0,4))) {
+      this.outputYear = parseInt(latestYearData.period.substring(0,4))
+
+      if (!this.getItemByDate(this.outputYear + this.inputMonth)) {
+        this.inputMonth = latestYearData.period.substring(4,8)
+      }
+    }
+
+    if (this.outputYear < 1963) {
+      this.outputYear = 1963
     }
   }
 }
