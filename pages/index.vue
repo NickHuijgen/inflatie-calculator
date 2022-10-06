@@ -78,16 +78,16 @@
             <div v-if="output > 0">
               <div class="mb-2">
                 <p v-if="inputYear < 2002 && outputYear >= 2002">
-                  <strong>ƒ{{ input }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ output }}</strong> in {{ outputYear }}
+                  <strong>ƒ{{ this.numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ this.numberWithCommas(output) }}</strong> in {{ outputYear }}
                 </p>
                 <p v-else-if="inputYear >= 2002 && outputYear < 2002">
-                  <strong>€{{ input }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>ƒ{{ output }}</strong> in {{ outputYear }}
+                  <strong>€{{ this.numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>ƒ{{ this.numberWithCommas(output) }}</strong> in {{ outputYear }}
                 </p>
                 <p v-else-if="inputYear < 2002 && outputYear < 2002">
-                  <strong>ƒ{{ input }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>ƒ{{ output }}</strong> in {{ outputYear }}
+                  <strong>ƒ{{ this.numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>ƒ{{ this.numberWithCommas(output) }}</strong> in {{ outputYear }}
                 </p>
                 <p v-else>
-                  <strong>€{{ input }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ output }}</strong> in {{ outputYear }}
+                  <strong>€{{ this.numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ this.numberWithCommas(output) }}</strong> in {{ outputYear }}
                 </p>
               </div>
 
@@ -263,6 +263,10 @@ export default class index extends Vue {
     if (this.outputYear < 1963) {
       this.outputYear = 1963
     }
+  }
+
+  numberWithCommas(number: number): string {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 }
 </script>
