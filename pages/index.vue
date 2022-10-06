@@ -152,7 +152,6 @@ export default class index extends Vue {
 
   latestYearData: YearData|null = null
 
-
   guilderToEuroConversionRate: number = 0.453780
   euroToGuilderConversionRate: number = 2.20371
 
