@@ -146,13 +146,21 @@ export default class index extends Vue {
 
   input: number = 100
   inputYear: number = 2015
-  inputMonth: string = 'MM09'
+  inputMonth: string = 'JJ00'
 
   outputYear: number = 2022
+
+  latestYearData: YearData|null = null
 
 
   guilderToEuroConversionRate: number = 0.453780
   euroToGuilderConversionRate: number = 2.20371
+
+  mounted() {
+    this.latestYearData = this.data[this.data.length -1]
+
+    this.inputMonth = this.latestYearData.period.substring(4,8)
+  }
 
   get output(): number {
     if (this.input > 9999999 || this.input <= 0) {
@@ -234,17 +242,15 @@ export default class index extends Vue {
   }
 
   resetBadInputs(): void {
-    const latestYearData: YearData = this.data[this.data.length -1]
-
     if (this.input > 9999999 || this.input <= 0) {
       this.input = 100
     }
 
-    if (this.inputYear >= parseInt(latestYearData.period.substring(0,4))) {
-      this.inputYear = parseInt(latestYearData.period.substring(0,4))
+    if (this.inputYear >= parseInt(this.latestYearData!.period.substring(0,4))) {
+      this.inputYear = parseInt(this.latestYearData!.period.substring(0,4))
 
       if (!this.getItemByDate(this.inputYear + this.inputMonth)) {
-        this.inputMonth = latestYearData.period.substring(4,8)
+        this.inputMonth = this.latestYearData!.period.substring(4,8)
       }
     }
 
@@ -252,11 +258,11 @@ export default class index extends Vue {
       this.inputYear = 1963
     }
 
-    if (this.outputYear >= parseInt(latestYearData.period.substring(0,4))) {
-      this.outputYear = parseInt(latestYearData.period.substring(0,4))
+    if (this.outputYear >= parseInt(this.latestYearData!.period.substring(0,4))) {
+      this.outputYear = parseInt(this.latestYearData!.period.substring(0,4))
 
       if (!this.getItemByDate(this.outputYear + this.inputMonth)) {
-        this.inputMonth = latestYearData.period.substring(4,8)
+        this.inputMonth = this.latestYearData!.period.substring(4,8)
       }
     }
 
