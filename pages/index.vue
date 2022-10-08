@@ -118,7 +118,7 @@
 
             <p class="mb-2">
               Voor de berekening is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-500">deze</a> dataset van het CBS.
-              Data is beschikbaar vanaf januari 1963 tot en met september 2022.
+              Data is beschikbaar vanaf 01-1963 tot en met {{ this.latestYearData.Perioden.substring(6,8) }}-{{ this.latestYearData.Perioden.substring(0,4) }}.
             </p>
 
             <p class="mb-4">
@@ -149,7 +149,7 @@ export default class index extends Vue {
 
   outputYear: number = 2022
 
-  latestYearData: YearData|null = null
+  latestYearData: YearData = new YearData({})
 
   guilderToEuroConversionRate: number = 0.453780
   euroToGuilderConversionRate: number = 2.20371
@@ -164,7 +164,7 @@ export default class index extends Vue {
 
         this.latestYearData = this.data[this.data.length -1]
 
-        this.inputMonth = this.latestYearData.Perioden.substring(4,8)
+        this.inputMonth = this.latestYearData.Perioden!.substring(4,8)
       });
   }
 
@@ -214,7 +214,7 @@ export default class index extends Vue {
           CPIMutation = this.round(CPIMutation * this.guilderToEuroConversionRate)
         }
 
-        CPIMutation = this.round(CPIMutation * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1))
+        CPIMutation = this.round(CPIMutation * (((parseFloat(yearData!.JaarmutatieCPI_1!.replace(/\s/g, ''))) / 100) + 1))
       }
     } else {
       for (let i: number = 0; i < Math.abs(yearDifference); i++) {
@@ -224,7 +224,7 @@ export default class index extends Vue {
           CPIMutation = this.round((CPIMutation * this.euroToGuilderConversionRate))
         }
 
-        CPIMutation = this.round(CPIMutation * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1))
+        CPIMutation = this.round(CPIMutation * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1!.replace(/\s/g, '')) / 100) + 1))
 
         year--
       }
@@ -252,11 +252,11 @@ export default class index extends Vue {
       this.input = 100
     }
 
-    if (this.inputYear >= parseInt(this.latestYearData!.Perioden.substring(0,4))) {
-      this.inputYear = parseInt(this.latestYearData!.Perioden.substring(0,4))
+    if (this.inputYear >= parseInt(this.latestYearData!.Perioden!.substring(0,4))) {
+      this.inputYear = parseInt(this.latestYearData!.Perioden!.substring(0,4))
 
       if (!this.getItemByDate(this.inputYear + this.inputMonth)) {
-        this.inputMonth = this.latestYearData!.Perioden.substring(4,8)
+        this.inputMonth = this.latestYearData!.Perioden!.substring(4,8)
       }
     }
 
@@ -264,11 +264,11 @@ export default class index extends Vue {
       this.inputYear = 1963
     }
 
-    if (this.outputYear >= parseInt(this.latestYearData!.Perioden.substring(0,4))) {
-      this.outputYear = parseInt(this.latestYearData!.Perioden.substring(0,4))
+    if (this.outputYear >= parseInt(this.latestYearData!.Perioden!.substring(0,4))) {
+      this.outputYear = parseInt(this.latestYearData!.Perioden!.substring(0,4))
 
       if (!this.getItemByDate(this.outputYear + this.inputMonth)) {
-        this.inputMonth = this.latestYearData!.Perioden.substring(4,8)
+        this.inputMonth = this.latestYearData!.Perioden!.substring(4,8)
       }
     }
 
