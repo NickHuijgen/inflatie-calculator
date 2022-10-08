@@ -277,8 +277,10 @@ export default class index extends Vue {
     }
   }
 
-  numberWithCommas(number: number): string {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  numberWithCommas(number: string): string {
+    const fixedNumber = parseFloat(number).toFixed(2)
+
+    return fixedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 }
 </script>
