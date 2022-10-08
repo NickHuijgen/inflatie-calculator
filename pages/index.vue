@@ -137,12 +137,11 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
-import inflationData from '~/static/data.json'
 import YearData from "~/models/YearData";
 
 @Component
 export default class index extends Vue {
-  data: YearData[] = inflationData
+  data: YearData[] = []
 
   input: number = 100
   inputYear: number = 2015
@@ -156,9 +155,17 @@ export default class index extends Vue {
   euroToGuilderConversionRate: number = 2.20371
 
   mounted() {
-    this.latestYearData = this.data[this.data.length -1]
+    fetch('https://opendata.cbs.nl/ODataFeed/odata/70936ned/UntypedDataSet?%24format=json')
+      .then(function(response) {
+        return response.json();
+      })
+      .then((myJson) =>  {
+        this.data = myJson.value
 
-    this.inputMonth = this.latestYearData.period.substring(4,8)
+        this.latestYearData = this.data[this.data.length -1]
+
+        this.inputMonth = this.latestYearData.Perioden.substring(4,8)
+      });
   }
 
   get output(): number {
@@ -207,7 +214,7 @@ export default class index extends Vue {
           CPIMutation = this.round(CPIMutation * this.guilderToEuroConversionRate)
         }
 
-        CPIMutation = this.round(CPIMutation * (((parseFloat(yearData!.yearmutation_cpi.replace(/\s/g, ''))) / 100) + 1))
+        CPIMutation = this.round(CPIMutation * (((parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, ''))) / 100) + 1))
       }
     } else {
       for (let i: number = 0; i < Math.abs(yearDifference); i++) {
@@ -217,7 +224,7 @@ export default class index extends Vue {
           CPIMutation = this.round((CPIMutation * this.euroToGuilderConversionRate))
         }
 
-        CPIMutation = this.round(CPIMutation * (-Math.abs(parseFloat(yearData!.yearmutation_cpi.replace(/\s/g, '')) / 100) + 1))
+        CPIMutation = this.round(CPIMutation * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1.replace(/\s/g, '')) / 100) + 1))
 
         year--
       }
@@ -231,7 +238,7 @@ export default class index extends Vue {
   }
 
   getItemByDate(period: string): YearData|undefined {
-    return this.data.find(object => object.period === period)
+    return this.data.find(object => object.Perioden === period)
   }
 
   switchInputAndOutput(): void {
@@ -245,11 +252,11 @@ export default class index extends Vue {
       this.input = 100
     }
 
-    if (this.inputYear >= parseInt(this.latestYearData!.period.substring(0,4))) {
-      this.inputYear = parseInt(this.latestYearData!.period.substring(0,4))
+    if (this.inputYear >= parseInt(this.latestYearData!.Perioden.substring(0,4))) {
+      this.inputYear = parseInt(this.latestYearData!.Perioden.substring(0,4))
 
       if (!this.getItemByDate(this.inputYear + this.inputMonth)) {
-        this.inputMonth = this.latestYearData!.period.substring(4,8)
+        this.inputMonth = this.latestYearData!.Perioden.substring(4,8)
       }
     }
 
@@ -257,11 +264,11 @@ export default class index extends Vue {
       this.inputYear = 1963
     }
 
-    if (this.outputYear >= parseInt(this.latestYearData!.period.substring(0,4))) {
-      this.outputYear = parseInt(this.latestYearData!.period.substring(0,4))
+    if (this.outputYear >= parseInt(this.latestYearData!.Perioden.substring(0,4))) {
+      this.outputYear = parseInt(this.latestYearData!.Perioden.substring(0,4))
 
       if (!this.getItemByDate(this.outputYear + this.inputMonth)) {
-        this.inputMonth = this.latestYearData!.period.substring(4,8)
+        this.inputMonth = this.latestYearData!.Perioden.substring(4,8)
       }
     }
 
