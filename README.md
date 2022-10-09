@@ -10,7 +10,7 @@ Voor de berekening is gebruik gemaakt van [deze](https://opendata.cbs.nl/#/CBS/n
 Dit project is open source zodat het voor iedereen duidelijk is hoe deze data precies gebruikt wordt, en de data en berekening kan verifiëren.
 
 Op de website worden nergens gebruikersgegevens vastgelegd.
-De dataset is in de app opgeslagen.
+De dataset wordt direct van het cbs opgehaald.
 
 ## About
 
@@ -22,7 +22,7 @@ For the calculation [this](https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/tab
 This project is open source so everyone can see how the data is being used and can very the data and calculation are correct.
 
 No user data is collected on the website.
-The dataset is stored in the app.
+The dataset is fetched directly from the cbs.
 
 ## Setup
 
