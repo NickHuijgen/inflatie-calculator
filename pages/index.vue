@@ -3,7 +3,7 @@
     <div class="container grid max-w-screen-xl gap-8 lg:grid-cols-2 lg:grid-rows-2">
       <div class="row-span-2 flex flex-col rounded-md border border-blue-200">
         <div class="p-10">
-          <h3 class="text-xl font-bold">Bereken inflatie</h3>
+          <h3 class="text-xl font-bold">Inflatie Berekenen</h3>
           <div class="mt-2">
             <div class="p-2">
               <label class="mb-1 font-semibold text-gray-700">Bedrag</label>
@@ -110,14 +110,14 @@
 
       <div class="flex rounded-md border border-blue-200">
         <div class="flex-1 p-10">
-          <h3 class="text-xl font-bold">Over deze site</h3>
+          <h3 class="text-xl font-bold">Informatie</h3>
           <div class="mt-2">
             <p class="mb-2">
               Inflatie is de laatste tijd steeds meer te merken, ons geld wordt razendsnel minder waard. Maar precies hoeveel minder waard is het geworden?
             </p>
 
             <p class="mb-2">
-              Voor de berekening is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-500">deze</a> dataset van het CBS.
+              Om de inflatie te berekenen is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-500">deze</a> dataset van het CBS.
               Data is beschikbaar vanaf 01-1963 tot en met {{ this.latestYearData.Perioden.substring(6,8) }}-{{ this.latestYearData.Perioden.substring(0,4) }}.
             </p>
 
