@@ -169,7 +169,7 @@ export default class index extends Vue {
   }
 
   get output(): number {
-    if (this.input > 9999999 || this.input <= 0) {
+    if (this.input >= 10000000 || this.input <= 0) {
       return -1
     }
 
@@ -248,12 +248,18 @@ export default class index extends Vue {
   }
 
   resetBadInputs(): void {
-    if (this.input > 9999999 || this.input <= 0) {
-      this.input = 100
+    const latestYear: number = parseInt(this.latestYearData!.Perioden!.substring(0,4))
+
+    if (this.input >= 10000000) {
+      this.input = 9999999
     }
 
-    if (this.inputYear >= parseInt(this.latestYearData!.Perioden!.substring(0,4))) {
-      this.inputYear = parseInt(this.latestYearData!.Perioden!.substring(0,4))
+    if (this.input <= 0) {
+      this.input = 1
+    }
+
+    if (this.inputYear >= latestYear) {
+      this.inputYear = latestYear
 
       if (!this.getItemByDate(this.inputYear + this.inputMonth)) {
         this.inputMonth = this.latestYearData!.Perioden!.substring(4,8)
@@ -264,8 +270,8 @@ export default class index extends Vue {
       this.inputYear = 1963
     }
 
-    if (this.outputYear >= parseInt(this.latestYearData!.Perioden!.substring(0,4))) {
-      this.outputYear = parseInt(this.latestYearData!.Perioden!.substring(0,4))
+    if (this.outputYear >= latestYear) {
+      this.outputYear = latestYear
 
       if (!this.getItemByDate(this.outputYear + this.inputMonth)) {
         this.inputMonth = this.latestYearData!.Perioden!.substring(4,8)
