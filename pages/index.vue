@@ -8,7 +8,7 @@
             <div class="p-2">
               <label class="mb-1 font-semibold text-gray-700">Bedrag</label>
               <input
-                v-model="input"
+                v-model.number="input"
                 @blur="resetBadInputs"
                 type="number"
                 class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
@@ -18,7 +18,7 @@
             <div class="p-2">
               <label class="block mb-1 font-semibold text-gray-700">Beginjaar</label>
               <input
-                v-model="inputYear"
+                v-model.number="inputYear"
                 @blur="resetBadInputs"
                 type="number"
                 class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
@@ -42,7 +42,7 @@
             <div class="p-2">
               <label class="block mb-1 font-semibold text-gray-700">Eindjaar</label>
               <input
-                v-model="outputYear"
+                v-model.number="outputYear"
                 @blur="resetBadInputs"
                 type="number"
                 class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
@@ -156,10 +156,10 @@ export default class index extends Vue {
 
   mounted() {
     fetch('https://opendata.cbs.nl/ODataFeed/odata/70936ned/UntypedDataSet?%24format=json')
-      .then(function(response) {
+      .then((response) => {
         return response.json();
       })
-      .then((myJson) =>  {
+      .then((myJson) => {
         this.data = myJson.value
 
         this.latestYearData = this.data[this.data.length -1]
@@ -277,8 +277,8 @@ export default class index extends Vue {
     }
   }
 
-  numberWithCommas(number: string): string {
-    const fixedNumber = parseFloat(number).toFixed(2)
+  numberWithCommas(number: number): string {
+    const fixedNumber = number.toFixed(2)
 
     return fixedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
