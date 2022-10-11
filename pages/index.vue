@@ -3,12 +3,12 @@
     <div class="container grid max-w-screen-xl gap-8 lg:grid-cols-2 lg:grid-rows-2">
       <div class="row-span-2 flex flex-col rounded-md border border-blue-200">
         <div class="p-10">
-          <h3 class="text-xl font-bold">Bereken inflatie</h3>
+          <h3 class="text-xl font-bold">Inflatie Berekenen</h3>
           <div class="mt-2">
             <div class="p-2">
               <label class="mb-1 font-semibold text-gray-700">Bedrag</label>
               <input
-                v-model="input"
+                v-model.number="input"
                 @blur="resetBadInputs"
                 type="number"
                 class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
@@ -18,7 +18,7 @@
             <div class="p-2">
               <label class="block mb-1 font-semibold text-gray-700">Beginjaar</label>
               <input
-                v-model="inputYear"
+                v-model.number="inputYear"
                 @blur="resetBadInputs"
                 type="number"
                 class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
@@ -42,7 +42,7 @@
             <div class="p-2">
               <label class="block mb-1 font-semibold text-gray-700">Eindjaar</label>
               <input
-                v-model="outputYear"
+                v-model.number="outputYear"
                 @blur="resetBadInputs"
                 type="number"
                 class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full"
@@ -110,14 +110,14 @@
 
       <div class="flex rounded-md border border-blue-200">
         <div class="flex-1 p-10">
-          <h3 class="text-xl font-bold">Over deze site</h3>
+          <h3 class="text-xl font-bold">Informatie</h3>
           <div class="mt-2">
             <p class="mb-2">
               Inflatie is de laatste tijd steeds meer te merken, ons geld wordt razendsnel minder waard. Maar precies hoeveel minder waard is het geworden?
             </p>
 
             <p class="mb-2">
-              Voor de berekening is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-500">deze</a> dataset van het CBS.
+              Om de inflatie te berekenen is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-500">deze</a> dataset van het CBS.
               Data is beschikbaar vanaf 01-1963 tot en met {{ this.latestYearData.Perioden.substring(6,8) }}-{{ this.latestYearData.Perioden.substring(0,4) }}.
             </p>
 
@@ -156,10 +156,10 @@ export default class index extends Vue {
 
   mounted() {
     fetch('https://opendata.cbs.nl/ODataFeed/odata/70936ned/UntypedDataSet?%24format=json')
-      .then(function(response) {
+      .then((response) => {
         return response.json();
       })
-      .then((myJson) =>  {
+      .then((myJson) => {
         this.data = myJson.value
 
         this.latestYearData = this.data[this.data.length -1]
@@ -169,7 +169,7 @@ export default class index extends Vue {
   }
 
   get output(): number {
-    if (this.input > 9999999 || this.input <= 0) {
+    if (this.input >= 10000000 || this.input <= 0) {
       return -1
     }
 
@@ -248,12 +248,18 @@ export default class index extends Vue {
   }
 
   resetBadInputs(): void {
-    if (this.input > 9999999 || this.input <= 0) {
-      this.input = 100
+    const latestYear: number = parseInt(this.latestYearData!.Perioden!.substring(0,4))
+
+    if (this.input >= 10000000) {
+      this.input = 9999999
     }
 
-    if (this.inputYear >= parseInt(this.latestYearData!.Perioden!.substring(0,4))) {
-      this.inputYear = parseInt(this.latestYearData!.Perioden!.substring(0,4))
+    if (this.input <= 0) {
+      this.input = 1
+    }
+
+    if (this.inputYear >= latestYear) {
+      this.inputYear = latestYear
 
       if (!this.getItemByDate(this.inputYear + this.inputMonth)) {
         this.inputMonth = this.latestYearData!.Perioden!.substring(4,8)
@@ -264,8 +270,8 @@ export default class index extends Vue {
       this.inputYear = 1963
     }
 
-    if (this.outputYear >= parseInt(this.latestYearData!.Perioden!.substring(0,4))) {
-      this.outputYear = parseInt(this.latestYearData!.Perioden!.substring(0,4))
+    if (this.outputYear >= latestYear) {
+      this.outputYear = latestYear
 
       if (!this.getItemByDate(this.outputYear + this.inputMonth)) {
         this.inputMonth = this.latestYearData!.Perioden!.substring(4,8)
@@ -277,8 +283,8 @@ export default class index extends Vue {
     }
   }
 
-  numberWithCommas(number: string): string {
-    const fixedNumber = parseFloat(number).toFixed(2)
+  numberWithCommas(number: number): string {
+    const fixedNumber = number.toFixed(2)
 
     return fixedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
