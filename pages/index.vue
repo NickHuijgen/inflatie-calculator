@@ -117,12 +117,12 @@
             </p>
 
             <p class="mb-2">
-              Om de inflatie te berekenen is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" class="text-blue-500">deze</a> dataset van het CBS.
+              Om de inflatie te berekenen is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" target="_blank" class="text-blue-500">deze</a> dataset van het CBS.
               Data is beschikbaar vanaf 01-1963 tot en met {{ this.latestYearData.Perioden.substring(6,8) }}-{{ this.latestYearData.Perioden.substring(0,4) }}.
             </p>
 
             <p class="mb-4">
-              De code (inclusief berekening) staat op <a href="https://github.com/NickHuijgen01/inflatie-calculator" class="text-blue-500">GitHub</a>.
+              De code (inclusief berekening) staat op <a href="https://github.com/NickHuijgen/inflatie-calculator" target="_blank" class="text-blue-500">GitHub</a>.
             </p>
 
             <p class="text-gray-400">
