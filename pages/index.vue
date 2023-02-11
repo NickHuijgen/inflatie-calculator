@@ -118,7 +118,7 @@
 
             <p class="mb-2">
               Om de inflatie te berekenen is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" target="_blank" class="text-blue-500">deze</a> dataset van het CBS.
-              Data is beschikbaar vanaf 01-1963 tot en met {{ this.latestYearData.Perioden.substring(6,8) }}-{{ this.latestYearData.Perioden.substring(0,4) }}.
+              Data is beschikbaar vanaf 01-1963 tot en met <template v-if="latestYearData.Perioden.substring(6,8) !== '00'">{{ this.latestYearData.Perioden.substring(6,8) }}-</template>{{ this.latestYearData.Perioden.substring(0,4) }}.
             </p>
 
             <p class="mb-4">
@@ -164,6 +164,7 @@ export default class index extends Vue {
 
         this.latestYearData = this.data[this.data.length -1]
 
+        this.outputYear = this.latestYearData.Perioden!.substring(0, 4)
         this.inputMonth = this.latestYearData.Perioden!.substring(4,8)
       });
   }
