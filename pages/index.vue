@@ -164,7 +164,7 @@ export default class index extends Vue {
 
         this.latestYearData = this.data[this.data.length -1]
 
-        this.outputYear = this.latestYearData.Perioden!.substring(0, 4)
+        this.outputYear = parseInt(this.latestYearData.Perioden!.substring(0, 4))
         this.inputMonth = this.latestYearData.Perioden!.substring(4,8)
       });
   }
