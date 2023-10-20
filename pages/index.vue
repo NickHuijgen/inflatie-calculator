@@ -182,13 +182,35 @@ export default class index extends Vue {
   }
 
   get averageInflation(): number {
-    const averageInflation: number = parseFloat((this.inflationPercentage / Math.abs(this.outputYear - this.inputYear)).toFixed(2))
+    const yearDifference: number = this.outputYear - this.inputYear
 
-    if (!averageInflation) {
+    if (yearDifference === 0) {
       return 0
     }
 
-    return averageInflation
+    let totalInflation: number = 0
+
+    let year: number = this.inputYear
+
+    for (let i: number = 0; i < Math.abs(yearDifference); i++) {
+      if (yearDifference > 0) {
+        year++
+      }
+
+      let yearData: YearData|undefined = this.getItemByDate(year + this.inputMonth)
+
+      if (!yearData) {
+        return 0
+      }
+
+      totalInflation += parseFloat(yearData!.JaarmutatieCPI_1!.replace(/\s/g, ''))
+
+      if (yearDifference < 0) {
+        year--
+      }
+    }
+
+    return this.round(totalInflation / yearDifference)
   }
 
   calculateCPIMutation(beginYear: number, endYear: number, month: string, conversion: boolean = true): number {
