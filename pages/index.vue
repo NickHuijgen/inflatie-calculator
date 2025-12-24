@@ -273,10 +273,6 @@ export default class index extends Vue {
   resetBadInputs(): void {
     const latestYear: number = parseInt(this.latestYearData!.Perioden!.substring(0,4))
 
-    if (this.input >= 10000000) {
-      this.input = 9999999
-    }
-
     if (this.input <= 0) {
       this.input = 1
     }
