@@ -1,9 +1,9 @@
 <template>
-  <div class="flex min-h-screen items-center justify-center p-10">
+  <main class="flex min-h-screen items-center justify-center p-10">
     <div class="container grid max-w-screen-xl gap-8 lg:grid-cols-2 lg:grid-rows-2">
-      <div class="row-span-2 flex flex-col rounded-md border border-blue-200">
+      <section class="row-span-2 flex flex-col rounded-md border border-blue-200" aria-label="Calculator">
         <div class="p-10">
-          <h3 class="text-xl font-bold">Inflatie Berekenen</h3>
+          <h1 class="text-xl font-bold">Inflatie Berekenen</h1>
           <div class="mt-2">
             <div class="p-2">
               <label class="mb-1 font-semibold text-gray-700">Bedrag</label>
@@ -72,11 +72,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="flex rounded-md border border-blue-200">
+      <section class="flex rounded-md border border-blue-200" aria-label="Resultaten">
         <div class="flex-1 p-10">
-          <h3 class="text-xl font-bold">Resultaten</h3>
+          <h2 class="text-xl font-bold">Resultaten</h2>
           <div class="mt-2">
             <div v-if="output > 0">
               <div class="mb-2">
@@ -109,11 +109,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="flex rounded-md border border-blue-200">
+      <section class="flex rounded-md border border-blue-200" aria-label="Informatie">
         <div class="flex-1 p-10">
-          <h3 class="text-xl font-bold">Informatie</h3>
+          <h2 class="text-xl font-bold">Informatie</h2>
           <div class="mt-2">
             <p class="mb-2">
               Inflatie is de laatste tijd steeds meer te merken, ons geld wordt razendsnel minder waard. Maar precies hoeveel minder waard is het geworden?
@@ -133,9 +133,9 @@
             </p>
           </div>
         </div>
-      </div>
+      </section>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -147,7 +147,7 @@ useHead({
   script: [
     {
       type: 'application/ld+json',
-      children: JSON.stringify({
+      innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
         'name': 'Inflatie Berekenen',
