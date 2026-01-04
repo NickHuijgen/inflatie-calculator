@@ -29,7 +29,7 @@ export default defineNuxtConfig({
         { name: 'twitter:description', content: 'Bereken eenvoudig inflatie en koopkracht in Nederland vanaf 1963.' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/icon.png' },
+        { rel: 'icon', type: 'image/png', href: '/icon.png' },
         { rel: 'canonical', href: 'https://inflatie-berekenen.nl/' }
       ]
     }
