@@ -30,6 +30,20 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       routes: ['/']
+    },
+    output: {
+      publicDir: '.output/public'
+    }
+  },
+  hooks: {
+    'nitro:build:public-assets': (nitro) => {
+      // Ensure .nojekyll file exists for GitHub Pages
+      const fs = require('fs')
+      const path = require('path')
+      const nojekyllPath = path.resolve(nitro.options.output.publicDir, '.nojekyll')
+      if (!fs.existsSync(nojekyllPath)) {
+        fs.writeFileSync(nojekyllPath, '')
+      }
     }
   }
 })
