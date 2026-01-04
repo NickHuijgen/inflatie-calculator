@@ -6,8 +6,9 @@
           <h1 class="text-xl font-bold">Inflatie Berekenen</h1>
           <div class="mt-2">
             <div class="p-2">
-              <label class="mb-1 font-semibold text-gray-700">Bedrag</label>
+              <label for="input-amount" class="mb-1 font-semibold text-gray-700">Bedrag</label>
               <input
+                id="input-amount"
                 v-model.number="input"
                 @blur="resetBadInputs"
                 type="number"
@@ -16,8 +17,9 @@
             </div>
 
             <div class="p-2">
-              <label class="block mb-1 font-semibold text-gray-700">Beginjaar</label>
+              <label for="input-start-year" class="block mb-1 font-semibold text-gray-700">Beginjaar</label>
               <input
+                id="input-start-year"
                 v-model.number="startYear"
                 @blur="resetBadInputs"
                 type="number"
@@ -28,12 +30,14 @@
             <div class="p-2 ml-4">
               <svg
                 @click="switchInputAndOutput"
+                @keydown.enter="switchInputAndOutput"
+                @keydown.space.prevent="switchInputAndOutput"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="w-6 h-6"
+                class="w-6 h-6 cursor-pointer"
                 role="button"
                 aria-label="Wissel begin- en eindjaar"
                 tabindex="0"
@@ -43,8 +47,9 @@
             </div>
 
             <div class="p-2">
-              <label class="block mb-1 font-semibold text-gray-700">Eindjaar</label>
+              <label for="input-end-year" class="block mb-1 font-semibold text-gray-700">Eindjaar</label>
               <input
+                id="input-end-year"
                 v-model.number="endYear"
                 @blur="resetBadInputs"
                 type="number"
@@ -53,8 +58,8 @@
             </div>
 
             <div class="p-2">
-              <label class="block mb-1 font-semibold text-gray-700">Maand</label>
-              <select v-model="compareMonth" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full">
+              <label for="select-month" class="block mb-1 font-semibold text-gray-700">Maand</label>
+              <select id="select-month" v-model="compareMonth" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full">
                 <option value="JJ00">Jaargemiddelde</option>
                 <option value="MM01">Januari</option>
                 <option value="MM02">Februari</option>
@@ -120,12 +125,12 @@
             </p>
 
             <p class="mb-2">
-              Om de inflatie te berekenen is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" target="_blank" class="text-blue-500">deze</a> dataset van het CBS.
+              Om de inflatie te berekenen is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" target="_blank" rel="noopener noreferrer" class="text-blue-500">deze dataset</a> van het CBS.
               Data is beschikbaar vanaf 01-1963 tot en met <template v-if="latestYearData?.Perioden?.substring(6,8) !== '00'">{{ latestYearData.Perioden?.substring(6,8) }}-</template>{{ latestYearData.Perioden?.substring(0,4) }}.
             </p>
 
             <p class="mb-4">
-              De code (inclusief berekening) staat op <a href="https://github.com/NickHuijgen/inflatie-calculator" target="_blank" class="text-blue-500">GitHub</a>.
+              De code (inclusief berekening) staat op <a href="https://github.com/NickHuijgen/inflatie-calculator" target="_blank" rel="noopener noreferrer" class="text-blue-500">GitHub</a>.
             </p>
 
             <p class="text-gray-400">

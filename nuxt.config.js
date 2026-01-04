@@ -8,9 +8,9 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/',
     head: {
-      title: 'Inflatie Berekenen',
+      title: 'Inflatie Berekenen - Bereken Koopkracht en Inflatie in Nederland',
       htmlAttrs: {
-        lang: 'en'
+        lang: 'nl'
       },
       meta: [
         { charset: 'utf-8' },
@@ -18,12 +18,19 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Bereken eenvoudig inflatie en koopkracht in Nederland vanaf 1963. Gratis inflatie calculator voor gulden en euro met actuele CBS data.' },
         { name: 'format-detection', content: 'telephone=no' },
         { name: 'keywords', content: 'inflatie, koopkracht, inflatie berekenen, inflatie calculator, CPI, consumentenprijsindex, Nederland, CBS, gulden inflatie, gulden' },
+        { name: 'author', content: 'Nick Huijgen' },
         { property: 'og:title', content: 'Inflatie Berekenen - Bereken Koopkracht en Inflatie' },
         { property: 'og:description', content: 'Bereken eenvoudig inflatie en koopkracht in Nederland vanaf 1963.' },
-        { property: 'og:type', content: 'website' }
+        { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: 'https://inflatie-berekenen.nl/' },
+        { property: 'og:image', content: 'https://inflatie-berekenen.nl/icon.png' },
+        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:title', content: 'Inflatie Berekenen - Bereken Koopkracht en Inflatie' },
+        { name: 'twitter:description', content: 'Bereken eenvoudig inflatie en koopkracht in Nederland vanaf 1963.' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/icon.png' }
+        { rel: 'icon', type: 'image/x-icon', href: '/icon.png' },
+        { rel: 'canonical', href: 'https://inflatie-berekenen.nl/' }
       ]
     }
   },
