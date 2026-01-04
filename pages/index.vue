@@ -78,16 +78,16 @@
             <div v-if="output > 0">
               <div class="mb-2">
                 <p v-if="inputYear < 2002 && outputYear >= 2002">
-                  <strong>ƒ{{ this.numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ this.numberWithCommas(output) }}</strong> in {{ outputYear }}
+                  <strong>ƒ{{ numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ numberWithCommas(output) }}</strong> in {{ outputYear }}
                 </p>
                 <p v-else-if="inputYear >= 2002 && outputYear < 2002">
-                  <strong>€{{ this.numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>ƒ{{ this.numberWithCommas(output) }}</strong> in {{ outputYear }}
+                  <strong>€{{ numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>ƒ{{ numberWithCommas(output) }}</strong> in {{ outputYear }}
                 </p>
                 <p v-else-if="inputYear < 2002 && outputYear < 2002">
-                  <strong>ƒ{{ this.numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>ƒ{{ this.numberWithCommas(output) }}</strong> in {{ outputYear }}
+                  <strong>ƒ{{ numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>ƒ{{ numberWithCommas(output) }}</strong> in {{ outputYear }}
                 </p>
                 <p v-else>
-                  <strong>€{{ this.numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ this.numberWithCommas(output) }}</strong> in {{ outputYear }}
+                  <strong>€{{ numberWithCommas(input) }}</strong> had in {{ inputYear }} dezelfde koopkracht als <strong>€{{ numberWithCommas(output) }}</strong> in {{ outputYear }}
                 </p>
               </div>
 
@@ -118,7 +118,7 @@
 
             <p class="mb-2">
               Om de inflatie te berekenen is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" target="_blank" class="text-blue-500">deze</a> dataset van het CBS.
-              Data is beschikbaar vanaf 01-1963 tot en met <template v-if="latestYearData.Perioden.substring(6,8) !== '00'">{{ this.latestYearData.Perioden.substring(6,8) }}-</template>{{ this.latestYearData.Perioden.substring(0,4) }}.
+              Data is beschikbaar vanaf 01-1963 tot en met <template v-if="latestYearData?.Perioden?.substring(6,8) !== '00'">{{ latestYearData.Perioden?.substring(6,8) }}-</template>{{ latestYearData.Perioden?.substring(0,4) }}.
             </p>
 
             <p class="mb-4">
@@ -135,184 +135,172 @@
   </div>
 </template>
 
-<script lang="ts">
-import {Component, Vue} from 'vue-property-decorator'
-import YearData from "~/models/YearData";
+<script setup lang="ts">
+import YearData from "~/models/YearData"
 
-@Component
-export default class index extends Vue {
-  data: YearData[] = []
+const data = ref<YearData[]>([])
+const input = ref<number>(100)
+const inputYear = ref<number>(2015)
+const inputMonth = ref<string>('JJ00')
+const outputYear = ref<number>(2022)
+const latestYearData = ref<YearData>(new YearData({}))
 
-  input: number = 100
-  inputYear: number = 2015
-  inputMonth: string = 'JJ00'
+const guilderToEuroConversionRate = 0.453780
+const euroToGuilderConversionRate = 2.20371
 
-  outputYear: number = 2022
+onMounted(() => {
+  fetch('https://opendata.cbs.nl/ODataFeed/odata/70936ned/UntypedDataSet?%24format=json')
+    .then((response) => {
+      return response.json();
+    })
+    .then((myJson) => {
+      data.value = myJson.value
 
-  latestYearData: YearData = new YearData({})
+      const latest = data.value[data.value.length - 1]
+      if (latest) {
+        latestYearData.value = latest
+        outputYear.value = parseInt(latestYearData.value.Perioden!.substring(0, 4))
+        inputMonth.value = latestYearData.value.Perioden!.substring(4, 8)
+      }
+    });
+})
 
-  guilderToEuroConversionRate: number = 0.453780
-  euroToGuilderConversionRate: number = 2.20371
-
-  mounted() {
-    fetch('https://opendata.cbs.nl/ODataFeed/odata/70936ned/UntypedDataSet?%24format=json')
-      .then((response) => {
-        return response.json();
-      })
-      .then((myJson) => {
-        this.data = myJson.value
-
-        this.latestYearData = this.data[this.data.length -1]
-
-        this.outputYear = parseInt(this.latestYearData.Perioden!.substring(0, 4))
-        this.inputMonth = this.latestYearData.Perioden!.substring(4,8)
-      });
+const output = computed((): number => {
+  if (input.value >= 10000000 || input.value <= 0) {
+    return -1
   }
 
-  get output(): number {
-    if (this.input >= 10000000 || this.input <= 0) {
-      return -1
+  return parseFloat(round(input.value * (calculateCPIMutation(inputYear.value, outputYear.value, inputMonth.value) / 100)).toFixed(2))
+})
+
+const inflationPercentage = computed((): number => {
+  return parseFloat((calculateCPIMutation(inputYear.value, outputYear.value, inputMonth.value, false) - 100).toFixed(2))
+})
+
+const averageInflation = computed((): number => {
+  const yearDifference: number = outputYear.value - inputYear.value
+
+  if (yearDifference === 0) {
+    return 0
+  }
+
+  let totalInflation: number = 0
+
+  let year: number = inputYear.value
+
+  for (let i: number = 0; i < Math.abs(yearDifference); i++) {
+    if (yearDifference > 0) {
+      year++
     }
 
-    return parseFloat(this.round(this.input * (this.calculateCPIMutation(this.inputYear, this.outputYear, this.inputMonth) / 100)).toFixed(2))
-  }
+    let yearData: YearData | undefined = getItemByDate(year + inputMonth.value)
 
-  get inflationPercentage(): number {
-    return parseFloat((this.calculateCPIMutation(this.inputYear, this.outputYear, this.inputMonth, false) - 100).toFixed(2))
-  }
-
-  get averageInflation(): number {
-    const yearDifference: number = this.outputYear - this.inputYear
-
-    if (yearDifference === 0) {
+    if (!yearData) {
       return 0
     }
 
-    let totalInflation: number = 0
+    totalInflation += parseFloat(yearData!.JaarmutatieCPI_1!.replace(/\s/g, ''))
 
-    let year: number = this.inputYear
+    if (yearDifference < 0) {
+      year--
+    }
+  }
 
+  return round(totalInflation / yearDifference)
+})
+
+function calculateCPIMutation(beginYear: number, endYear: number, month: string, conversion: boolean = true): number {
+  const inputYearData: YearData | undefined = getItemByDate(beginYear + month)
+  const outputYearData: YearData | undefined = getItemByDate(endYear + month)
+
+  if (!inputYearData || !outputYearData) {
+    return -1
+  }
+
+  const yearDifference: number = endYear - beginYear
+
+  let CPIMutation: number = 100
+
+  let year: number = beginYear
+
+  if (yearDifference > 0) {
+    for (let i: number = 0; i < yearDifference; i++) {
+      year++
+
+      let yearData: YearData | undefined = getItemByDate(year + month)
+
+      if (year === 2002 && conversion) {
+        CPIMutation = round(CPIMutation * guilderToEuroConversionRate)
+      }
+
+      CPIMutation = round(CPIMutation * (((parseFloat(yearData!.JaarmutatieCPI_1!.replace(/\s/g, ''))) / 100) + 1))
+    }
+  } else {
     for (let i: number = 0; i < Math.abs(yearDifference); i++) {
-      if (yearDifference > 0) {
-        year++
+      let yearData: YearData | undefined = getItemByDate(year + month)
+
+      if (year == 2002 && conversion) {
+        CPIMutation = round((CPIMutation * euroToGuilderConversionRate))
       }
 
-      let yearData: YearData|undefined = this.getItemByDate(year + this.inputMonth)
+      CPIMutation = round(CPIMutation * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1!.replace(/\s/g, '')) / 100) + 1))
 
-      if (!yearData) {
-        return 0
-      }
-
-      totalInflation += parseFloat(yearData!.JaarmutatieCPI_1!.replace(/\s/g, ''))
-
-      if (yearDifference < 0) {
-        year--
-      }
-    }
-
-    return this.round(totalInflation / yearDifference)
-  }
-
-  calculateCPIMutation(beginYear: number, endYear: number, month: string, conversion: boolean = true): number {
-    const inputYearData: YearData|undefined = this.getItemByDate(beginYear + month)
-    const outputYearData: YearData|undefined = this.getItemByDate(endYear + month)
-
-    if (!inputYearData || !outputYearData) {
-      return -1
-    }
-
-    const yearDifference: number = endYear - beginYear
-
-    let CPIMutation: number = 100
-
-    let year: number = beginYear
-
-    if (yearDifference > 0) {
-      for (let i: number = 0; i < yearDifference; i++) {
-        year++
-
-        let yearData: YearData|undefined = this.getItemByDate(year + month)
-
-        if (year === 2002 && conversion) {
-          CPIMutation = this.round(CPIMutation * this.guilderToEuroConversionRate)
-        }
-
-        CPIMutation = this.round(CPIMutation * (((parseFloat(yearData!.JaarmutatieCPI_1!.replace(/\s/g, ''))) / 100) + 1))
-      }
-    } else {
-      for (let i: number = 0; i < Math.abs(yearDifference); i++) {
-        let yearData: YearData|undefined = this.getItemByDate(year + month)
-
-        if (year == 2002 && conversion) {
-          CPIMutation = this.round((CPIMutation * this.euroToGuilderConversionRate))
-        }
-
-        CPIMutation = this.round(CPIMutation * (-Math.abs(parseFloat(yearData!.JaarmutatieCPI_1!.replace(/\s/g, '')) / 100) + 1))
-
-        year--
-      }
-    }
-
-    return CPIMutation
-  }
-
-  round(number: number, decimals: number = 2) {
-    return parseFloat((Math.round((number) * 10000) / 10000).toFixed(decimals))
-  }
-
-  getItemByDate(period: string): YearData|undefined {
-    return this.data.find(object => object.Perioden === period)
-  }
-
-  switchInputAndOutput(): void {
-    const inputYear: number = this.inputYear
-    this.inputYear = this.outputYear
-    this.outputYear = inputYear
-  }
-
-  resetBadInputs(): void {
-    const latestYear: number = parseInt(this.latestYearData!.Perioden!.substring(0,4))
-
-    if (this.input >= 10000000) {
-      this.input = 9999999
-    }
-
-    if (this.input <= 0) {
-      this.input = 1
-    }
-
-    if (this.inputYear >= latestYear) {
-      this.inputYear = latestYear
-
-      if (!this.getItemByDate(this.inputYear + this.inputMonth)) {
-        this.inputMonth = this.latestYearData!.Perioden!.substring(4,8)
-      }
-    }
-
-    if (this.inputYear < 1963) {
-      this.inputYear = 1963
-    }
-
-    if (this.outputYear >= latestYear) {
-      this.outputYear = latestYear
-
-      if (!this.getItemByDate(this.outputYear + this.inputMonth)) {
-        this.inputMonth = this.latestYearData!.Perioden!.substring(4,8)
-      }
-    }
-
-    if (this.outputYear < 1963) {
-      this.outputYear = 1963
+      year--
     }
   }
 
-  numberWithCommas(number: number): string {
-    const fixedNumber = number.toFixed(2)
+  return CPIMutation
+}
 
-    return fixedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+function round(number: number, decimals: number = 2): number {
+  return parseFloat((Math.round((number) * 10000) / 10000).toFixed(decimals))
+}
+
+function getItemByDate(period: string): YearData | undefined {
+  return data.value.find(object => object.Perioden === period)
+}
+
+function switchInputAndOutput(): void {
+  const tempInputYear: number = inputYear.value
+  inputYear.value = outputYear.value
+  outputYear.value = tempInputYear
+}
+
+function resetBadInputs(): void {
+  const latestYear: number = parseInt(latestYearData.value!.Perioden!.substring(0, 4))
+
+  if (input.value <= 0) {
+    input.value = 1
+  }
+
+  if (inputYear.value >= latestYear) {
+    inputYear.value = latestYear
+
+    if (!getItemByDate(inputYear.value + inputMonth.value)) {
+      inputMonth.value = latestYearData.value!.Perioden!.substring(4, 8)
+    }
+  }
+
+  if (inputYear.value < 1963) {
+    inputYear.value = 1963
+  }
+
+  if (outputYear.value >= latestYear) {
+    outputYear.value = latestYear
+
+    if (!getItemByDate(outputYear.value + inputMonth.value)) {
+      inputMonth.value = latestYearData.value!.Perioden!.substring(4, 8)
+    }
+  }
+
+  if (outputYear.value < 1963) {
+    outputYear.value = 1963
   }
 }
-</script>
 
-<style scoped>
-</style>
+function numberWithCommas(number: number): string {
+  const fixedNumber = number.toFixed(2)
+
+  return fixedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+</script>
