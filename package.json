@@ -9,7 +9,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "deploy": "push-dir --dir=.output/public --branch=gh-pages --cleanup",
+    "deploy": "nuxt generate && push-dir --dir=.output/public --branch=gh-pages --cleanup",
     "lint": "eslint --fix"
   },
   "dependencies": {

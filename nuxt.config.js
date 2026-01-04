@@ -26,6 +26,11 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
   ],
-  devtools: { enabled: true }
+  devtools: { enabled: true },
+  nitro: {
+    prerender: {
+      routes: ['/']
+    }
+  }
 })
 
