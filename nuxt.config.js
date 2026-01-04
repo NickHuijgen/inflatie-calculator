@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
-  ssr: false,
+  ssr: true,
   app: {
     baseURL: '/',
     head: {
@@ -15,8 +15,12 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Met deze inflatie calculator kan iedereen gemakkelijk en snel berekenen hoe inflatie jouw leven beïnvloed en hoe snel onze koopkracht daalt' },
-        { name: 'format-detection', content: 'telephone=no' }
+        { name: 'description', content: 'Bereken eenvoudig inflatie en koopkracht in Nederland vanaf 1963. Gratis inflatie calculator voor gulden en euro met actuele CBS data.' },
+        { name: 'format-detection', content: 'telephone=no' },
+        { name: 'keywords', content: 'inflatie, koopkracht, inflatie berekenen, inflatie calculator, CPI, consumentenprijsindex, Nederland, CBS, gulden inflatie, gulden' },
+        { property: 'og:title', content: 'Inflatie Berekenen - Bereken Koopkracht en Inflatie' },
+        { property: 'og:description', content: 'Bereken eenvoudig inflatie en koopkracht in Nederland vanaf 1963.' },
+        { property: 'og:type', content: 'website' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/icon.png' }
@@ -25,7 +29,11 @@ export default defineNuxtConfig({
   },
   modules: [
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/sitemap',
   ],
+  site: {
+    url: 'https://inflatie-berekenen.nl/',
+  },
   devtools: { enabled: true },
   nitro: {
     prerender: {
