@@ -1,5 +1,5 @@
 <template>
-  <main class="flex min-h-screen items-center justify-center p-4 lg:p-6 lg:p-8">
+  <main class="flex min-h-screen items-center justify-center p-4 lg:px-6 lg:pt-6">
     <div class="container grid max-w-screen-xl gap-4 lg:gap-8 lg:grid-cols-2 lg:grid-rows-2">
       <section class="row-span-2 flex flex-col rounded-md border border-blue-200" aria-label="Calculator">
         <div class="p-6 lg:p-8">
@@ -238,11 +238,11 @@
     </div>
   </main>
 
-  <div class="flex justify-center w-full mb-2">
+  <footer class="flex justify-center w-full mb-2">
     <p class="text-gray-400 w-fit">
       Gemaakt door Nick Huijgen
     </p>
-  </div>
+  </footer>
 </template>
 
 <script setup lang="ts">
