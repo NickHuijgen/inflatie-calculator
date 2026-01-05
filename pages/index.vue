@@ -121,22 +121,102 @@
           <h2 class="text-xl font-bold">Informatie</h2>
           <div class="mt-2">
             <p class="mb-2">
-              Inflatie is de laatste tijd steeds meer te merken, ons geld wordt razendsnel minder waard. Maar precies hoeveel minder waard is het geworden?
+              Inflatie zorgt ervoor dat geld steeds minder waard wordt. Met deze inflatiecalculator bereken je eenvoudig
+              hoeveel koopkracht je door de jaren heen hebt verloren.
             </p>
 
             <p class="mb-2">
-              Om de inflatie te berekenen is gebruik gemaakt van <a href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870" target="_blank" rel="noopener noreferrer" class="text-blue-500">deze dataset</a> van het CBS.
+              De berekening is gebaseerd op officiële inflatiecijfers van het Centraal Bureau voor de Statistiek (CBS),
+              afkomstig uit <a
+                href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-blue-500"
+              >deze dataset</a>.
               Data is beschikbaar vanaf 01-1963 tot en met <template v-if="latestYearData?.Perioden?.substring(6,8) !== '00'">{{ latestYearData.Perioden?.substring(6,8) }}-</template>{{ latestYearData.Perioden?.substring(0,4) }}.
             </p>
 
             <p class="mb-4">
-              De code (inclusief berekening) staat op <a href="https://github.com/NickHuijgen/inflatie-calculator" target="_blank" rel="noopener noreferrer" class="text-blue-500">GitHub</a>.
+              De volledige broncode en berekening zijn te vinden op <a
+                href="https://github.com/NickHuijgen/inflatie-calculator"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-blue-500"
+              >GitHub</a>.
             </p>
 
             <p class="text-gray-400">
               Gemaakt door Nick Huijgen
             </p>
           </div>
+        </div>
+      </section>
+
+      <section class="flex rounded-md border border-blue-200 lg:col-span-2" aria-label="FAQ">
+        <div class="flex-1 p-10">
+          <h2 class="text-xl font-bold mb-4">Veelgestelde vragen</h2>
+
+          <h3 class="font-semibold">Wat is inflatie?</h3>
+          <p class="mb-3">
+            Inflatie betekent dat prijzen stijgen en je geld minder waard wordt. Hierdoor kun je met hetzelfde bedrag
+            minder producten en diensten kopen dan voorheen.
+          </p>
+
+          <h3 class="font-semibold">Waarom is inflatie belangrijk?</h3>
+          <p class="mb-3">
+            Inflatie heeft invloed op je koopkracht, spaargeld en inkomen. Bij hoge inflatie daalt de waarde van spaargeld
+            sneller en worden dagelijkse uitgaven duurder.
+          </p>
+
+          <h3 class="font-semibold">Hoe wordt inflatie berekend?</h3>
+          <p class="mb-3">
+            Inflatie wordt berekend op basis van de consumentenprijsindex (CPI). Deze index meet de gemiddelde
+            prijsontwikkeling van een vast pakket aan goederen en diensten.
+          </p>
+
+          <h3 class="font-semibold">Wat is de consumentenprijsindex (CPI)?</h3>
+          <p class="mb-3">
+            De CPI is een maatstaf die laat zien hoe prijzen van alledaagse producten, zoals boodschappen, energie en
+            wonen, zich in de loop van de tijd ontwikkelen.
+          </p>
+
+          <h3 class="font-semibold">Waar komen de inflatiecijfers vandaan?</h3>
+          <p class="mb-3">
+            De inflatiecijfers op deze website zijn afkomstig van het Centraal Bureau voor de Statistiek (CBS),
+            de officiële statistische instantie van Nederland. Er wordt gebruikgemaakt van
+            <a
+              href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-blue-500"
+            >
+              deze dataset
+            </a>.
+          </p>
+
+          <h3 class="font-semibold">Wat kan ik berekenen met deze inflatiecalculator?</h3>
+          <p class="mb-3">
+            Met deze inflatiecalculator kun je berekenen hoeveel een bedrag uit het verleden vandaag waard zou zijn,
+            of hoeveel koopkracht je door inflatie bent verloren.
+          </p>
+
+          <h3 class="font-semibold">Is deze inflatiecalculator betrouwbaar?</h3>
+          <p class="mb-3">
+            Ja, de berekening is gebaseerd op officiële CBS-inflatiecijfers en volgt een transparante rekenmethode.
+            De volledige broncode is openbaar beschikbaar op GitHub.
+          </p>
+
+          <h3 class="font-semibold">Vanaf welk jaar is inflatie te berekenen?</h3>
+          <p class="mb-3">
+            De beschikbare inflatiegegevens lopen vanaf januari 1963 tot en met het meest recente jaar waarvoor
+            CBS-data beschikbaar is.
+          </p>
+
+          <h3 class="font-semibold">Worden de inflatiecijfers bijgewerkt?</h3>
+          <p>
+            Ja, zodra het CBS nieuwe inflatiecijfers publiceert, worden deze automatisch verwerkt in de
+            inflatiecalculator.
+          </p>
         </div>
       </section>
     </div>
