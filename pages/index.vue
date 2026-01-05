@@ -1,11 +1,11 @@
 <template>
-  <main class="flex min-h-screen items-center justify-center p-10">
-    <div class="container grid max-w-screen-xl gap-8 lg:grid-cols-2 lg:grid-rows-2">
+  <main class="flex min-h-screen items-center justify-center p-4 lg:p-6 lg:p-10">
+    <div class="container grid max-w-screen-xl gap-4 lg:gap-8 lg:grid-cols-2 lg:grid-rows-2">
       <section class="row-span-2 flex flex-col rounded-md border border-blue-200" aria-label="Calculator">
-        <div class="p-10">
+        <div class="p-6 lg:p-10">
           <h1 class="text-xl font-bold">Inflatie Berekenen</h1>
           <div class="mt-2">
-            <div class="p-2">
+            <div class="py-2">
               <label for="input-amount" class="mb-1 font-semibold text-gray-700">Bedrag</label>
               <input
                 id="input-amount"
@@ -16,7 +16,7 @@
               />
             </div>
 
-            <div class="p-2">
+            <div class="py-2">
               <label for="input-start-year" class="block mb-1 font-semibold text-gray-700">Beginjaar</label>
               <input
                 id="input-start-year"
@@ -27,7 +27,7 @@
               />
             </div>
 
-            <div class="p-2 ml-4">
+            <div class="py-2 ml-4">
               <svg
                 @click="switchInputAndOutput"
                 @keydown.enter="switchInputAndOutput"
@@ -46,7 +46,7 @@
               </svg>
             </div>
 
-            <div class="p-2">
+            <div class="py-2">
               <label for="input-end-year" class="block mb-1 font-semibold text-gray-700">Eindjaar</label>
               <input
                 id="input-end-year"
@@ -57,7 +57,7 @@
               />
             </div>
 
-            <div class="p-2">
+            <div class="py-2">
               <label for="select-month" class="block mb-1 font-semibold text-gray-700">Maand</label>
               <select id="select-month" v-model="compareMonth" class="bg-gray-100 px-4 py-2 outline-none rounded-md w-full">
                 <option value="JJ00">Jaargemiddelde</option>
@@ -80,7 +80,7 @@
       </section>
 
       <section class="flex rounded-md border border-blue-200" aria-label="Resultaten">
-        <div class="flex-1 p-10">
+        <div class="flex-1 p-6 lg:p-10">
           <h2 class="text-xl font-bold">Resultaten</h2>
           <div class="mt-2">
             <div v-if="output > 0">
@@ -117,7 +117,7 @@
       </section>
 
       <section class="flex rounded-md border border-blue-200" aria-label="Informatie">
-        <div class="flex-1 p-10">
+        <div class="flex-1 p-6 lg:p-10">
           <h2 class="text-xl font-bold">Informatie</h2>
           <div class="mt-2">
             <p class="mb-2">
@@ -153,7 +153,7 @@
       </section>
 
       <section class="flex rounded-md border border-blue-200 lg:col-span-2" aria-label="FAQ">
-        <div class="flex-1 p-10">
+        <div class="flex-1 p-6 lg:p-10">
           <h2 class="text-xl font-bold mb-4">Veelgestelde vragen</h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
