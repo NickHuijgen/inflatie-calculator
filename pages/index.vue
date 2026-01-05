@@ -1,8 +1,8 @@
 <template>
-  <main class="flex min-h-screen items-center justify-center p-4 lg:p-6 lg:p-10">
+  <main class="flex min-h-screen items-center justify-center p-4 lg:p-6 lg:p-8">
     <div class="container grid max-w-screen-xl gap-4 lg:gap-8 lg:grid-cols-2 lg:grid-rows-2">
       <section class="row-span-2 flex flex-col rounded-md border border-blue-200" aria-label="Calculator">
-        <div class="p-6 lg:p-10">
+        <div class="p-6 lg:p-8">
           <h1 class="text-xl font-bold">Inflatie Berekenen</h1>
           <div class="mt-2">
             <div class="py-2">
@@ -80,7 +80,7 @@
       </section>
 
       <section class="flex rounded-md border border-blue-200" aria-label="Resultaten">
-        <div class="flex-1 p-6 lg:p-10">
+        <div class="flex-1 p-6 lg:p-8">
           <h2 class="text-xl font-bold">Resultaten</h2>
           <div class="mt-2">
             <div v-if="output > 0">
@@ -117,7 +117,7 @@
       </section>
 
       <section class="flex rounded-md border border-blue-200" aria-label="Informatie">
-        <div class="flex-1 p-6 lg:p-10">
+        <div class="flex-1 p-6 lg:p-8">
           <h2 class="text-xl font-bold">Informatie</h2>
           <div class="mt-2">
             <p class="mb-2">
@@ -144,16 +144,12 @@
                 class="text-blue-500"
               >GitHub</a>.
             </p>
-
-            <p class="text-gray-400">
-              Gemaakt door Nick Huijgen
-            </p>
           </div>
         </div>
       </section>
 
       <section class="flex rounded-md border border-blue-200 lg:col-span-2" aria-label="FAQ">
-        <div class="flex-1 p-6 lg:p-10">
+        <div class="flex-1 p-6 lg:p-8">
           <h2 class="text-xl font-bold mb-4">Veelgestelde vragen</h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -241,6 +237,12 @@
       </section>
     </div>
   </main>
+
+  <div class="flex justify-center w-full mb-2">
+    <p class="text-gray-400 w-fit">
+      Gemaakt door Nick Huijgen
+    </p>
+  </div>
 </template>
 
 <script setup lang="ts">
