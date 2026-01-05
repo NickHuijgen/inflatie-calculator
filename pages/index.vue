@@ -156,67 +156,87 @@
         <div class="flex-1 p-10">
           <h2 class="text-xl font-bold mb-4">Veelgestelde vragen</h2>
 
-          <h3 class="font-semibold">Wat is inflatie?</h3>
-          <p class="mb-3">
-            Inflatie betekent dat prijzen stijgen en je geld minder waard wordt. Hierdoor kun je met hetzelfde bedrag
-            minder producten en diensten kopen dan voorheen.
-          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="font-semibold">Wat is inflatie?</h3>
+              <p class="mb-3">
+                Inflatie betekent dat prijzen stijgen en je geld minder waard wordt. Hierdoor kun je met hetzelfde bedrag
+                minder producten en diensten kopen dan voorheen.
+              </p>
+            </div>
 
-          <h3 class="font-semibold">Waarom is inflatie belangrijk?</h3>
-          <p class="mb-3">
-            Inflatie heeft invloed op je koopkracht, spaargeld en inkomen. Bij hoge inflatie daalt de waarde van spaargeld
-            sneller en worden dagelijkse uitgaven duurder.
-          </p>
+            <div>
+              <h3 class="font-semibold">Waarom is inflatie belangrijk?</h3>
+              <p class="mb-3">
+                Inflatie heeft invloed op je koopkracht, spaargeld en inkomen. Bij hoge inflatie daalt de waarde van spaargeld
+                sneller en worden dagelijkse uitgaven duurder.
+              </p>
+            </div>
 
-          <h3 class="font-semibold">Hoe wordt inflatie berekend?</h3>
-          <p class="mb-3">
-            Inflatie wordt berekend op basis van de consumentenprijsindex (CPI). Deze index meet de gemiddelde
-            prijsontwikkeling van een vast pakket aan goederen en diensten.
-          </p>
+            <div>
+              <h3 class="font-semibold">Hoe wordt inflatie berekend?</h3>
+              <p class="mb-3">
+                Inflatie wordt berekend op basis van de consumentenprijsindex (CPI). Deze index meet de gemiddelde
+                prijsontwikkeling van een vast pakket aan goederen en diensten.
+              </p>
+            </div>
 
-          <h3 class="font-semibold">Wat is de consumentenprijsindex (CPI)?</h3>
-          <p class="mb-3">
-            De CPI is een maatstaf die laat zien hoe prijzen van alledaagse producten, zoals boodschappen, energie en
-            wonen, zich in de loop van de tijd ontwikkelen.
-          </p>
+            <div>
+              <h3 class="font-semibold">Wat is de consumentenprijsindex (CPI)?</h3>
+              <p class="mb-3">
+                De CPI is een maatstaf die laat zien hoe prijzen van alledaagse producten, zoals boodschappen, energie en
+                wonen, zich in de loop van de tijd ontwikkelen.
+              </p>
+            </div>
 
-          <h3 class="font-semibold">Waar komen de inflatiecijfers vandaan?</h3>
-          <p class="mb-3">
-            De inflatiecijfers op deze website zijn afkomstig van het Centraal Bureau voor de Statistiek (CBS),
-            de officiële statistische instantie van Nederland. Er wordt gebruikgemaakt van
-            <a
-              href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-blue-500"
-            >
-              deze dataset
-            </a>.
-          </p>
+            <div>
+              <h3 class="font-semibold">Waar komen de inflatiecijfers vandaan?</h3>
+              <p class="mb-3">
+                De inflatiecijfers op deze website zijn afkomstig van het Centraal Bureau voor de Statistiek (CBS),
+                de officiële statistische instantie van Nederland. Er wordt gebruikgemaakt van
+                <a
+                  href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-blue-500"
+                >
+                  deze dataset
+                </a>.
+              </p>
+            </div>
 
-          <h3 class="font-semibold">Wat kan ik berekenen met deze inflatiecalculator?</h3>
-          <p class="mb-3">
-            Met deze inflatiecalculator kun je berekenen hoeveel een bedrag uit het verleden vandaag waard zou zijn,
-            of hoeveel koopkracht je door inflatie bent verloren.
-          </p>
+            <div>
+              <h3 class="font-semibold">Wat kan ik berekenen met deze inflatiecalculator?</h3>
+              <p class="mb-3">
+                Met deze inflatiecalculator kun je berekenen hoeveel een bedrag uit het verleden vandaag waard zou zijn,
+                of hoeveel koopkracht je door inflatie bent verloren.
+              </p>
+            </div>
 
-          <h3 class="font-semibold">Is deze inflatiecalculator betrouwbaar?</h3>
-          <p class="mb-3">
-            Ja, de berekening is gebaseerd op officiële CBS-inflatiecijfers en volgt een transparante rekenmethode.
-            De volledige broncode is openbaar beschikbaar op GitHub.
-          </p>
+            <div>
+              <h3 class="font-semibold">Is deze inflatiecalculator betrouwbaar?</h3>
+              <p class="mb-3">
+                Ja, de berekening is gebaseerd op officiële CBS-inflatiecijfers en volgt een transparante rekenmethode.
+                De volledige broncode is openbaar beschikbaar op GitHub.
+              </p>
+            </div>
 
-          <h3 class="font-semibold">Vanaf welk jaar is inflatie te berekenen?</h3>
-          <p class="mb-3">
-            De beschikbare inflatiegegevens lopen vanaf januari 1963 tot en met het meest recente jaar waarvoor
-            CBS-data beschikbaar is.
-          </p>
+            <div>
+              <h3 class="font-semibold">Vanaf welk jaar is inflatie te berekenen?</h3>
+              <p class="mb-3">
+                De beschikbare inflatiegegevens lopen vanaf januari 1963 tot en met het meest recente jaar waarvoor
+                CBS-data beschikbaar is.
+              </p>
+            </div>
 
-          <h3 class="font-semibold">Worden de inflatiecijfers bijgewerkt?</h3>
-          <p>
-            Ja, zodra het CBS nieuwe inflatiecijfers publiceert, worden deze automatisch verwerkt in de
-            inflatiecalculator.
-          </p>
+            <div>
+              <h3 class="font-semibold">Worden de inflatiecijfers bijgewerkt?</h3>
+              <p>
+                Ja, zodra het CBS nieuwe inflatiecijfers publiceert, worden deze automatisch verwerkt in de
+                inflatiecalculator.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>
