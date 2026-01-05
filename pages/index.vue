@@ -8,6 +8,7 @@
             <div class="py-2">
               <label for="input-amount" class="mb-1 font-semibold text-gray-700">Bedrag</label>
               <input
+                :disabled="isLoading"
                 id="input-amount"
                 v-model.number="input"
                 @blur="resetBadInputs"
@@ -19,6 +20,7 @@
             <div class="py-2">
               <label for="input-start-year" class="block mb-1 font-semibold text-gray-700">Beginjaar</label>
               <input
+                :disabled="isLoading"
                 id="input-start-year"
                 v-model.number="startYear"
                 @blur="resetBadInputs"
@@ -49,6 +51,7 @@
             <div class="py-2">
               <label for="input-end-year" class="block mb-1 font-semibold text-gray-700">Eindjaar</label>
               <input
+                :disabled="isLoading"
                 id="input-end-year"
                 v-model.number="endYear"
                 @blur="resetBadInputs"
@@ -107,9 +110,14 @@
                 Gemiddeld <strong>{{ averageInflation }}%</strong> per jaar
               </p>
             </div>
-            <div v-else>
+            <div v-else-if="!isLoading">
               <p>
                 Vul alstublieft geldige waarden in
+              </p>
+            </div>
+            <div v-else>
+              <p>
+                Aan het laden, even geduld aub...
               </p>
             </div>
           </div>
@@ -276,6 +284,8 @@ const latestYearData = ref<YearData>(new YearData({}));
 const guilderToEuroConversionRate = 0.453780;
 const euroToGuilderConversionRate = 2.20371;
 
+const isLoading = ref(true);
+
 onMounted(() => {
   fetch('https://opendata.cbs.nl/ODataFeed/odata/70936ned/UntypedDataSet?%24format=json')
     .then((response) => {
@@ -292,6 +302,8 @@ onMounted(() => {
         startYear.value = endYear.value - 10;
         compareMonth.value = latestYearData.value.Perioden!.substring(4, 8);
       }
+
+      isLoading.value = false;
     });
 });
 
