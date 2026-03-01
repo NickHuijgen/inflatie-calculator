@@ -203,9 +203,7 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-blue-500"
-                >
-                  deze dataset
-                </a>.
+                >deze dataset</a>.
               </p>
             </div>
 
