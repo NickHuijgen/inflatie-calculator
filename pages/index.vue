@@ -1,5 +1,5 @@
 <template>
-  <main class="flex min-h-screen items-center justify-center p-4 lg:px-6 lg:pt-6">
+  <main class="flex items-center justify-center p-4 lg:px-6 lg:pt-6">
     <div class="container grid max-w-screen-xl gap-4 lg:gap-8 lg:grid-cols-2 lg:grid-rows-2">
       <section class="row-span-2 flex flex-col rounded-md border border-blue-200" aria-label="Calculator">
         <div class="p-6 lg:p-8">
