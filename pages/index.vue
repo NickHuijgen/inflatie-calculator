@@ -139,7 +139,7 @@
                 href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-blue-500"
+                class="text-blue700"
               >deze dataset</a>.
               Data is beschikbaar vanaf 01-1963 tot en met <template v-if="latestYearData?.Perioden?.substring(6,8) !== '00'">{{ latestYearData.Perioden?.substring(6,8) }}-</template>{{ latestYearData.Perioden?.substring(0,4) }}.
             </p>
@@ -149,7 +149,7 @@
                 href="https://github.com/NickHuijgen/inflatie-calculator"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-blue-500"
+                class="text-blue-700"
               >GitHub</a>.
             </p>
           </div>
@@ -202,7 +202,7 @@
                   href="https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-blue-500"
+                  class="text-blue-700"
                 >deze dataset</a>.
               </p>
             </div>
@@ -245,7 +245,7 @@
   </main>
 
   <footer class="flex justify-center w-full mb-2">
-    <p class="text-gray-400 w-fit">
+    <p class="text-gray-800 w-fit">
       Gemaakt door Nick Huijgen
     </p>
   </footer>
