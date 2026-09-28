@@ -46,7 +46,9 @@ say so before doing it.
 What that means in practice here:
 - **Content is static HTML.** Everything a search engine should read
   (headings, the info text, the FAQ) is rendered at build time in
-  `index.astro`. Only the calculator's *numbers* depend on JS. Never move
+  `index.astro` — including a default calculation and the table of
+  historical values, both computed from build-time CBS data. JS only
+  makes the calculator interactive and refreshes the numbers. Never move
   indexable copy into client-side rendering or behind a fetch.
 - **Don't break the head.** Title, description, canonical, Open Graph and
   JSON-LD (`Layout.astro`, see SEO) must survive every change. The same
@@ -86,17 +88,33 @@ these fail a build.
 - `src/lib/inflation.ts` is pure: no DOM access. All calculation lives
   there; `calculator.ts` only reads inputs, calls it, and writes text.
   Keep it that way so the logic stays testable outside a browser.
-- Inflation data is fetched from CBS **in the browser** on every visit,
-  not at build time. That is what makes the FAQ's "worden automatisch
-  verwerkt" true without a rebuild. Moving the fetch to build time
-  would need a scheduled rebuild to keep that promise.
+- CBS data is fetched **twice**, by the same `fetchInflationData()`:
+  - **At build time**, in `index.astro`'s frontmatter, to render the
+    default result, the "Wat is geld van vroeger nu waard?" table and the
+    latest data period as static HTML. A CBS failure fails the build on
+    purpose, so the previous deployment stays live rather than shipping a
+    page without data. A daily scheduled rebuild keeps this copy current
+    (see Hosting).
+  - **In the browser** on every visit, so the calculator always uses the
+    newest figures even between rebuilds. If CBS has published since the
+    build and the visitor hasn't touched the form yet, the script moves
+    the defaults to the newest period.
+- Numbers are shown in Dutch notation (`€ 1.234,50`, `39,28%`) through
+  `formatMoney`/`formatAmount`/`formatPercent` in `inflation.ts` — never
+  `toFixed()` or `String()` in the UI. The amount field is
+  `type="text" inputmode="decimal"` rather than `type="number"`, so
+  visitors can type Dutch notation; `parseAmount()` is the single place
+  that interprets it (comma = decimal separator; dots in groups of three
+  = thousands). The year fields stay `type="number"` with
+  `inputmode="numeric"`.
 - UI copy is Dutch and lives directly in `index.astro`. There is no
   i18n layer, and none is needed for one language.
-- The page must be fully readable before the script runs: all
-  FAQ/info content is static HTML, and the inputs start `disabled`
-  until data has loaded. The results area has four states (loading,
-  result, invalid input, CBS fetch failed) toggled via `hidden`; exactly
-  one is visible at a time (`showState()`).
+- The page must be fully readable before the script runs: all content,
+  including the default result, is static HTML, and the inputs start
+  `disabled` until the browser has its own data. The results area shows
+  either the result or the invalid-input message (`showState()`). If the
+  browser's CBS fetch fails, the error message appears *below* the
+  build-time result, which stays visible, and the inputs stay disabled.
 
 ## Calculation
 - Dataset: CBS 70936ned (`CBS_DATA_URL` / `CBS_DATASET_URL` in
@@ -149,9 +167,25 @@ these fail a build.
 
 ## SEO
 - All `<head>` metadata lives in `src/layouts/Layout.astro`: title and
-  description (props), Open Graph / Twitter tags, canonical, and the
-  `WebApplication` JSON-LD. Page-specific strings are passed in from
+  description (props), Open Graph / Twitter tags, canonical, icons, and
+  the `WebApplication` JSON-LD. Page-specific strings are passed in from
   `index.astro`.
+- The social image is `public/og-image.png` (1200×630 PNG, a
+  `summary_large_image` card). Its source is `design/og-image.html`, with
+  the command to regenerate it in a comment at the top. The
+  `og:image:width`/`height`/`type` meta in `Layout.astro` assume exactly
+  that size and format.
+- Icons: `favicon.ico` (32×32) and `apple-touch-icon.png` (180×180) are
+  both resized from `public/icon.png`.
+- Deliberately **not** used: FAQPage structured data (Google only shows
+  FAQ rich results for government and health sites) and ratings in the
+  JSON-LD (none are actually collected; adding them violates Google's
+  guidelines).
+- The historical-values table is the page's main content for long-tail
+  searches ("wat is 100 gulden uit 1980 nu waard"). It's one table on
+  the homepage on purpose: separate pages per year were considered and
+  rejected for now, as near-identical pages risk being treated as thin
+  content.
 - `public/robots.txt` is minimal: allow all, plus the `Sitemap:` line.
 
 ## Hosting
@@ -166,6 +200,7 @@ registrar), so it's written down here.
 | Hosting | Cloudflare Worker `inflatie-calculator` | Static assets only, configured by `wrangler.jsonc` (`name` must match the Worker's name in the dashboard). |
 | Build & deploy | Cloudflare Workers Builds, connected to the GitHub repo | Production branch `master`. Build command `npm run build`, deploy command `npx wrangler deploy`. Node version from `.node-version`. |
 | Custom domain | Worker → Settings → Domains & Routes | `inflatie-berekenen.nl` only. |
+| HTTPS | Zone → SSL/TLS → Edge Certificates | **Always Use HTTPS** on, so `http://` 301s to `https://` instead of serving a second copy of the page. |
 | `www` redirect | Zone → Rules → Redirect Rules | `www.inflatie-berekenen.nl/*` → `https://inflatie-berekenen.nl/${1}`, **301**, query string preserved (Cloudflare's "Redirect from WWW to root" template). The apex is the one canonical host — it's what `site` in `astro.config.mjs` and every canonical/og:url say, so `www` must redirect permanently rather than serve a duplicate copy. |
 
 In the repo:
@@ -175,24 +210,34 @@ In the repo:
   `immutable` — safe because every file there is content-hashed.
   Everything else gets Cloudflare's default `max-age=0, must-revalidate`.
 - `.node-version` — Node for Cloudflare's build.
-- No CI of its own: there is no GitHub Actions workflow. Cloudflare's
-  build status shows on each commit in GitHub and in the Worker's
-  Deployments tab.
+- CI is Cloudflare's build: its status shows on each commit in GitHub
+  and in the Worker's Deployments tab.
+- **Scheduled rebuild:** `.github/workflows/scheduled-rebuild.yml` runs
+  daily at 07:00 UTC (and on demand via "Run workflow") and POSTs to a
+  Cloudflare **Deploy Hook** (Worker → Settings → Builds → Deploy Hooks,
+  branch `master`). The hook URL is itself the credential, so it lives
+  in the `CLOUDFLARE_DEPLOY_HOOK_URL` repository secret, never in the
+  repo; the workflow fails loudly if the secret is missing. CBS
+  publishes monthly, so daily keeps the build-time data at most a day
+  behind. GitHub pauses scheduled workflows after 60 days without repo
+  activity — if the table's period stops advancing, check that first.
 - To run it the way Cloudflare does: `npm run build`, then
   `npx wrangler dev --port 8787 --local`. Deploying by hand
   (`npx wrangler deploy`) works too, but needs `wrangler login` and
   bypasses the Git-connected build; prefer pushing.
 
 **Migration status (2026-09-28):** moved off GitHub Pages in commit
-`ec95491`. Still to do, in order: the nameserver change at Hostnet
-propagating; connecting the repo in Workers Builds; attaching the apex
-custom domain; adding the `www` record and redirect rule; switching off
-GitHub Pages in the GitHub repo settings. Then check that `http://`,
+`ec95491`. Done: nameservers switched to Cloudflare, repo connected in
+Workers Builds, apex custom domain serving the site, www redirect rule
+in place, Search Console TXT record present in the Cloudflare zone.
+Still to do: add the proxied `www` DNS record (without it `www` doesn't
+resolve, so the redirect rule never fires); turn on Always Use HTTPS
+(plain `http://` currently serves a 200 instead of redirecting); create
+the Deploy Hook and the `CLOUDFLARE_DEPLOY_HOOK_URL` secret; resubmit
+`sitemap-index.xml` in Search Console. Then check that `http://`,
 `https://www.` and `http://www.` all end up at
-`https://inflatie-berekenen.nl/` via 301s (one hop ideally, two at
-most). Until the domain moves, `inflatie-berekenen.nl` is still served
-by GitHub Pages from the last build there (`6f85ca2`), and pushes don't
-deploy anywhere. Remove this paragraph once the migration is done.
+`https://inflatie-berekenen.nl/` via 301s. Remove this paragraph once
+that's all done.
 
 ## Don't
 - Don't add dependencies without asking.
@@ -215,9 +260,17 @@ Before calling a change done:
   typescript-eslint). Note that it runs with `--fix`.
 - Load the built page (`npm run preview`) and exercise the calculator,
   not just the build: default result on load, a pre-2002 → post-2002
-  calculation (`ƒ` → `€`), the swap button, amount `0` (shows the
-  invalid message; resets to `1` on blur), years outside 1963–latest
-  (clamped on blur), and an empty year field.
+  calculation (`ƒ` → `€`), the swap button, Dutch input (`1.234,50` is
+  read as 1234.5 and reformatted on blur), amount `0` or text (shows
+  the invalid message; resets to `1,00` on blur), years outside
+  1963–latest (clamped on blur), and an empty year field.
+- Check the static `dist/index.html` too — it's what search engines
+  see first: the default result, the latest period and the table must
+  all be there with real numbers. Astro drops the space at a line break
+  that directly follows or precedes an `{expression}` or a tag in some
+  positions; this has already produced "vandeze dataset" and
+  "1963zie" once each, so read the rendered text around any
+  expression you add.
 - If you touched the fetch or loading states: block
   `opendata.cbs.nl` and check the error message shows instead of an
   endless "Aan het laden".

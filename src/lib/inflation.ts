@@ -8,6 +8,23 @@ export interface YearData {
 export const CBS_DATA_URL = 'https://opendata.cbs.nl/ODataFeed/odata/70936ned/UntypedDataSet?%24format=json';
 export const CBS_DATASET_URL = 'https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870';
 export const FIRST_YEAR = 1963;
+
+/** CBS period suffixes and their Dutch labels, in select order. */
+export const MONTHS: [string, string][] = [
+  ['JJ00', 'Jaargemiddelde'],
+  ['MM01', 'Januari'],
+  ['MM02', 'Februari'],
+  ['MM03', 'Maart'],
+  ['MM04', 'April'],
+  ['MM05', 'Mei'],
+  ['MM06', 'Juni'],
+  ['MM07', 'Juli'],
+  ['MM08', 'Augustus'],
+  ['MM09', 'September'],
+  ['MM10', 'Oktober'],
+  ['MM11', 'November'],
+  ['MM12', 'December'],
+];
 export const EURO_INTRODUCTION_YEAR = 2002;
 
 const guilderToEuroConversionRate = 0.453780;
@@ -15,6 +32,11 @@ const euroToGuilderConversionRate = 2.20371;
 
 export async function fetchInflationData(): Promise<InflationData> {
   const response = await fetch(CBS_DATA_URL);
+
+  if (!response.ok) {
+    throw new Error(`CBS data request failed: ${response.status} ${response.statusText}`);
+  }
+
   const json: { value: YearData[] } = await response.json();
 
   return new InflationData(json.value);
@@ -98,6 +120,34 @@ export class InflationData {
     return parseFloat((this.calculateCPIMutation(startYear, endYear, month, false) - 100).toFixed(2));
   }
 
+  /**
+   * What `amount` from each earlier year is worth in the latest period,
+   * comparing the same month (the latest one CBS has published).
+   */
+  historicalValues(amount: number): { year: number; value: number; inflation: number }[] {
+    const month = this.latestMonth;
+    const rows = [];
+
+    for (let year = FIRST_YEAR; year < this.latestYear; year++) {
+      if (this.has(year, month)) {
+        rows.push({
+          year,
+          value: this.output(amount, year, this.latestYear, month),
+          inflation: this.inflationPercentage(year, this.latestYear, month),
+        });
+      }
+    }
+
+    return rows;
+  }
+
+  /** Human-readable latest period, e.g. "augustus 2026" or "2025". */
+  get latestPeriodLabel(): string {
+    const month = MONTHS.find(([value]) => value === this.latestMonth);
+
+    return this.latestMonth === 'JJ00' || !month ? String(this.latestYear) : `${month[1].toLowerCase()} ${this.latestYear}`;
+  }
+
   averageInflation(startYear: number, endYear: number, month: string): number {
     const yearDifference = endYear - startYear;
 
@@ -134,8 +184,40 @@ export function round(number: number, decimals: number = 2): number {
   return parseFloat((Math.round(number * 10000) / 10000).toFixed(decimals));
 }
 
-export function numberWithCommas(number: number): string {
-  return number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const amountFormat = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const percentFormat = new Intl.NumberFormat('nl-NL', { maximumFractionDigits: 2 });
+
+/** Dutch notation: 1234.5 → "1.234,50". */
+export function formatAmount(number: number): string {
+  return amountFormat.format(number);
+}
+
+/** "€ 1.234,50", or "ƒ 1.234,50" for years before the euro. */
+export function formatMoney(number: number, year: number): string {
+  return `${currencySymbol(year)}\u00a0${formatAmount(number)}`;
+}
+
+/** Dutch notation without the sign: 39.28 → "39,28". */
+export function formatPercent(number: number): string {
+  return percentFormat.format(number);
+}
+
+/**
+ * Parses an amount as a Dutch visitor may type it: "1.234,50", "1234,5",
+ * "1234.5" or "1.000". A comma is always the decimal separator; without a
+ * comma, dots in groups of three ("1.000", "12.500.000") are thousands
+ * separators and a single other dot is a decimal point.
+ */
+export function parseAmount(input: string): number {
+  let value = input.trim().replace(/[€ƒ\s]/g, '');
+
+  if (value.includes(',')) {
+    value = value.replace(/\./g, '').replace(',', '.');
+  } else if (/^\d{1,3}(\.\d{3})+$/.test(value)) {
+    value = value.replace(/\./g, '');
+  }
+
+  return /^\d*\.?\d+$|^\d+\.$/.test(value) ? parseFloat(value) : NaN;
 }
 
 export function currencySymbol(year: number): string {

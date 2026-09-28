@@ -1,9 +1,11 @@
 import {
   FIRST_YEAR,
   InflationData,
-  currencySymbol,
   fetchInflationData,
-  numberWithCommas,
+  formatAmount,
+  formatMoney,
+  formatPercent,
+  parseAmount,
 } from '../lib/inflation';
 
 function element<T extends HTMLElement>(id: string): T {
@@ -19,19 +21,16 @@ const switchButton = element<HTMLButtonElement>('switch-years');
 const result = element('result');
 const resultInvalid = element('result-invalid');
 const resultError = element('result-error');
-const resultLoading = element('result-loading');
 
 let data: InflationData;
 
-function showState(state: 'result' | 'invalid' | 'error' | 'loading'): void {
+function showState(state: 'result' | 'invalid'): void {
   result.hidden = state !== 'result';
   resultInvalid.hidden = state !== 'invalid';
-  resultError.hidden = state !== 'error';
-  resultLoading.hidden = state !== 'loading';
 }
 
 function render(): void {
-  const amount = amountInput.valueAsNumber;
+  const amount = parseAmount(amountInput.value);
   const startYear = startYearInput.valueAsNumber;
   const endYear = endYearInput.valueAsNumber;
   const month = monthSelect.value;
@@ -44,12 +43,12 @@ function render(): void {
     return;
   }
 
-  element('result-input').textContent = currencySymbol(startYear) + numberWithCommas(amount);
-  element('result-output').textContent = currencySymbol(endYear) + numberWithCommas(output);
+  element('result-input').textContent = formatMoney(amount, startYear);
+  element('result-output').textContent = formatMoney(output, endYear);
   element('result-start-year').textContent = String(startYear);
   element('result-end-year').textContent = String(endYear);
-  element('result-inflation').textContent = String(data.inflationPercentage(startYear, endYear, month));
-  element('result-average').textContent = String(data.averageInflation(startYear, endYear, month));
+  element('result-inflation').textContent = formatPercent(data.inflationPercentage(startYear, endYear, month));
+  element('result-average').textContent = formatPercent(data.averageInflation(startYear, endYear, month));
 
   showState('result');
 }
@@ -74,9 +73,9 @@ function clampYear(input: HTMLInputElement): void {
 }
 
 function resetBadInputs(): void {
-  if (!(amountInput.valueAsNumber > 0)) {
-    amountInput.valueAsNumber = 1;
-  }
+  const amount = parseAmount(amountInput.value);
+
+  amountInput.value = formatAmount(amount > 0 ? amount : 1);
 
   clampYear(startYearInput);
   clampYear(endYearInput);
@@ -94,23 +93,29 @@ async function init(): Promise<void> {
   try {
     data = await fetchInflationData();
   } catch (error) {
+    // The build-time result stays visible; the inputs stay disabled.
     console.error(error);
-    showState('error');
+    resultError.hidden = false;
 
     return;
   }
 
-  const latest = data.latest;
+  // The page was rendered with build-time data. If CBS has published since,
+  // move the defaults to the newest period — unless the visitor already
+  // changed something while the data was loading.
+  const untouched = [startYearInput, endYearInput].every(input => input.value === input.defaultValue)
+    && [...monthSelect.options].every(option => option.selected === option.defaultSelected);
 
-  if (latest) {
-    const period = latest.Perioden.substring(6, 8);
+  if (data.latest) {
+    const period = data.latest.Perioden.substring(6, 8);
 
     element('latest-period').textContent = (period !== '00' ? `${period}-` : '') + data.latestYear;
-    element('latest-period-wrapper').hidden = false;
 
-    endYearInput.valueAsNumber = data.latestYear;
-    startYearInput.valueAsNumber = data.latestYear - 10;
-    monthSelect.value = data.latestMonth;
+    if (untouched) {
+      endYearInput.valueAsNumber = data.latestYear;
+      startYearInput.valueAsNumber = data.latestYear - 10;
+      monthSelect.value = data.latestMonth;
+    }
   }
 
   for (const input of [amountInput, startYearInput, endYearInput]) {
