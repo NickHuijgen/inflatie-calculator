@@ -139,6 +139,19 @@ export class InflationData {
     return Math.max(...this.levels.keys());
   }
 
+  /** Yearly price level (1900=100), or undefined for years without one. */
+  priceLevel(year: number): number | undefined {
+    return this.levels.get(year);
+  }
+
+  /** How much prices rose in `year` compared with the year before, in percent. */
+  yearlyChange(year: number): number | undefined {
+    const level = this.levels.get(year);
+    const previous = this.levels.get(year - 1);
+
+    return level !== undefined && previous !== undefined ? round((level / previous - 1) * 100) : undefined;
+  }
+
   has(year: number, month: string): boolean {
     return month === 'JJ00' ? this.levels.has(year) : this.byPeriod.has(year + month);
   }

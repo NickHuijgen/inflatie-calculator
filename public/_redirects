@@ -7,3 +7,8 @@
 
 # Otherwise Cloudflare's html_handling answers /index.html with a 307.
 /index.html / 301
+
+# Year pages without their trailing slash (Cloudflare would answer with a
+# 307). Only the exact /<currency>/<year> form matches, not /…/<year>/.
+/gulden/:year /gulden/:year/ 301
+/euro/:year /euro/:year/ 301

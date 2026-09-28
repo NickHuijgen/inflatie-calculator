@@ -1,0 +1,222 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Calculator from '../../components/Calculator.astro';
+import PriceChart from '../../components/PriceChart.astro';
+import { loadBuildData } from '../../lib/build-data';
+import {
+  FIRST_MONTHLY_YEAR,
+  FIRST_YEAR,
+  MONTHS,
+  euroToGuilderConversionRate,
+  formatAmount,
+  formatMoney,
+  formatPercent,
+} from '../../lib/inflation';
+import { SITE_NAME, breadcrumbSchema, webPageSchema } from '../../lib/schema';
+import { cardClass, focusRing, linkClass } from '../../lib/ui';
+import { currencyOf, yearPagePath, yearPageYears, type Currency } from '../../lib/year-pages';
+
+// One page per year: /gulden/1900/ … /gulden/2001/ and /euro/2002/ … up to
+// the year before the latest yearly average. Everything on it is computed
+// from that year's CBS figures, so no two pages say the same thing — the
+// reason these are worth having rather than thin near-duplicates (see
+// Routes in AGENTS.md).
+export async function getStaticPaths() {
+  const { data } = await loadBuildData();
+
+  return yearPageYears(data).map(year => ({ params: { currency: currencyOf(year), year: String(year) } }));
+}
+
+const { data, datasetModified } = await loadBuildData();
+const year = Number(Astro.params.year);
+const currency = Astro.params.currency as Currency;
+const endYear = data.latestYearlyYear;
+const amount = 100;
+
+const name = currency === 'gulden' ? 'gulden' : 'euro';
+const question = `Wat is ${amount} ${name} uit ${year} nu waard?`;
+
+const value = data.output(amount, year, endYear, 'JJ00');
+const inflation = data.inflationPercentage(year, endYear, 'JJ00');
+const average = data.averageInflation(year, endYear, 'JJ00');
+const factor = data.priceLevel(endYear)! / data.priceLevel(year)!;
+const reverse = data.output(amount, endYear, year, 'JJ00');
+const guilderRate = euroToGuilderConversionRate.toLocaleString('nl-NL', { maximumFractionDigits: 5 });
+const factorText = factor.toLocaleString('nl-NL', { maximumFractionDigits: factor >= 10 ? 0 : 1 });
+// "2,9 keer zo hoog" reads well from double; below that, a percentage does.
+const priceLevelText = factor >= 2
+  ? `is het prijspeil ${factorText} keer zo hoog geworden`
+  : `${inflation < 0 ? 'daalden' : 'stegen'} de prijzen met ${formatPercent(Math.abs(inflation))}%`;
+const direction = inflation < 0 ? 'daalden' : 'stegen';
+
+// Same month in both years, for years with monthly figures: the most recent
+// comparison possible, next to the yearly one above.
+const month = data.latestMonth;
+const monthName = MONTHS.find(([code]) => code === month)?.[1].toLowerCase();
+const monthlyValue = year >= FIRST_MONTHLY_YEAR && month !== 'JJ00' && data.has(year, month)
+  ? data.output(amount, year, data.latestYear, month)
+  : undefined;
+
+// This year's own inflation, in context.
+const yearChange = data.yearlyChange(year);
+const longTermAverage = data.averageInflation(FIRST_YEAR, endYear, 'JJ00');
+const laterChanges = [];
+for (let y = year + 1; y <= endYear; y++) {
+  const change = data.yearlyChange(y);
+  if (change !== undefined) {
+    laterChanges.push({ year: y, change });
+  }
+}
+const highest = laterChanges.reduce((a, b) => (b.change > a.change ? b : a));
+const lowest = laterChanges.reduce((a, b) => (b.change < a.change ? b : a));
+
+const amounts = [1, 5, 10, 25, 50, 100, 250, 500, 1000, 10000];
+
+const chartPoints = [];
+for (let y = year; y <= endYear; y++) {
+  chartPoints.push({ year: y, level: data.priceLevel(y)! });
+}
+
+// Neighbours: previous/next year and the rest of this decade.
+const years = yearPageYears(data);
+const previousYear = years.includes(year - 1) ? year - 1 : undefined;
+const nextYear = years.includes(year + 1) ? year + 1 : undefined;
+const decade = Math.floor(year / 10) * 10;
+const decadeYears = years.filter(y => y >= decade && y < decade + 10);
+
+const answer = `${formatMoney(amount, year)} uit ${year} had in ${endYear} de koopkracht van ${formatMoney(value, endYear)}.`;
+const description = `${answer} De prijzen zijn sinds ${year} met ${formatPercent(inflation)}% gestegen. Bereken het zelf met officiële CBS-cijfers.`;
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site);
+const jsonLd = [
+  webPageSchema({ url: pageUrl, name: question, description, dateModified: datasetModified, site: Astro.site! }),
+  breadcrumbSchema([
+    { name: SITE_NAME, url: new URL('/', Astro.site) },
+    { name: question, url: pageUrl },
+  ]),
+];
+
+const navLinkClass = `rounded-md border border-blue-700 px-3 py-2 font-semibold text-blue-700 hover:bg-blue-50 ${focusRing}`;
+---
+
+<Layout title={`${question} – ${SITE_NAME}`} description={description} jsonLd={jsonLd}>
+  <main class="flex items-center justify-center p-4 lg:px-6 lg:pt-6">
+    <div class="container grid max-w-7xl gap-4 lg:gap-8 lg:grid-cols-2">
+      <nav aria-label="Kruimelpad" class="text-sm text-gray-700 lg:col-span-2">
+        <a href="/" class={linkClass}>{SITE_NAME}</a>
+        <span aria-hidden="true"> › </span>
+        <span aria-current="page">{name === 'gulden' ? 'Gulden' : 'Euro'} {year}</span>
+      </nav>
+
+      <section class={`${cardClass} bg-blue-50/40 p-6 lg:col-span-2 lg:p-8`} aria-labelledby="page-title">
+        <h1 id="page-title" class="text-2xl font-bold lg:text-3xl">{question}</h1>
+        <p class="mt-4 text-gray-800">
+          {formatMoney(amount, year)} uit {year} had in {endYear} dezelfde koopkracht als
+        </p>
+        <p class="mt-1 text-4xl font-bold tracking-tight text-blue-900 lg:text-5xl">{formatMoney(value, endYear)}</p>
+        <p class="mt-4 max-w-3xl">
+          {factor >= 2
+            ? <Fragment>Sinds {year} is het prijspeil {factorText} keer zo hoog geworden: de prijzen {direction} met <strong>{formatPercent(Math.abs(inflation))}%</strong>, gemiddeld <strong>{formatPercent(average)}%</strong> per jaar.</Fragment>
+            : <Fragment>{`Sinds ${year} ${direction} de prijzen met `} <strong>{formatPercent(Math.abs(inflation))}%</strong>{endYear - year > 1 && <Fragment>, gemiddeld <strong>{formatPercent(average)}%</strong> per jaar</Fragment>}.</Fragment>}
+          {currency === 'gulden' && <Fragment> Daarbij is omgerekend van gulden naar euro, tegen {guilderRate} gulden per euro.</Fragment>}
+        </p>
+        {monthlyValue !== undefined && (
+          <p class="mt-2 max-w-3xl">
+            Vergelijk je {monthName} {year} met {data.latestPeriodLabel}, dan is {formatMoney(amount, year)} nu {formatMoney(monthlyValue, data.latestYear)} waard.
+          </p>
+        )}
+        <p class="mt-4 text-sm text-gray-600">
+          Berekend met de jaargemiddelden van de CBS-prijsindex; {endYear} is het meest recente volledige jaar.
+        </p>
+      </section>
+
+      <section class={`${cardClass} p-6 lg:p-8`} aria-labelledby="amounts-title">
+        <h2 id="amounts-title" class="text-xl font-bold">Andere bedragen uit {year}</h2>
+        <table class="mt-3 w-full text-left tabular-nums">
+          <caption class="sr-only">Bedragen uit {year} en hun koopkracht in {endYear}</caption>
+          <thead>
+            <tr class="border-b border-blue-200">
+              <th scope="col" class="py-2 pr-2 font-semibold">In {year}</th>
+              <th scope="col" class="py-2 font-semibold">In {endYear}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {amounts.map(a => (
+              <tr class="border-b border-gray-100">
+                <th scope="row" class="py-1.5 pr-2 font-normal">{formatMoney(a, year)}</th>
+                <td class="py-1.5 font-semibold">{formatMoney(data.output(a, year, endYear, 'JJ00'), endYear)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="mt-4">
+          Omgekeerd had {formatMoney(amount, endYear)} in {endYear} dezelfde koopkracht als {formatMoney(reverse, year)} in {year}.
+        </p>
+      </section>
+
+      <section class={`${cardClass} p-6 lg:p-8`} aria-labelledby="year-inflation-title">
+        <h2 id="year-inflation-title" class="text-xl font-bold">{yearChange !== undefined ? `Inflatie in ${year}` : `Inflatie sinds ${year}`}</h2>
+        {yearChange !== undefined && (
+          <p class="mt-2">
+            In {year} {yearChange < 0 ? 'daalden' : 'stegen'} de prijzen met <strong>{formatPercent(Math.abs(yearChange))}%</strong> ten opzichte
+            van {year - 1}. Dat is {yearChange > longTermAverage ? 'hoger' : 'lager'} dan het gemiddelde van {formatPercent(longTermAverage)}% per jaar
+            sinds {FIRST_YEAR}.
+          </p>
+        )}
+        {laterChanges.length > 1 && (
+          <p class="mt-2">
+            Na {year} was de inflatie het hoogst in {highest.year} ({formatPercent(highest.change)}%) en het laagst in {lowest.year} ({formatPercent(lowest.change)}%).
+          </p>
+        )}
+        <div class="mt-4">
+          <PriceChart
+            points={chartPoints}
+            title={`Prijspeil van ${year} tot en met ${endYear} (${year} = 100)`}
+            caption={`Het prijspeil sinds ${year}, met ${year} als 100. In ${endYear} was het ${formatAmount(factor * 100)}: sinds ${year} ${priceLevelText}.`}
+          />
+        </div>
+      </section>
+
+      <div class="grid gap-4 lg:col-span-2 lg:grid-cols-2 lg:gap-8">
+        <Calculator
+          data={data}
+          datasetModified={datasetModified}
+          amount={amount}
+          startYear={year}
+          endYear={endYear}
+          month="JJ00"
+          heading="Zelf berekenen"
+          headingTag="h2"
+          intro={`Vul een ander bedrag of jaar in. Maandcijfers zijn er vanaf ${FIRST_MONTHLY_YEAR}.`}
+        />
+      </div>
+
+      <nav class={`${cardClass} p-6 lg:col-span-2 lg:p-8`} aria-labelledby="other-years-title">
+        <h2 id="other-years-title" class="text-xl font-bold">Andere jaren</h2>
+        <div class="mt-3 flex flex-wrap gap-3">
+          {previousYear && <a href={yearPagePath(previousYear)} class={navLinkClass}>← {formatMoney(amount, previousYear)} uit {previousYear}</a>}
+          {nextYear && <a href={yearPagePath(nextYear)} class={navLinkClass}>{formatMoney(amount, nextYear)} uit {nextYear} →</a>}
+        </div>
+        <p class="mt-4 font-semibold">De jaren {decade}–{decade + 9}</p>
+        <ul class="mt-2 flex flex-wrap gap-x-4 gap-y-2">
+          {decadeYears.map(y => (
+            <li>
+              {y === year
+                ? <span aria-current="page" class="font-semibold">{y}</span>
+                : <a href={yearPagePath(y)} class={linkClass}>{y}</a>}
+            </li>
+          ))}
+        </ul>
+        <p class="mt-4">
+          <a href="/#historical-values-title" class={linkClass}>Alle jaren sinds {FIRST_YEAR} in één tabel</a>
+        </p>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="flex justify-center w-full mb-4">
+    <p class="text-gray-700 w-fit">
+      Gemaakt door <a href="https://nickhuijgen.nl/" class={linkClass}>Nick Huijgen</a>
+    </p>
+  </footer>
+</Layout>

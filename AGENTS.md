@@ -74,7 +74,8 @@ these fail a build.
 
 | If you change… | …also check | Why |
 |---|---|---|
-| An element `id` in `src/pages/index.astro` | The matching `element()` call in `src/scripts/calculator.ts` | The script looks every element up by id and casts the result. A renamed id is `null` at runtime and the script throws on load, leaving a dead calculator — `astro check` can't see it. |
+| An element `id` in `src/components/Calculator.astro` | The matching `element()` call in `src/scripts/calculator.ts` | The script looks every element up by id and casts the result. A renamed id is `null` at runtime and the script throws on load, leaving a dead calculator — `astro check` can't see it. Same reason there can be only **one** `<Calculator>` per page. |
+| The year page URL scheme (`yearPagePath()` in `src/lib/year-pages.ts`) | The `/gulden/:year` and `/euro/:year` rules in `public/_redirects`, and `EURO_INTRODUCTION_YEAR` | Every link to a year page is built by `yearPagePath()`, and `getStaticPaths` uses the same `currencyOf()`, so those can't drift — but the redirects restate the two path prefixes by hand. |
 | The shareable URL parameters (`PARAMS` in `calculator.ts`: `bedrag`, `van`, `naar`, `maand`) | Nothing in code — but links people have already shared | Renaming a parameter silently breaks every shared link. Only ever add parameters; keep reading old names if one must change. |
 | `public/_redirects` | That the target exists in `dist/` | Cloudflare applies these before the static assets; a redirect to a missing file just becomes a redirect to a 404. |
 | The `<option>` values in the month `<select>` (`index.astro`) | The CBS `Perioden` format (`1963MM01`, `2025JJ00`) | Monthly lookups are `year + month` string concatenations against that key. `JJ00` means yearly average and goes to the `71905ned` index instead (`has()`, `priceFactor()`). |
@@ -193,6 +194,28 @@ Two CBS datasets, both fetched at build time (URLs and titles in
 
 ## Routes
 - `/` — the calculator (`src/pages/index.astro`).
+- `/gulden/<year>/` (1900–2001) and `/euro/<year>/` (2002 up to the year
+  before `latestYearlyYear`) — one page per year,
+  `src/pages/[currency]/[year].astro`, answering "Wat is 100 gulden uit
+  1980 nu waard?". ~125 pages, all built from the same CBS data. What's
+  on each, all computed for that year: the headline answer (yearly
+  averages, exact), for years from 1963 the same-month comparison with
+  the latest month, an amounts table (ƒ 1 … ƒ 10.000), the reverse
+  conversion, that year's inflation versus the long-term average and the
+  highest/lowest year since, a price-level chart (`PriceChart.astro`),
+  the calculator prefilled with that year (yearly average → latest
+  complete year), and links to the previous/next year and that decade.
+  Linked from every row of the homepage table and from the homepage FAQ.
+  - **Why they exist and the thin-content risk.** They target exact
+    long-tail questions and give AI answers a precise, citable page (an
+    AI summary once answered "€78–95" for ƒ 100 from 1980; the right
+    figure is ~€134). Neighbouring pages differ in ~23% of their words —
+    almost all numbers — so they are template pages by nature. Keep every
+    addition *year-specific data*, never generic filler text. The owner
+    planned to check Search Console 4–8 weeks after launch and `noindex`
+    pages that get no impressions at all.
+  - Wrong-currency URLs (`/euro/1980/`) are plain 404s. A missing
+    trailing slash 301s (`_redirects`; Cloudflare would 307).
 - `/404` — `src/pages/404.astro`, served by Cloudflare for any unmatched
   path. `noindex` via `Layout.astro`'s `noindex` prop, which also drops
   canonical, og:/twitter: tags and the JSON-LD. `@astrojs/sitemap`
@@ -217,11 +240,16 @@ Two CBS datasets, both fetched at build time (URLs and titles in
 ## SEO
 - All `<head>` metadata lives in `src/layouts/Layout.astro`: title and
   description (props), Open Graph / Twitter tags, canonical, icons, and
-  the `WebApplication` JSON-LD (free `offers`, `author`). `index.astro`
-  adds page-specific JSON-LD through the `schema` prop: `dateModified`
-  (CBS's own last-update date of the dataset — not the build date, which
-  changes daily and would misrepresent freshness) and `isBasedOn` (the
-  CBS dataset). No `meta keywords` — search engines ignore it.
+  whatever JSON-LD the page passes in its `jsonLd` prop. Every JSON-LD
+  object comes from `src/lib/schema.ts`: `WebApplication` on the
+  homepage (free `offers`, `author`), `WebPage` + `BreadcrumbList` on
+  year pages. Both carry `dateModified` (CBS's own last-update date of
+  the data — not the build date, which changes daily and would
+  misrepresent freshness) and `isBasedOn` (both CBS datasets). No
+  `meta keywords` — search engines ignore it.
+- `trailingSlash: 'always'` (astro.config.mjs): every page URL, canonical
+  and sitemap entry ends in `/`, matching how Cloudflare serves
+  directory-style pages.
 - Trust signals, visible on the page: the source line under the result
   ("Bron: CBS, cijfers tot en met … (bijgewerkt op …)"), and the author
   linking to https://nickhuijgen.nl/.
@@ -238,11 +266,9 @@ Two CBS datasets, both fetched at build time (URLs and titles in
   FAQ rich results for government and health sites) and ratings in the
   JSON-LD (none are actually collected; adding them violates Google's
   guidelines).
-- The historical-values table is the page's main content for long-tail
-  searches ("wat is 100 gulden uit 1980 nu waard"). It's one table on
-  the homepage on purpose: separate pages per year were considered and
-  rejected for now, as near-identical pages risk being treated as thin
-  content.
+- The homepage's historical-values table is the overview for long-tail
+  searches; each row links to that year's own page (see Routes), which
+  is the page meant to rank for "wat is 100 gulden uit 1980 nu waard".
 - `public/robots.txt` is minimal: allow all, plus the `Sitemap:` line.
 
 ## Hosting
@@ -337,7 +363,20 @@ Before calling a change done:
   "deCBS-dataset", "dataugustus" and "Nu waarddaarnaast". Scan the built
   HTML for text directly touching an inline tag
   (`[letter]<a|strong|span|time` or `</a|strong|span|time>[letter]`)
-  after any copy change.
+  after any copy change. A second variant: inside a `<Fragment>` within
+  an expression (`{cond ? <Fragment>…</Fragment> : …}`) Astro follows
+  JSX whitespace rules, so even the space in `{year} {direction}` is
+  dropped ("Sinds 2024stegen"). Use a template string there
+  (`` {`Sinds ${year} ${direction} …`} ``). Scanning all pages for a
+  four-digit number glued to a word (`\d{4}[a-z]{2,}`) catches it.
+- Year pages come in the hundreds, so check them mechanically across
+  **all** of `dist/`, not by opening a few: every title and description
+  unique; every internal `href` resolves to a file in `dist/`; every
+  canonical equals the page's own URL; every JSON-LD block parses; the
+  sitemap lists every page and not the 404. Then read a few extremes in
+  full: the first year (1900, which has no previous year), a year around
+  1963 (monthly data starts), 2001/2002 (currency switch) and the newest
+  year (where "keer zo duur" wording would be silly).
 - If you touched `inflation.ts`: the full old-vs-new diff described
   under Calculation.
 - If you touched `wrangler.jsonc`, `_headers`, `_redirects` or the 404 page: run

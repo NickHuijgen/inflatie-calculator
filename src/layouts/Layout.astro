@@ -9,29 +9,15 @@ interface Props {
   // For pages that must not be indexed (the 404): adds robots noindex and
   // drops canonical, og:/twitter: tags and the JSON-LD.
   noindex?: boolean;
-  // Extra page-specific fields merged into the WebApplication JSON-LD.
-  schema?: Record<string, unknown>;
+  // Structured data for this page, built with src/lib/schema.ts. Required
+  // unless `noindex`.
+  jsonLd?: Record<string, unknown>[];
 }
 
-const { title, description, socialTitle = title, socialDescription = description, noindex = false, schema = {} } = Astro.props;
+const { title, description, socialTitle = title, socialDescription = description, noindex = false, jsonLd = [] } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const imageUrl = new URL('/og-image.png', Astro.site);
-
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  'name': 'Inflatie Berekenen',
-  'url': new URL('/', Astro.site).href,
-  'inLanguage': 'nl',
-  'description': 'Calculator voor inflatie en koopkracht in Nederland',
-  'applicationCategory': 'FinanceApplication',
-  'operatingSystem': 'Any',
-  'isAccessibleForFree': true,
-  'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'EUR' },
-  'author': { '@type': 'Person', 'name': 'Nick Huijgen', 'url': 'https://nickhuijgen.nl/' },
-  ...schema,
-};
 ---
 
 <!doctype html>
@@ -65,7 +51,7 @@ const structuredData = {
         <meta name="twitter:title" content={socialTitle} />
         <meta name="twitter:description" content={socialDescription} />
         <link rel="canonical" href={canonicalUrl} />
-        <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+        {jsonLd.map(item => <script type="application/ld+json" set:html={JSON.stringify(item)} />)}
       </>
     )}
   </head>

@@ -1,14 +1,18 @@
 ---
 import { formatMoney, formatPercent } from '../lib/inflation';
+import { linkClass } from '../lib/ui';
+import { yearPagePath } from '../lib/year-pages';
 
 interface Props {
   caption: string;
   amount: number;
   endYear: number;
   rows: { year: number; value: number; inflation: number }[];
+  /** Link each year to its own page (/gulden/1980/). */
+  linkYears?: boolean;
 }
 
-const { caption, amount, endYear, rows } = Astro.props;
+const { caption, amount, endYear, rows, linkYears = false } = Astro.props;
 ---
 
 <table class="w-full text-left tabular-nums">
@@ -24,7 +28,9 @@ const { caption, amount, endYear, rows } = Astro.props;
   <tbody>
     {rows.map(row => (
       <tr id={`jaar-${row.year}`} class="border-b border-gray-100 target:bg-yellow-50">
-        <th scope="row" class="py-1.5 pr-2 font-normal">{row.year}</th>
+        <th scope="row" class="py-1.5 pr-2 font-normal">
+          {linkYears ? <a href={yearPagePath(row.year)} class={linkClass}>{row.year}</a> : row.year}
+        </th>
         <td class="py-1.5 pr-2">{formatMoney(amount, row.year)}</td>
         <td class="py-1.5 pr-2 font-semibold">{formatMoney(row.value, endYear)}</td>
         <td class="py-1.5 text-right">{formatPercent(row.inflation)}%</td>

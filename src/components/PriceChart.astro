@@ -1,0 +1,121 @@
+---
+// Line chart of the price level from `points[0].year` onwards, rebased to
+// 100 in that first year. Rendered at build time as plain SVG: no chart
+// library, no client JS. Hover: every year has a full-height hit area with
+// a native tooltip (<title>) and a CSS-revealed dot + crosshair. The same
+// numbers are available as a table below it (collapsed), and the caption
+// states the headline in words.
+//
+// Marks follow the dataviz skill: 2px line with round joins, ~10% area
+// wash on a zero baseline, r=4 end dot, 1px solid recessive gridlines,
+// text in text colours (never the series colour), value labelled at the
+// end of the line only. Series colour #1447e6 (Tailwind blue-700) passes
+// the palette validator against white (≥ 3:1).
+import { formatPercent } from '../lib/inflation';
+import { focusRing } from '../lib/ui';
+
+interface Props {
+  points: { year: number; level: number }[];
+  title: string;
+  caption: string;
+}
+
+const { points, title, caption } = Astro.props;
+
+const base = points[0].level;
+const series = points.map(point => ({ year: point.year, value: (point.level / base) * 100 }));
+const first = series[0];
+const last = series[series.length - 1];
+
+const width = 640;
+const height = 260;
+const pad = { top: 16, right: 64, bottom: 28, left: 52 };
+const plotWidth = width - pad.left - pad.right;
+const plotHeight = height - pad.top - pad.bottom;
+
+// Clean y ticks (1, 2 or 5 × 10^n) from a zero baseline.
+const maxValue = Math.max(...series.map(point => point.value));
+const rawStep = maxValue / 4;
+const magnitude = 10 ** Math.floor(Math.log10(rawStep));
+const step = [1, 2, 5, 10].map(m => m * magnitude).find(s => s >= rawStep)!;
+const yMax = Math.ceil(maxValue / step) * step;
+const yTicks = Array.from({ length: yMax / step + 1 }, (_, i) => i * step);
+
+// X ticks on round years, at most ~6.
+const span = last.year - first.year;
+const xStep = [1, 2, 5, 10, 20, 25, 50].find(s => span / s <= 6) ?? 50;
+const xTicks = [first.year];
+for (let year = Math.ceil((first.year + 1) / xStep) * xStep; year < last.year; year += xStep) {
+  if (year - first.year >= xStep / 2 && last.year - year >= xStep / 2) {
+    xTicks.push(year);
+  }
+}
+xTicks.push(last.year);
+
+const x = (year: number) => pad.left + (span === 0 ? 0 : ((year - first.year) / span) * plotWidth);
+const y = (value: number) => pad.top + plotHeight - (value / yMax) * plotHeight;
+
+const linePath = series.map((point, i) => `${i === 0 ? 'M' : 'L'}${x(point.year).toFixed(1)},${y(point.value).toFixed(1)}`).join(' ');
+const areaPath = `${linePath} L${x(last.year).toFixed(1)},${y(0).toFixed(1)} L${x(first.year).toFixed(1)},${y(0).toFixed(1)} Z`;
+
+const number = new Intl.NumberFormat('nl-NL', { maximumFractionDigits: 0 });
+const oneDecimal = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const hitWidth = span === 0 ? plotWidth : plotWidth / span;
+const titleId = `chart-title-${first.year}`;
+const captionId = `chart-caption-${first.year}`;
+---
+
+<figure class="m-0">
+  <svg viewBox={`0 0 ${width} ${height}`} class="h-auto w-full" role="img" aria-labelledby={`${titleId} ${captionId}`}>
+    <title id={titleId}>{title}</title>
+
+    {yTicks.map(tick => (
+      <g>
+        <line x1={pad.left} x2={width - pad.right} y1={y(tick)} y2={y(tick)} stroke="#e5e7eb" stroke-width="1" />
+        <text x={pad.left - 8} y={y(tick)} text-anchor="end" dominant-baseline="middle" class="fill-gray-600 text-[12px] tabular-nums">{number.format(tick)}</text>
+      </g>
+    ))}
+
+    {xTicks.map(tick => (
+      <text x={x(tick)} y={height - 8} text-anchor="middle" class="fill-gray-600 text-[12px] tabular-nums">{tick}</text>
+    ))}
+
+    <path d={areaPath} fill="#1447e6" fill-opacity="0.1" />
+    <path d={linePath} fill="none" stroke="#1447e6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+    <circle cx={x(last.year)} cy={y(last.value)} r="4" fill="#1447e6" stroke="#fff" stroke-width="2" />
+    <text x={x(last.year) + 10} y={y(last.value)} dominant-baseline="middle" class="fill-gray-900 text-[13px] font-semibold">{number.format(last.value)}</text>
+
+    {series.map(point => (
+      <g class="group">
+        <rect x={x(point.year) - hitWidth / 2} y={pad.top} width={hitWidth} height={plotHeight} fill="transparent" />
+        <line x1={x(point.year)} x2={x(point.year)} y1={pad.top} y2={pad.top + plotHeight} stroke="#9ca3af" stroke-width="1" class="opacity-0 group-hover:opacity-100" />
+        <circle cx={x(point.year)} cy={y(point.value)} r="4" fill="#1447e6" stroke="#fff" stroke-width="2" class="opacity-0 group-hover:opacity-100" />
+        <title>{point.year}: prijspeil {oneDecimal.format(point.value)} ({first.year} = 100)</title>
+      </g>
+    ))}
+  </svg>
+  <figcaption id={captionId} class="mt-2 text-sm text-gray-700">{caption}</figcaption>
+
+  <details class="mt-2">
+    <summary class={`cursor-pointer py-2 text-sm font-semibold text-blue-700 ${focusRing}`}>Toon als tabel</summary>
+    <table class="text-left text-sm tabular-nums">
+      <caption class="sr-only">{title}</caption>
+      <thead>
+        <tr class="border-b border-blue-200">
+          <th scope="col" class="py-1 pr-6 font-semibold">Jaar</th>
+          <th scope="col" class="py-1 pr-6 font-semibold">Prijspeil ({first.year} = 100)</th>
+          <th scope="col" class="py-1 font-semibold">Verandering</th>
+        </tr>
+      </thead>
+      <tbody>
+        {series.map((point, i) => (
+          <tr class="border-b border-gray-100">
+            <th scope="row" class="py-1 pr-6 font-normal">{point.year}</th>
+            <td class="py-1 pr-6">{oneDecimal.format(point.value)}</td>
+            <td class="py-1">{i === 0 ? '–' : `${formatPercent((point.value / series[i - 1].value - 1) * 100)}%`}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </details>
+</figure>
