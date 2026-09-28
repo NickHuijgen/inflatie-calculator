@@ -128,10 +128,40 @@ these fail a build.
 - `public/robots.txt` is minimal: allow all, plus the `Sitemap:` line.
 
 ## Hosting
+
+Most of this setup lives outside the repo (Cloudflare dashboard,
+registrar), so it's written down here.
+
+| Piece | Where | Setting |
+|---|---|---|
+| Domain registration | Hostnet | `inflatie-berekenen.nl`. Only the nameservers are set here; they point at Cloudflare. |
+| DNS | Cloudflare (zone `inflatie-berekenen.nl`) | Records are managed by the Worker's custom domains — don't add A/CNAME records for the apex or `www` by hand. |
+| Hosting | Cloudflare Worker `inflatie-calculator` | Static assets only, configured by `wrangler.jsonc` (`name` must match the Worker's name in the dashboard). |
+| Build & deploy | Cloudflare Workers Builds, connected to the GitHub repo | Production branch `master`. Build command `npm run build`, deploy command `npx wrangler deploy`. Node version from `.node-version`. |
+| Custom domains | Worker → Settings → Domains & Routes | `inflatie-berekenen.nl`, plus `www.inflatie-berekenen.nl` (either as a second custom domain or redirected to the apex). |
+
+In the repo:
+- `wrangler.jsonc` — Worker name, `assets.directory: ./dist`, and
+  `not_found_handling: "404-page"` (see Invariants).
 - `public/_headers` (Cloudflare syntax) caches `/_astro/*` for a year as
   `immutable` — safe because every file there is content-hashed.
   Everything else gets Cloudflare's default `max-age=0, must-revalidate`.
-- The Node version for Cloudflare's build comes from `.node-version`.
+- `.node-version` — Node for Cloudflare's build.
+- No CI of its own: there is no GitHub Actions workflow. Cloudflare's
+  build status shows on each commit in GitHub and in the Worker's
+  Deployments tab.
+- To run it the way Cloudflare does: `npm run build`, then
+  `npx wrangler dev --port 8787 --local`. Deploying by hand
+  (`npx wrangler deploy`) works too, but needs `wrangler login` and
+  bypasses the Git-connected build; prefer pushing.
+
+**Migration status (2026-09-28):** moved off GitHub Pages in commit
+`ec95491`. Still to do: nameserver change at Hostnet propagating;
+then connect the repo in Workers Builds, attach the custom domains, and
+switch off GitHub Pages in the GitHub repo settings. Until the domain
+moves, `inflatie-berekenen.nl` is still served by GitHub Pages from the
+last build there (`6f85ca2`), and pushes don't deploy anywhere.
+Remove this paragraph once the migration is done.
 
 ## Don't
 - Don't add dependencies without asking.
