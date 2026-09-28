@@ -3,5 +3,5 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://inflatie-berekenen.nl/sitemap.xml
+Sitemap: https://inflatie-berekenen.nl/sitemap-index.xml
 

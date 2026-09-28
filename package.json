@@ -1,29 +1,28 @@
 {
   "name": "inflatie-calculator",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nuxt dev",
-    "build": "nuxt build",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
     "lint": "eslint --fix"
   },
   "dependencies": {
-    "@nuxtjs/sitemap": "^7.5.0",
-    "nuxt": "^4.2.2",
-    "vue": "^3.5.13"
+    "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.5",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@nuxtjs/tailwindcss": "^6.12.2",
-    "eslint": "^9.39.2",
-    "eslint-plugin-vue": "^10.6.2",
-    "globals": "^17.0.0",
+    "@astrojs/check": "^0.9.10",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.11.0",
+    "eslint-plugin-astro": "^3.2.1",
+    "globals": "^17.12.0",
     "jiti": "^2.6.1",
-    "push-dir": "^0.4.1",
-    "typescript-eslint": "^8.51.0"
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.70.1"
   }
 }

@@ -32,6 +32,6 @@ In case you want to run the project locally, clone the repository and run these 
 # install dependencies
 $ npm install
 
-# serve with hot reload at localhost:3000
+# serve with hot reload at localhost:4321
 $ npm run dev
 ```

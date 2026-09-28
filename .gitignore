@@ -65,12 +65,11 @@ typings/
 # next.js build output
 .next
 
-# nuxt.js build output
-.nuxt
+# Astro
+.astro
 
-# Nuxt generate
+# Build output
 dist
-.output
 
 # vuepress build output
 .vuepress/dist
