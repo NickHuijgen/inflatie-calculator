@@ -77,7 +77,7 @@ these fail a build.
 | An element `id` in `src/pages/index.astro` | The matching `element()` call in `src/scripts/calculator.ts` | The script looks every element up by id and casts the result. A renamed id is `null` at runtime and the script throws on load, leaving a dead calculator — `astro check` can't see it. |
 | The shareable URL parameters (`PARAMS` in `calculator.ts`: `bedrag`, `van`, `naar`, `maand`) | Nothing in code — but links people have already shared | Renaming a parameter silently breaks every shared link. Only ever add parameters; keep reading old names if one must change. |
 | `public/_redirects` | That the target exists in `dist/` | Cloudflare applies these before the static assets; a redirect to a missing file just becomes a redirect to a 404. |
-| The `<option>` values in the month `<select>` (`index.astro`) | The CBS `Perioden` format (`1963MM01`, `2025JJ00`) | Lookups are `year + month` string concatenations against that key. `JJ00` is the yearly average, `MMxx` a month. |
+| The `<option>` values in the month `<select>` (`index.astro`) | The CBS `Perioden` format (`1963MM01`, `2025JJ00`) | Monthly lookups are `year + month` string concatenations against that key. `JJ00` means yearly average and goes to the `71905ned` index instead (`has()`, `priceFactor()`). |
 | The sitemap integration or its output name | The `Sitemap:` line in `public/robots.txt` | `@astrojs/sitemap` writes `sitemap-index.xml` (not `sitemap.xml`); robots.txt names it by hand. |
 | `site` in `astro.config.mjs` | The custom domain attached to the Worker in Cloudflare | Canonical, `og:url` and `og:image` are all derived from `site` (`Layout.astro`), so it's the one place in code — but the domain actually served is configured in Cloudflare. |
 | `not_found_handling: "404-page"` (`wrangler.jsonc`) | That `src/pages/404.astro` exists, at the `src/pages/` root | The handler serves a literal `dist/404.html`; without it every miss is an empty-body 404. Only the root `404.astro` builds to that file. |
@@ -137,36 +137,59 @@ these fail a build.
   were missing.
 
 ## Calculation
-- Dataset: CBS 70936ned (`CBS_DATA_URL` / `CBS_DATASET_URL` in
-  `inflation.ts`). Each row's `JaarmutatieCPI_1` is the year-on-year
-  CPI change in percent for that period, as a space-padded string.
-- The result compounds those yearly mutations from start year to end
-  year for the selected month, rounding at every step (`round()`).
-  Crossing 2002 applies the fixed guilder↔euro rate
+Two CBS datasets, both fetched at build time (URLs and titles in
+`inflation.ts`):
+
+| Dataset | Contents | Used for |
+|---|---|---|
+| `70936ned` | Year-on-year CPI change in % per month and per year (`JaarmutatieCPI_1`, a space-padded string), from January 1963, updated monthly | Every comparison **by month** (`MM01`–`MM12`) |
+| `71905ned` | Yearly price index, 1900=100 (`CPI_1`), from 1900, updated once a year (around February) | Every comparison of **yearly averages** (`JJ00`), and the table |
+
+- **Yearly averages** use the exact ratio of CBS's own index levels
+  (`priceFactor()`), without intermediate rounding: matches the index to
+  within 0.005 percentage points over 1900–2025. `71905ned` lags: CBS
+  publishes a year's yearly change in `70936ned` weeks before the new
+  index level, so the constructor extends the index with those changes
+  (`latestYearlyYear` is the last year either way). Checked: bridging
+  2025 that way differs from the real 2025 level by < 0.04%.
+- **Months** chain that month's yearly changes from start to end year,
+  rounding at every step (`round()`) — deliberately unchanged from the
+  original Vue calculation, so monthly results are identical to it (0
+  differences across all 48,644 year pairs when this was introduced).
+  Chaining one-decimal percentages drifts from the true index by up to
+  ~0.6% over 60 years; that's why yearly averages don't use it any more.
+- Before 1963 only yearly averages exist. The calculator switches to
+  "Jaargemiddelde" by itself when a committed year is before 1963, and
+  moves a year without a yearly average (the current one) to
+  `latestYearlyYear`, explaining it in `#result-note`
+  (`adjustForYearlyOnly()` in `calculator.ts`).
+- Crossing 2002 applies the fixed guilder↔euro rate
   (`EURO_INTRODUCTION_YEAR`), and amounts before 2002 display as `ƒ`.
 - Going *backwards* in time (end year before start year) is the exact
-  mirror of going forwards: divide by `1 + mutation` per year, then undo
-  the euro conversion when stepping back out of 2002. A backwards result
-  is therefore the inverse of the forwards one, up to the per-step
-  rounding (≤ ~0.1% across the whole dataset). Until September 2026 it
-  multiplied by `1 − |mutation|` instead, which made €100 in 2026 →
-  ƒ88.07 in 1990 rather than ≈ƒ91.3, and counted deflation as inflation.
+  inverse of going forwards (for months up to the per-step rounding,
+  ≤ ~0.1%). Until September 2026 it multiplied by `1 − |mutation|`
+  instead, which made €100 in 2026 → ƒ88.07 in 1990 rather than
+  ≈ƒ91.3, and counted deflation as inflation.
 - The result describes the price change **forwards in time**, from the
   earlier to the later year, whatever order the visitor entered the
   years in ("Tussen 1990 en 2026 stegen de prijzen met 141,32%"). The
-  converted amount itself still goes in the direction entered. This
-  replaced a "totale inflatie van -58,58%" wording that read as
-  deflation when it just meant "going back in time".
-- **Known, not fixed:** "Gemiddeld per jaar" is the arithmetic mean of
-  the yearly mutations, not the geometric (compound) average. It
-  changes numbers visitors already see, so don't "fix" it incidentally —
-  raise it and let the owner decide.
+  converted amount itself still goes in the direction entered.
+- "Gemiddeld per jaar" is the **compound** average: the constant yearly
+  rate that gives the same total change (`averageInflation()`). It was
+  the arithmetic mean of the yearly changes until September 2026 (3,41%
+  instead of 3,37% for 2016–2026); the owner chose compound.
+- The table ("Wat is geld van vroeger nu waard?") compares **yearly
+  averages** of every year from 1900 with `latestYearlyYear`
+  (`historicalValues()`): exact and from one source, at the cost of
+  lagging the newest month by up to a year. The calculator covers the
+  latest month. This was the owner's choice over a same-month table.
 - Any change to `inflation.ts` should be checked against the current
   behaviour across the whole data range, not a few spot checks: run
   old vs. new for every start year × end year × month (`JJ00`,
-  `MM01`–`MM12`) on the live CBS data and diff the results. For the
-  backwards direction also check the round trip (forwards then
-  backwards returns the original amount to within ~0.1%).
+  `MM01`–`MM12`) on the live CBS data and diff the results; check
+  yearly averages against the `71905ned` index ratio directly; and
+  check the round trip (forwards then backwards returns the original
+  amount).
 
 ## Routes
 - `/` — the calculator (`src/pages/index.astro`).
@@ -297,10 +320,12 @@ Before calling a change done:
   not just the build: default result on load, a pre-2002 → post-2002
   calculation (`ƒ` → `€`), the swap button, Dutch input (`1.234,50` is
   read as 1234.5 and reformatted on blur), amount `0` or text (dims;
-  resets to `1,00` on blur), years outside 1963–latest (clamped on
+  resets to `1,00` on blur), years outside 1900–latest (clamped on
   blur), an empty year field, a month without data (e.g. December of
   the current year: explains why), Enter in a field (must not reload),
-  a URL with parameters (`/?bedrag=250&van=1980&naar=2026&maand=08`)
+  a year before 1963 with a month selected (switches to the yearly
+  average and explains why), a URL with parameters
+  (`/?bedrag=250&van=1980&naar=2026&maand=08`)
   loading that result, and the share button (stub `navigator.share`
   and `navigator.clipboard` in the console rather than opening the real
   share sheet). Tab through the form and check focus is always visible.

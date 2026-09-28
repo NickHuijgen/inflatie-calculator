@@ -4,7 +4,10 @@ import ValueTable from '../components/ValueTable.astro';
 import {
   CBS_DATASET_TITLE,
   CBS_DATASET_URL,
+  CBS_INDEX_DATASET_URL,
+  CBS_INDEX_TITLE,
   EURO_INTRODUCTION_YEAR,
+  FIRST_MONTHLY_YEAR,
   FIRST_YEAR,
   MONTHS,
   euroToGuilderConversionRate,
@@ -26,7 +29,7 @@ const endYear = data.latestYear;
 const startYear = endYear - 10;
 const month = data.latestMonth;
 const latestPeriod = data.latestPeriodLabel;
-const comparedMonth = month === 'JJ00' ? 'het jaargemiddelde' : `de maand ${latestPeriod.split(' ')[0]}`;
+const latestYearlyYear = data.latestYearlyYear;
 const updatedOn = datasetModified.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Amsterdam' });
 
 const inflation = data.inflationPercentage(startYear, endYear, month);
@@ -38,27 +41,27 @@ const defaultResult = {
   average: formatPercent(data.averageInflation(startYear, endYear, month)),
 };
 
-// The table: euro years, then guilder years with the oldest ones folded
+// The table compares yearly averages (exact, from 1900) with the latest
+// complete year. Euro years, then guilder years with the oldest ones folded
 // away (still in the HTML, so still indexed) to keep the page short.
 const historicalValues = data.historicalValues(defaultAmount);
 const OLDER_GUILDER_YEARS_BEFORE = 1980;
 const euroRows = historicalValues.filter(row => row.year >= EURO_INTRODUCTION_YEAR);
 const guilderRows = historicalValues.filter(row => row.year < EURO_INTRODUCTION_YEAR && row.year >= OLDER_GUILDER_YEARS_BEFORE);
 const olderGuilderRows = historicalValues.filter(row => row.year < OLDER_GUILDER_YEARS_BEFORE);
-const tableCaption = (currency: string) => `Waarde van ${currency} ${defaultAmount} per jaar, omgerekend naar ${latestPeriod}`;
+const tableCaption = (currency: string) => `Waarde van ${currency} ${defaultAmount} per jaar, omgerekend naar ${latestYearlyYear}`;
 
 // A concrete example for the gulden question in the FAQ.
 const guilderExample = historicalValues.find(row => row.year === 1980);
 const guilderRate = euroToGuilderConversionRate.toLocaleString('nl-NL', { maximumFractionDigits: 5 });
 
+const cbs = { '@type': 'Organization', 'name': 'Centraal Bureau voor de Statistiek', 'url': 'https://www.cbs.nl/' };
 const schema = {
   'dateModified': datasetModified.toISOString(),
-  'isBasedOn': {
-    '@type': 'Dataset',
-    'name': CBS_DATASET_TITLE,
-    'url': CBS_DATASET_URL,
-    'creator': { '@type': 'Organization', 'name': 'Centraal Bureau voor de Statistiek', 'url': 'https://www.cbs.nl/' },
-  },
+  'isBasedOn': [
+    { '@type': 'Dataset', 'name': CBS_DATASET_TITLE, 'url': CBS_DATASET_URL, 'creator': cbs },
+    { '@type': 'Dataset', 'name': CBS_INDEX_TITLE, 'url': CBS_INDEX_DATASET_URL, 'creator': cbs },
+  ],
 };
 
 const focusRing = 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700';
@@ -66,14 +69,15 @@ const inputClass = 'block w-full rounded-md border border-gray-500 bg-white px-3
 const labelClass = 'block mb-1 font-semibold text-gray-800';
 const hintClass = 'mt-1 text-sm text-gray-600';
 const linkClass = `text-blue-700 underline underline-offset-2 hover:no-underline ${focusRing}`;
-const datasetLinkText = `CBS-dataset “${CBS_DATASET_TITLE}”`;
+const datasetLinkText = `“${CBS_DATASET_TITLE}”`;
+const indexLinkText = `“${CBS_INDEX_TITLE}”`;
 ---
 
 <Layout
-  title="Inflatie Berekenen – Koopkracht van Gulden en Euro sinds 1963"
-  description="Bereken wat een bedrag van vroeger nu waard is. Gratis inflatiecalculator voor gulden en euro, met officiële CBS-cijfers van 1963 tot nu."
+  title="Inflatie Berekenen – Koopkracht van Gulden en Euro sinds 1900"
+  description="Bereken wat een bedrag van vroeger nu waard is. Gratis inflatiecalculator voor gulden en euro, met officiële CBS-cijfers van 1900 tot nu."
   socialTitle="Inflatie Berekenen – wat is je geld van vroeger nu waard?"
-  socialDescription="Gratis inflatiecalculator voor gulden en euro, met officiële CBS-cijfers van 1963 tot nu."
+  socialDescription="Gratis inflatiecalculator voor gulden en euro, met officiële CBS-cijfers van 1900 tot nu."
   schema={schema}
 >
   <main class="flex items-center justify-center p-4 lg:px-6 lg:pt-6">
@@ -116,7 +120,7 @@ const datasetLinkText = `CBS-dataset “${CBS_DATASET_TITLE}”`;
               <select id="select-month" name="maand" aria-describedby="hint-month" class={inputClass}>
                 {MONTHS.map(([value, label]) => <option value={value} selected={value === month}>{label}</option>)}
               </select>
-              <p id="hint-month" class={hintClass}>Dezelfde maand in beide jaren, of het gemiddelde van het hele jaar.</p>
+              <p id="hint-month" class={hintClass}>Dezelfde maand in beide jaren (vanaf {FIRST_MONTHLY_YEAR}), of het gemiddelde van het hele jaar.</p>
             </div>
           </div>
         </form>
@@ -136,6 +140,7 @@ const datasetLinkText = `CBS-dataset “${CBS_DATASET_TITLE}”`;
           <p id="result-same-year" class="mt-4" hidden>Begin- en eindjaar zijn hetzelfde, dus er is geen verschil in koopkracht.</p>
         </div>
         <p id="result-missing" class="mt-3" hidden></p>
+        <p id="result-note" class="mt-3 text-sm text-gray-700" hidden></p>
         <p id="result-status" class="sr-only" role="status"></p>
 
         <div class="mt-6 flex flex-wrap items-center gap-3">
@@ -146,7 +151,7 @@ const datasetLinkText = `CBS-dataset “${CBS_DATASET_TITLE}”`;
         </div>
 
         <p class="mt-6 text-sm text-gray-600">
-          Bron: CBS, cijfers tot en met {latestPeriod} (bijgewerkt op <time datetime={datasetModified.toISOString()}>{updatedOn}</time>).
+          Bron: CBS, maandcijfers tot en met {latestPeriod} en jaarcijfers tot en met {latestYearlyYear} (bijgewerkt op <time datetime={datasetModified.toISOString()}>{updatedOn}</time>).
         </p>
       </section>
 
@@ -155,29 +160,30 @@ const datasetLinkText = `CBS-dataset “${CBS_DATASET_TITLE}”`;
           <h2 id="historical-values-title" class="text-xl font-bold mb-2">Wat is geld van vroeger nu waard?</h2>
           <p class="mb-2">
             Hoeveel is {defaultAmount} gulden of {defaultAmount} euro uit een bepaald jaar vandaag waard?
-            De tabellen hieronder geven het antwoord voor elk jaar sinds {FIRST_YEAR}, omgerekend naar {latestPeriod}.
-            Vergeleken wordt steeds {comparedMonth} van elk jaar. Voor een ander bedrag of jaar gebruik je de calculator bovenaan.
+            De tabellen hieronder geven het antwoord voor elk jaar sinds {FIRST_YEAR}, omgerekend naar {latestYearlyYear}.
+            Vergeleken worden de jaargemiddelden, want {latestYearlyYear} is het meest recente volledige jaar.
+            Voor een ander bedrag, jaar of een recente maand gebruik je de calculator bovenaan.
           </p>
           <p class="mb-6 text-gray-700">
             <strong>Prijsstijging</strong> is hoeveel duurder alles sindsdien is geworden.
-            Bij guldens is <strong>Nu waard</strong> daarnaast omgerekend naar euro's, tegen {guilderRate} gulden per euro. Daarom is het bedrag in euro's lager dan de prijsstijging doet vermoeden.
+            Bij guldens is het bedrag in de kolom <strong>In {latestYearlyYear}</strong> daarnaast omgerekend naar euro's, tegen {guilderRate} gulden per euro. Daarom is het bedrag in euro's lager dan de prijsstijging doet vermoeden.
           </p>
 
           <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
             <div>
               <h3 class="font-semibold mb-2">Euro ({euroRows[0]?.year}–{euroRows.at(-1)?.year})</h3>
-              <ValueTable caption={tableCaption('€')} amount={defaultAmount} endYear={endYear} rows={euroRows} />
+              <ValueTable caption={tableCaption('€')} amount={defaultAmount} endYear={latestYearlyYear} rows={euroRows} />
             </div>
 
             <div>
               <h3 class="font-semibold mb-2">Gulden naar euro ({olderGuilderRows[0]?.year ?? guilderRows[0]?.year}–{guilderRows.at(-1)?.year})</h3>
-              <ValueTable caption={tableCaption('ƒ')} amount={defaultAmount} endYear={endYear} rows={guilderRows} />
+              <ValueTable caption={tableCaption('ƒ')} amount={defaultAmount} endYear={latestYearlyYear} rows={guilderRows} />
               {olderGuilderRows.length > 0 && (
                 <details class="mt-2">
                   <summary class={`cursor-pointer py-2 font-semibold text-blue-700 ${focusRing}`}>
                     Toon {olderGuilderRows[0].year}–{olderGuilderRows.at(-1)!.year}
                   </summary>
-                  <ValueTable caption={tableCaption('ƒ')} amount={defaultAmount} endYear={endYear} rows={olderGuilderRows} />
+                  <ValueTable caption={tableCaption('ƒ')} amount={defaultAmount} endYear={latestYearlyYear} rows={olderGuilderRows} />
                 </details>
               )}
             </div>
@@ -196,9 +202,9 @@ const datasetLinkText = `CBS-dataset “${CBS_DATASET_TITLE}”`;
             </p>
 
             <p class="mb-2">
-              De berekening gebruikt de officiële inflatiecijfers van het Centraal Bureau voor de Statistiek (CBS),
-              uit de <a href={CBS_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{datasetLinkText}</a>.
-              De cijfers lopen van januari {FIRST_YEAR} tot en met {latestPeriod}.
+              De berekening gebruikt de officiële cijfers van het Centraal Bureau voor de Statistiek (CBS).
+              Voor jaargemiddelden vanaf {FIRST_YEAR} is dat de prijsindex <a href={CBS_INDEX_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{indexLinkText}</a>.
+              Voor maanden, vanaf januari {FIRST_MONTHLY_YEAR} tot en met {latestPeriod}, zijn dat de cijfers uit <a href={CBS_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{datasetLinkText}</a>.
               Bedragen van vóór {EURO_INTRODUCTION_YEAR} worden omgerekend naar euro's tegen de vaste koers van {guilderRate} gulden per euro.
             </p>
 
@@ -238,8 +244,8 @@ const datasetLinkText = `CBS-dataset “${CBS_DATASET_TITLE}”`;
                 reken je alleen de munt om, niet de inflatie.
                 {guilderExample && (
                   <Fragment>
-                    Rekening houdend met inflatie is ƒ {defaultAmount} uit {guilderExample.year}
-                    in {latestPeriod} {formatMoney(guilderExample.value, endYear)} waard.
+                    Rekening houdend met inflatie had ƒ {defaultAmount} uit {guilderExample.year}
+                    in {latestYearlyYear} de koopkracht van {formatMoney(guilderExample.value, latestYearlyYear)}.
                   </Fragment>
                 )}
                 Kijk in de <a href="#historical-values-title" class={linkClass}>tabel met alle jaren</a> of vul je eigen bedrag in de calculator in.
@@ -258,9 +264,11 @@ const datasetLinkText = `CBS-dataset “${CBS_DATASET_TITLE}”`;
             <div>
               <h3 class="font-semibold">Hoe rekent deze calculator?</h3>
               <p>
-                De calculator neemt voor elk jaar tussen begin- en eindjaar de inflatie van het CBS en telt die bij
-                elkaar op, met rente op rente. Zo ontstaat de totale prijsstijging over de hele periode. Bij bedragen
-                van vóór {EURO_INTRODUCTION_YEAR} rekent hij ook om van gulden naar euro.
+                Bij jaargemiddelden vergelijkt de calculator het prijspeil van het CBS in beide jaren: is dat
+                2,5 keer zo hoog, dan heb je 2,5 keer zoveel geld nodig voor hetzelfde. Bij een maand telt hij de
+                inflatie van elk jaar voor die maand bij elkaar op, met rente op rente. Het gemiddelde per jaar is
+                ook samengesteld: de vaste jaarlijkse inflatie die op hetzelfde totaal uitkomt. Bij bedragen van
+                vóór {EURO_INTRODUCTION_YEAR} rekent hij ook om van gulden naar euro.
               </p>
             </div>
 
@@ -269,7 +277,8 @@ const datasetLinkText = `CBS-dataset “${CBS_DATASET_TITLE}”`;
               <p>
                 Kies je een maand, dan vergelijkt de calculator die maand in het beginjaar met dezelfde maand in het
                 eindjaar. Het jaargemiddelde kijkt naar het hele jaar en is daardoor minder gevoelig voor uitschieters.
-                Voor het lopende jaar is nog geen jaargemiddelde beschikbaar.
+                Maandcijfers zijn er vanaf {FIRST_MONTHLY_YEAR}; daarvoor alleen jaargemiddelden. Voor het lopende jaar is
+                nog geen jaargemiddelde beschikbaar.
               </p>
             </div>
 
@@ -277,15 +286,15 @@ const datasetLinkText = `CBS-dataset “${CBS_DATASET_TITLE}”`;
               <h3 class="font-semibold">Waar komen de cijfers vandaan?</h3>
               <p>
                 Van het Centraal Bureau voor de Statistiek (CBS), de officiële statistische dienst van Nederland.
-                De calculator gebruikt de <a href={CBS_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{datasetLinkText}</a>.
+                De calculator gebruikt de CBS-tabellen <a href={CBS_INDEX_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{indexLinkText}</a> en <a href={CBS_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{datasetLinkText}</a>.
               </p>
             </div>
 
             <div>
               <h3 class="font-semibold">Over welke periode kan ik rekenen?</h3>
               <p>
-                Van januari {FIRST_YEAR} tot en met de meest recente maand die het CBS heeft gepubliceerd;
-                nu is dat {latestPeriod}.
+                Met jaargemiddelden van {FIRST_YEAR} tot en met {latestYearlyYear}.
+                Per maand van januari {FIRST_MONTHLY_YEAR} tot en met de meest recente maand die het CBS heeft gepubliceerd; nu is dat {latestPeriod}.
               </p>
             </div>
 

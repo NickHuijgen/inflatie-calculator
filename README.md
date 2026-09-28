@@ -5,7 +5,7 @@
 Deze inflatie bereken app heeft het doel om iedereen een makkelijke en gebruiksvriendelijke manier te geven om inflatie te bereken.
 Inflatie is steeds meer te merken en het is dus belangrijk dat iedereen op de hoogte is van hoe de inflatie hun leven beïnvloed.
 
-Voor de berekening is gebruik gemaakt van [deze](https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870) dataset van het CBS.
+Voor de berekening zijn twee datasets van het CBS gebruikt: de [prijsindex 1900=100](https://opendata.cbs.nl/#/CBS/nl/dataset/71905ned/table) voor jaargemiddelden vanaf 1900, en de [jaarmutatie consumentenprijsindex](https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870) voor maandcijfers vanaf 1963.
 
 Dit project is open source zodat het voor iedereen duidelijk is hoe deze data precies gebruikt wordt, en de data en berekening kan verifiëren.
 
@@ -17,7 +17,7 @@ De dataset wordt bij het bouwen van de site (dagelijks) bij het CBS opgehaald.
 This inflation calculation app is made to ensure everyone has an easy and user-friendly way to calculate inflation.
 Inflation is very noticeable in our day-to-day life and so it is important that everyone knows just how much inflation is affecting their lives.
 
-For the calculation [this](https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870) dataset from the CBS was used.
+The calculation uses two CBS datasets: the [price index 1900=100](https://opendata.cbs.nl/#/CBS/nl/dataset/71905ned/table) for yearly averages from 1900, and the [yearly CPI change](https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870) for monthly figures from 1963.
 
 This project is open source so everyone can see how the data is being used and can very the data and calculation are correct.
 

@@ -1,4 +1,5 @@
 import {
+  FIRST_MONTHLY_YEAR,
   FIRST_YEAR,
   InflationData,
   MONTHS,
@@ -22,6 +23,7 @@ const shareButton = element<HTMLButtonElement>('share-result');
 
 const result = element('result');
 const resultMissing = element('result-missing');
+const resultNote = element('result-note');
 const resultStatus = element('result-status');
 const shareFeedback = element('share-feedback');
 
@@ -66,9 +68,14 @@ function render(): string | undefined {
     const missingYear = [startYear, endYear].find(year => year >= FIRST_YEAR && year <= data.latestYear && !data.has(year, month));
 
     if (missingYear !== undefined && amount > 0) {
-      resultMissing.textContent = month === 'JJ00'
-        ? `Voor ${missingYear} is nog geen jaargemiddelde beschikbaar. Kies een maand of een eerder jaar.`
-        : `Voor ${monthLabel(month)} ${missingYear} zijn nog geen cijfers. De nieuwste cijfers zijn van ${data.latestPeriodLabel}.`;
+      if (month === 'JJ00') {
+        resultMissing.textContent = `Voor ${missingYear} is nog geen jaargemiddelde beschikbaar. Kies een maand of een eerder jaar.`;
+      } else if (missingYear < FIRST_MONTHLY_YEAR) {
+        resultMissing.textContent = `Voor jaren vóór ${FIRST_MONTHLY_YEAR} zijn alleen jaargemiddelden beschikbaar. Kies bij "Vergelijk op" het jaargemiddelde.`;
+      } else {
+        resultMissing.textContent = `Voor ${monthLabel(month)} ${missingYear} zijn nog geen cijfers. De nieuwste cijfers zijn van ${data.latestPeriodLabel}.`;
+      }
+
       resultMissing.hidden = false;
       result.hidden = true;
     } else {
@@ -126,6 +133,37 @@ function resetBadInputs(): void {
   clampYear(endYearInput);
 }
 
+/**
+ * Before 1963 CBS only has yearly averages. When a committed year is that
+ * early, switch to the yearly average instead of showing no result — and
+ * if the other year is the current one (which has no yearly average yet),
+ * move it to the latest complete year. Explains what happened in
+ * #result-note.
+ */
+function adjustForYearlyOnly(): void {
+  const years = [startYearInput, endYearInput];
+
+  resultNote.hidden = true;
+
+  if (monthSelect.value === 'JJ00' || !years.some(input => input.valueAsNumber < FIRST_MONTHLY_YEAR)) {
+    return;
+  }
+
+  monthSelect.value = 'JJ00';
+
+  let note = `Vóór ${FIRST_MONTHLY_YEAR} zijn alleen jaargemiddelden beschikbaar, dus die worden vergeleken.`;
+
+  for (const input of years) {
+    if (!data.has(input.valueAsNumber, 'JJ00')) {
+      input.valueAsNumber = data.latestYearlyYear;
+      note += ` ${data.latestYearlyYear} is het meest recente jaar met een jaargemiddelde.`;
+    }
+  }
+
+  resultNote.textContent = note;
+  resultNote.hidden = false;
+}
+
 function isDefault(): boolean {
   return [amountInput, startYearInput, endYearInput].every(input => parseAmount(input.value) === parseAmount(input.defaultValue))
     && [...monthSelect.options].every(option => option.selected === option.defaultSelected);
@@ -156,12 +194,13 @@ function updateUrl(): void {
 /** Called when a value is committed (field left, select changed, swap). */
 function commit(): void {
   resetBadInputs();
+  adjustForYearlyOnly();
 
   const summary = render();
 
   updateUrl();
   shareFeedback.textContent = '';
-  resultStatus.textContent = summary ?? resultMissing.textContent ?? '';
+  resultStatus.textContent = [summary ?? resultMissing.textContent, resultNote.hidden ? '' : resultNote.textContent].filter(Boolean).join(' ');
 }
 
 function applyUrlParams(): void {
@@ -188,6 +227,7 @@ function applyUrlParams(): void {
   }
 
   resetBadInputs();
+  adjustForYearlyOnly();
 }
 
 async function share(): Promise<void> {
