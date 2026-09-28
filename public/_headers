@@ -1,0 +1,8 @@
+# Custom headers, honoured by Cloudflare Workers static assets (see
+# wrangler.jsonc): https://developers.cloudflare.com/workers/static-assets/headers/
+#
+# Everything under /_astro/ is content-hashed by Astro's build, so a
+# changed file always gets a new URL and these can be cached for a year
+# without revalidation.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

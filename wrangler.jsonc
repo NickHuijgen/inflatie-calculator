@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "inflatie-calculator",
+  "compatibility_date": "2026-09-28",
+  // Static site only: no worker script, Cloudflare serves dist/ directly.
+  "assets": {
+    "directory": "./dist",
+    // Without this an unmatched path gets an empty-body 404. The handler
+    // walks up from the requested path looking for a literal 404.html;
+    // there is exactly one, at the root (src/pages/404.astro).
+    "not_found_handling": "404-page"
+  }
+}

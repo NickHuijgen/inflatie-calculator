@@ -4,11 +4,14 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description: string;
-  socialTitle: string;
-  socialDescription: string;
+  socialTitle?: string;
+  socialDescription?: string;
+  // For pages that must not be indexed (the 404): adds robots noindex and
+  // drops canonical, og:/twitter: tags and the JSON-LD.
+  noindex?: boolean;
 }
 
-const { title, description, socialTitle, socialDescription } = Astro.props;
+const { title, description, socialTitle = title, socialDescription = description, noindex = false } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const imageUrl = new URL('/icon.png', Astro.site);
@@ -31,21 +34,27 @@ const structuredData = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="format-detection" content="telephone=no" />
-    <meta name="keywords" content="inflatie, koopkracht, inflatie berekenen, inflatie calculator, CPI, consumentenprijsindex, Nederland, CBS, gulden inflatie, gulden" />
     <meta name="author" content="Nick Huijgen" />
-    <meta property="og:title" content={socialTitle} />
-    <meta property="og:description" content={socialDescription} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content={imageUrl} />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={socialTitle} />
-    <meta name="twitter:description" content={socialDescription} />
     <link rel="icon" type="image/png" href="/icon.png" />
-    <link rel="canonical" href={canonicalUrl} />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="preconnect" href="https://opendata.cbs.nl" crossorigin />
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    {noindex ? (
+      <meta name="robots" content="noindex" />
+    ) : (
+      <>
+        <meta name="keywords" content="inflatie, koopkracht, inflatie berekenen, inflatie calculator, CPI, consumentenprijsindex, Nederland, CBS, gulden inflatie, gulden" />
+        <meta property="og:title" content={socialTitle} />
+        <meta property="og:description" content={socialDescription} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={imageUrl} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={socialTitle} />
+        <meta name="twitter:description" content={socialDescription} />
+        <link rel="canonical" href={canonicalUrl} />
+        <link rel="preconnect" href="https://opendata.cbs.nl" crossorigin />
+        <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+      </>
+    )}
   </head>
   <body>
     <slot />

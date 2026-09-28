@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Served by Cloudflare's static asset handler for every unmatched path
+// (not_found_handling: "404-page" in wrangler.jsonc). It looks for a literal
+// dist/404.html, which Astro only produces for this root 404.astro.
+---
+
+<Layout
+  title="Pagina niet gevonden - Inflatie Berekenen"
+  description="Deze pagina bestaat niet."
+  noindex
+>
+  <main class="flex items-center justify-center p-4 lg:px-6 lg:pt-6">
+    <section class="container max-w-7xl rounded-md border border-blue-200 p-6 lg:p-8">
+      <h1 class="text-xl font-bold">Pagina niet gevonden</h1>
+      <p class="mt-2">
+        Deze pagina bestaat niet (meer). Ga terug naar de
+        <a href="/" class="text-blue-700 underline-offset-2 hover:underline">inflatiecalculator</a>.
+      </p>
+    </section>
+  </main>
+</Layout>
