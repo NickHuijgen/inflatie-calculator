@@ -69,12 +69,14 @@ export class InflationData {
         CPIMutation = round(CPIMutation * ((this.mutation(year, month)! / 100) + 1));
       }
     } else {
+      // Mirror of the forward branch: undo each year's mutation, then undo
+      // the euro conversion when stepping back from 2002 into 2001.
       for (let i = 0; i < Math.abs(yearDifference); i++) {
+        CPIMutation = round(CPIMutation / ((this.mutation(year, month)! / 100) + 1));
+
         if (year === EURO_INTRODUCTION_YEAR && conversion) {
           CPIMutation = round(CPIMutation * euroToGuilderConversionRate);
         }
-
-        CPIMutation = round(CPIMutation * (-Math.abs(this.mutation(year, month)! / 100) + 1));
 
         year--;
       }
