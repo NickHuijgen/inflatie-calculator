@@ -204,7 +204,7 @@ registrar), so it's written down here.
 | Domain registration | Hostnet | `inflatie-berekenen.nl`. Only the nameservers are set here; they point at Cloudflare. |
 | DNS | Cloudflare (zone `inflatie-berekenen.nl`) | The apex record is created and managed by the Worker's custom domain — don't add one by hand. `www` needs its own **proxied** (orange-cloud) record so the redirect below can act on it; it never reaches an origin, so a placeholder such as `AAAA www 100::` is enough. |
 | Hosting | Cloudflare Worker `inflatie-calculator` | Static assets only, configured by `wrangler.jsonc` (`name` must match the Worker's name in the dashboard). |
-| Build & deploy | Cloudflare Workers Builds, connected to the GitHub repo | Production branch `master`. Build command `npm run build`, deploy command `npx wrangler deploy`. Node version from `.node-version`. |
+| Build & deploy | Cloudflare Workers Builds, connected to the GitHub repo | Production branch `master`, automatic builds on. Build command `npm run build`, deploy command `npx wrangler deploy`. Node version from `.node-version`. The Cloudflare Workers and Pages GitHub App needs access to this repo — without it the first build works but pushes never trigger another one (happened during the migration). |
 | Custom domain | Worker → Settings → Domains & Routes | `inflatie-berekenen.nl` only. |
 | HTTPS | Zone → SSL/TLS → Edge Certificates | **Always Use HTTPS** on, so `http://` 301s to `https://` instead of serving a second copy of the page. |
 | `www` redirect | Zone → Rules → Redirect Rules | `www.inflatie-berekenen.nl/*` → `https://inflatie-berekenen.nl/${1}`, **301**, query string preserved (Cloudflare's "Redirect from WWW to root" template). The apex is the one canonical host — it's what `site` in `astro.config.mjs` and every canonical/og:url say, so `www` must redirect permanently rather than serve a duplicate copy. |
@@ -232,18 +232,6 @@ In the repo:
   (`npx wrangler deploy`) works too, but needs `wrangler login` and
   bypasses the Git-connected build; prefer pushing.
 
-**Migration status (2026-09-28):** moved off GitHub Pages in commit
-`ec95491`. Done: nameservers switched to Cloudflare, repo connected in
-Workers Builds, apex custom domain serving the site, www redirect rule
-in place, Search Console TXT record present in the Cloudflare zone.
-Still to do: add the proxied `www` DNS record (without it `www` doesn't
-resolve, so the redirect rule never fires); turn on Always Use HTTPS
-(plain `http://` currently serves a 200 instead of redirecting); create
-the Deploy Hook and the `CLOUDFLARE_DEPLOY_HOOK_URL` secret; resubmit
-`sitemap-index.xml` in Search Console. Then check that `http://`,
-`https://www.` and `http://www.` all end up at
-`https://inflatie-berekenen.nl/` via 301s. Remove this paragraph once
-that's all done.
 
 ## Don't
 - Don't add dependencies without asking.
