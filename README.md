@@ -10,7 +10,7 @@ Voor de berekening is gebruik gemaakt van [deze](https://opendata.cbs.nl/#/CBS/n
 Dit project is open source zodat het voor iedereen duidelijk is hoe deze data precies gebruikt wordt, en de data en berekening kan verifiëren.
 
 Op de website worden nergens gebruikersgegevens vastgelegd.
-De dataset wordt direct van het cbs opgehaald.
+De dataset wordt bij het bouwen van de site (dagelijks) bij het CBS opgehaald.
 
 ## About
 
@@ -22,14 +22,14 @@ For the calculation [this](https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/tab
 This project is open source so everyone can see how the data is being used and can very the data and calculation are correct.
 
 No user data is collected on the website.
-The dataset is fetched directly from the cbs.
+The dataset is fetched from the CBS when the site is built (daily).
 
 ## Setup
 
 Built with [Astro](https://astro.build) and Tailwind CSS, with a small
 vanilla TypeScript script for the calculator — no client framework. The
-CBS data is fetched in the browser on every visit, so new figures show up
-without a rebuild.
+CBS data is fetched at build time and embedded in the page; a daily
+scheduled rebuild picks up new figures.
 
 Deployed to Cloudflare as Workers static assets (`wrangler.jsonc`):
 Cloudflare builds and deploys every push to `master`. The domain's DNS is

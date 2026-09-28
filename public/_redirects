@@ -1,0 +1,9 @@
+# Redirects, honoured by Cloudflare Workers static assets:
+# https://developers.cloudflare.com/workers/static-assets/redirects/
+
+# The sitemap used to be at /sitemap.xml (Nuxt); @astrojs/sitemap writes
+# sitemap-index.xml.
+/sitemap.xml /sitemap-index.xml 301
+
+# Otherwise Cloudflare's html_handling answers /index.html with a 307.
+/index.html / 301

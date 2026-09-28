@@ -7,6 +7,8 @@ export interface YearData {
 
 export const CBS_DATA_URL = 'https://opendata.cbs.nl/ODataFeed/odata/70936ned/UntypedDataSet?%24format=json';
 export const CBS_DATASET_URL = 'https://opendata.cbs.nl/#/CBS/nl/dataset/70936ned/table?ts=1664823822870';
+export const CBS_DATASET_INFO_URL = 'https://opendata.cbs.nl/ODataApi/odata/70936ned/TableInfos?$format=json';
+export const CBS_DATASET_TITLE = 'Jaarmutatie consumentenprijsindex; vanaf 1963';
 export const FIRST_YEAR = 1963;
 
 /** CBS period suffixes and their Dutch labels, in select order. */
@@ -43,6 +45,25 @@ export async function fetchInflationData(): Promise<InflationData> {
   return new InflationData(json.value);
 }
 
+/** When CBS last updated the dataset, e.g. "2026-09-08T06:30:00". */
+export async function fetchDatasetModified(): Promise<Date> {
+  const response = await fetch(CBS_DATASET_INFO_URL);
+
+  if (!response.ok) {
+    throw new Error(`CBS table info request failed: ${response.status} ${response.statusText}`);
+  }
+
+  const json: { value: { Modified: string }[] } = await response.json();
+
+  return new Date(json.value[0].Modified);
+}
+
+/**
+ * Compact form of the data for embedding in the page: [period, mutation]
+ * pairs, e.g. ["1963MM01", "3.9"]. `InflationData.fromCompact` reads it back.
+ */
+export type CompactData = [string, string][];
+
 export class InflationData {
   private readonly byPeriod: Map<string, YearData>;
   readonly latest: YearData | undefined;
@@ -50,6 +71,14 @@ export class InflationData {
   constructor(items: YearData[]) {
     this.byPeriod = new Map(items.map(item => [item.Perioden, item]));
     this.latest = items[items.length - 1];
+  }
+
+  static fromCompact(rows: CompactData): InflationData {
+    return new InflationData(rows.map(([Perioden, JaarmutatieCPI_1], ID) => ({ ID, Perioden, JaarmutatieCPI_1, JaarmutatieCPIAfgeleid_2: null })));
+  }
+
+  toCompact(): CompactData {
+    return [...this.byPeriod.values()].map(item => [item.Perioden, item.JaarmutatieCPI_1.trim()]);
   }
 
   get latestYear(): number {
@@ -186,7 +215,7 @@ export function round(number: number, decimals: number = 2): number {
 }
 
 const amountFormat = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const percentFormat = new Intl.NumberFormat('nl-NL', { maximumFractionDigits: 2 });
+const percentFormat = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 /** Dutch notation: 1234.5 → "1.234,50". */
 export function formatAmount(number: number): string {
@@ -198,7 +227,7 @@ export function formatMoney(number: number, year: number): string {
   return `${currencySymbol(year)}\u00a0${formatAmount(number)}`;
 }
 
-/** Dutch notation without the sign: 39.28 → "39,28". */
+/** Dutch notation, always two decimals: 39.28 → "39,28", 3.3 → "3,30". */
 export function formatPercent(number: number): string {
   return percentFormat.format(number);
 }

@@ -1,6 +1,17 @@
 # Custom headers, honoured by Cloudflare Workers static assets (see
 # wrangler.jsonc): https://developers.cloudflare.com/workers/static-assets/headers/
-#
+# Headers from every matching rule are combined.
+
+# Security headers for every response. No Content-Security-Policy on
+# purpose: Cloudflare injects its own scripts/headers (e.g. speculation
+# rules), and a CSP that breaks those can't be tested locally.
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+
 # Everything under /_astro/ is content-hashed by Astro's build, so a
 # changed file always gets a new URL and these can be cached for a year
 # without revalidation.

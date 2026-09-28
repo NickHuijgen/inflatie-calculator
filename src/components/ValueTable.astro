@@ -1,0 +1,34 @@
+---
+import { formatMoney, formatPercent } from '../lib/inflation';
+
+interface Props {
+  caption: string;
+  amount: number;
+  endYear: number;
+  rows: { year: number; value: number; inflation: number }[];
+}
+
+const { caption, amount, endYear, rows } = Astro.props;
+---
+
+<table class="w-full text-left tabular-nums">
+  <caption class="sr-only">{caption}</caption>
+  <thead>
+    <tr class="border-b border-blue-200">
+      <th scope="col" class="py-2 pr-2 font-semibold">Jaar</th>
+      <th scope="col" class="py-2 pr-2 font-semibold">Toen</th>
+      <th scope="col" class="py-2 pr-2 font-semibold">Nu waard</th>
+      <th scope="col" class="py-2 text-right font-semibold">Prijsstijging</th>
+    </tr>
+  </thead>
+  <tbody>
+    {rows.map(row => (
+      <tr id={`jaar-${row.year}`} class="border-b border-gray-100 target:bg-yellow-50">
+        <th scope="row" class="py-1.5 pr-2 font-normal">{row.year}</th>
+        <td class="py-1.5 pr-2">{formatMoney(amount, row.year)}</td>
+        <td class="py-1.5 pr-2 font-semibold">{formatMoney(row.value, endYear)}</td>
+        <td class="py-1.5 text-right">{formatPercent(row.inflation)}%</td>
+      </tr>
+    ))}
+  </tbody>
+</table>

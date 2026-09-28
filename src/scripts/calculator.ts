@@ -1,7 +1,8 @@
 import {
   FIRST_YEAR,
   InflationData,
-  fetchInflationData,
+  MONTHS,
+  type CompactData,
   formatAmount,
   formatMoney,
   formatPercent,
@@ -17,19 +18,39 @@ const startYearInput = element<HTMLInputElement>('input-start-year');
 const endYearInput = element<HTMLInputElement>('input-end-year');
 const monthSelect = element<HTMLSelectElement>('select-month');
 const switchButton = element<HTMLButtonElement>('switch-years');
+const shareButton = element<HTMLButtonElement>('share-result');
 
 const result = element('result');
-const resultInvalid = element('result-invalid');
-const resultError = element('result-error');
+const resultMissing = element('result-missing');
+const resultStatus = element('result-status');
+const shareFeedback = element('share-feedback');
 
-let data: InflationData;
+// The build embeds the CBS data it rendered the page with (see index.astro),
+// so the calculator works immediately and never depends on CBS being up.
+const data = InflationData.fromCompact(JSON.parse(element('cbs-data').textContent!) as CompactData);
 
-function showState(state: 'result' | 'invalid'): void {
-  result.hidden = state !== 'result';
-  resultInvalid.hidden = state !== 'invalid';
+// Shareable URLs: ?bedrag=100&van=1990&naar=2026&maand=08 (or maand=jaar).
+const PARAMS = { amount: 'bedrag', startYear: 'van', endYear: 'naar', month: 'maand' } as const;
+
+function monthToParam(month: string): string {
+  return month === 'JJ00' ? 'jaar' : month.substring(2);
 }
 
-function render(): void {
+function paramToMonth(value: string): string | undefined {
+  const month = value === 'jaar' ? 'JJ00' : `MM${value.padStart(2, '0')}`;
+
+  return MONTHS.some(([code]) => code === month) ? month : undefined;
+}
+
+function monthLabel(month: string): string {
+  return MONTHS.find(([code]) => code === month)?.[1].toLowerCase() ?? month;
+}
+
+/**
+ * Recalculates and updates the result. Returns a one-sentence summary when
+ * the inputs are valid, for the status announcement and the share text.
+ */
+function render(): string | undefined {
   const amount = parseAmount(amountInput.value);
   const startYear = startYearInput.valueAsNumber;
   const endYear = endYearInput.valueAsNumber;
@@ -38,9 +59,23 @@ function render(): void {
   const output = data.output(amount, startYear, endYear, month);
 
   if (!(output > 0)) {
-    showState('invalid');
+    // A valid year that just has no figures for this month (the current
+    // year's later months, or its yearly average) gets an explanation.
+    // Anything else is a half-typed value: dim the last result until the
+    // field is left, when resetBadInputs() corrects it.
+    const missingYear = [startYear, endYear].find(year => year >= FIRST_YEAR && year <= data.latestYear && !data.has(year, month));
 
-    return;
+    if (missingYear !== undefined && amount > 0) {
+      resultMissing.textContent = month === 'JJ00'
+        ? `Voor ${missingYear} is nog geen jaargemiddelde beschikbaar. Kies een maand of een eerder jaar.`
+        : `Voor ${monthLabel(month)} ${missingYear} zijn nog geen cijfers. De nieuwste cijfers zijn van ${data.latestPeriodLabel}.`;
+      resultMissing.hidden = false;
+      result.hidden = true;
+    } else {
+      result.classList.add('opacity-40');
+    }
+
+    return undefined;
   }
 
   element('result-input').textContent = formatMoney(amount, startYear);
@@ -62,23 +97,22 @@ function render(): void {
   element('result-inflation').textContent = formatPercent(Math.abs(inflation));
   element('result-average').textContent = formatPercent(data.averageInflation(fromYear, toYear, month));
 
-  showState('result');
+  result.hidden = false;
+  result.classList.remove('opacity-40');
+  resultMissing.hidden = true;
+
+  return `${formatMoney(amount, startYear)} uit ${startYear} heeft in ${endYear} een koopkracht van ${formatMoney(output, endYear)}.`;
 }
 
 function clampYear(input: HTMLInputElement): void {
-  const latestYear = data.latestYear;
-  let year = input.valueAsNumber;
+  let year = Math.round(input.valueAsNumber);
 
   if (Number.isNaN(year) || year < FIRST_YEAR) {
     year = FIRST_YEAR;
   }
 
-  if (year >= latestYear) {
-    year = latestYear;
-
-    if (!data.has(year, monthSelect.value)) {
-      monthSelect.value = data.latestMonth;
-    }
+  if (year > data.latestYear) {
+    year = data.latestYear;
   }
 
   input.valueAsNumber = year;
@@ -88,56 +122,122 @@ function resetBadInputs(): void {
   const amount = parseAmount(amountInput.value);
 
   amountInput.value = formatAmount(amount > 0 ? amount : 1);
-
   clampYear(startYearInput);
   clampYear(endYearInput);
-
-  render();
 }
 
-function switchYears(): void {
-  [startYearInput.value, endYearInput.value] = [endYearInput.value, startYearInput.value];
-
-  render();
-}
-
-async function init(): Promise<void> {
-  try {
-    data = await fetchInflationData();
-  } catch (error) {
-    // The build-time result stays visible; the inputs stay disabled.
-    console.error(error);
-    resultError.hidden = false;
-
-    return;
-  }
-
-  // The page was rendered with build-time data. If CBS has published since,
-  // move the defaults to the newest period — unless the visitor already
-  // changed something while the data was loading.
-  const untouched = [startYearInput, endYearInput].every(input => input.value === input.defaultValue)
+function isDefault(): boolean {
+  return [amountInput, startYearInput, endYearInput].every(input => parseAmount(input.value) === parseAmount(input.defaultValue))
     && [...monthSelect.options].every(option => option.selected === option.defaultSelected);
+}
 
-  if (data.latest) {
-    element('latest-period').textContent = data.latestPeriodLabel;
+/** Mirrors the form into the address bar so the result can be shared. */
+function updateUrl(): void {
+  const url = new URL(location.href);
+  const values = {
+    [PARAMS.amount]: String(parseAmount(amountInput.value)),
+    [PARAMS.startYear]: startYearInput.value,
+    [PARAMS.endYear]: endYearInput.value,
+    [PARAMS.month]: monthToParam(monthSelect.value),
+  };
+  const clear = isDefault();
 
-    if (untouched) {
-      endYearInput.valueAsNumber = data.latestYear;
-      startYearInput.valueAsNumber = data.latestYear - 10;
-      monthSelect.value = data.latestMonth;
+  for (const [param, value] of Object.entries(values)) {
+    if (clear) {
+      url.searchParams.delete(param);
+    } else {
+      url.searchParams.set(param, value);
     }
   }
 
-  for (const input of [amountInput, startYearInput, endYearInput]) {
-    input.disabled = false;
-    input.addEventListener('input', render);
-    input.addEventListener('blur', resetBadInputs);
-  }
-
-  monthSelect.addEventListener('change', render);
-  switchButton.addEventListener('click', switchYears);
-
-  render();
+  history.replaceState(history.state, '', url);
 }
 
-init();
+/** Called when a value is committed (field left, select changed, swap). */
+function commit(): void {
+  resetBadInputs();
+
+  const summary = render();
+
+  updateUrl();
+  shareFeedback.textContent = '';
+  resultStatus.textContent = summary ?? resultMissing.textContent ?? '';
+}
+
+function applyUrlParams(): void {
+  const params = new URLSearchParams(location.search);
+  const amount = parseAmount(params.get(PARAMS.amount) ?? '');
+  const startYear = parseInt(params.get(PARAMS.startYear) ?? '');
+  const endYear = parseInt(params.get(PARAMS.endYear) ?? '');
+  const month = paramToMonth(params.get(PARAMS.month) ?? '');
+
+  if (amount > 0) {
+    amountInput.value = formatAmount(amount);
+  }
+
+  if (!Number.isNaN(startYear)) {
+    startYearInput.valueAsNumber = startYear;
+  }
+
+  if (!Number.isNaN(endYear)) {
+    endYearInput.valueAsNumber = endYear;
+  }
+
+  if (month) {
+    monthSelect.value = month;
+  }
+
+  resetBadInputs();
+}
+
+async function share(): Promise<void> {
+  const text = render();
+  const url = location.href;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: document.title, text, url });
+
+      return;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        return;
+      }
+    }
+  }
+
+  try {
+    await navigator.clipboard.writeText(url);
+    shareFeedback.textContent = 'Link gekopieerd.';
+  } catch {
+    shareFeedback.textContent = 'Kopiëren lukte niet. Kopieer de link uit de adresbalk.';
+  }
+}
+
+if (location.search) {
+  applyUrlParams();
+}
+
+// Live update while typing (visual only); announce and update the URL only
+// once a value is committed, so a screen reader isn't interrupted per key.
+for (const input of [amountInput, startYearInput, endYearInput]) {
+  input.addEventListener('input', () => render());
+  input.addEventListener('change', commit);
+}
+
+monthSelect.addEventListener('change', commit);
+
+switchButton.addEventListener('click', () => {
+  [startYearInput.value, endYearInput.value] = [endYearInput.value, startYearInput.value];
+  commit();
+});
+
+shareButton.addEventListener('click', share);
+
+// Enter in a field would otherwise submit the form and reload the page.
+element<HTMLFormElement>('calculator').addEventListener('submit', event => {
+  event.preventDefault();
+  commit();
+});
+
+render();

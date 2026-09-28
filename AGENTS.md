@@ -74,7 +74,9 @@ these fail a build.
 
 | If you change… | …also check | Why |
 |---|---|---|
-| An element `id` in `src/pages/index.astro` | The matching `element()` call in `src/scripts/calculator.ts` | The script looks every element up by id and casts the result. A renamed id is `null` at runtime and the calculator stays stuck on "Aan het laden" — `astro check` can't see it. |
+| An element `id` in `src/pages/index.astro` | The matching `element()` call in `src/scripts/calculator.ts` | The script looks every element up by id and casts the result. A renamed id is `null` at runtime and the script throws on load, leaving a dead calculator — `astro check` can't see it. |
+| The shareable URL parameters (`PARAMS` in `calculator.ts`: `bedrag`, `van`, `naar`, `maand`) | Nothing in code — but links people have already shared | Renaming a parameter silently breaks every shared link. Only ever add parameters; keep reading old names if one must change. |
+| `public/_redirects` | That the target exists in `dist/` | Cloudflare applies these before the static assets; a redirect to a missing file just becomes a redirect to a 404. |
 | The `<option>` values in the month `<select>` (`index.astro`) | The CBS `Perioden` format (`1963MM01`, `2025JJ00`) | Lookups are `year + month` string concatenations against that key. `JJ00` is the yearly average, `MMxx` a month. |
 | The sitemap integration or its output name | The `Sitemap:` line in `public/robots.txt` | `@astrojs/sitemap` writes `sitemap-index.xml` (not `sitemap.xml`); robots.txt names it by hand. |
 | `site` in `astro.config.mjs` | The custom domain attached to the Worker in Cloudflare | Canonical, `og:url` and `og:image` are all derived from `site` (`Layout.astro`), so it's the one place in code — but the domain actually served is configured in Cloudflare. |
@@ -88,17 +90,18 @@ these fail a build.
 - `src/lib/inflation.ts` is pure: no DOM access. All calculation lives
   there; `calculator.ts` only reads inputs, calls it, and writes text.
   Keep it that way so the logic stays testable outside a browser.
-- CBS data is fetched **twice**, by the same `fetchInflationData()`:
-  - **At build time**, in `index.astro`'s frontmatter, to render the
-    default result, the "Wat is geld van vroeger nu waard?" table and the
-    latest data period as static HTML. A CBS failure fails the build on
-    purpose, so the previous deployment stays live rather than shipping a
-    page without data. A daily scheduled rebuild keeps this copy current
-    (see Hosting).
-  - **In the browser** on every visit, so the calculator always uses the
-    newest figures even between rebuilds. If CBS has published since the
-    build and the visitor hasn't touched the form yet, the script moves
-    the defaults to the newest period.
+- CBS data is fetched **only at build time** (`fetchInflationData()` and
+  `fetchDatasetModified()` in `index.astro`'s frontmatter). That one copy
+  renders the default result, the "Wat is geld van vroeger nu waard?"
+  table, the dates, and is embedded in the page as compact JSON
+  (`<script type="application/json" id="cbs-data">`, via
+  `InflationData.toCompact()`/`fromCompact()`) for the calculator. The
+  browser never contacts CBS: the calculator works instantly and doesn't
+  break when CBS is slow or down. A CBS failure fails the *build* on
+  purpose, so the previous deployment stays live. The daily scheduled
+  rebuild (see Hosting) keeps the data at most a day behind — which is
+  what the FAQ's "Worden de cijfers bijgewerkt?" promises; keep them in
+  sync.
 - Numbers are shown in Dutch notation (`€ 1.234,50`, `39,28%`) through
   `formatMoney`/`formatAmount`/`formatPercent` in `inflation.ts` — never
   `toFixed()` or `String()` in the UI. The amount field is
@@ -110,11 +113,28 @@ these fail a build.
 - UI copy is Dutch and lives directly in `index.astro`. There is no
   i18n layer, and none is needed for one language.
 - The page must be fully readable before the script runs: all content,
-  including the default result, is static HTML, and the inputs start
-  `disabled` until the browser has its own data. The results area shows
-  either the result or the invalid-input message (`showState()`). If the
-  browser's CBS fetch fails, the error message appears *below* the
-  build-time result, which stays visible, and the inputs stay disabled.
+  including the default result, is static HTML.
+- Result behaviour (`render()`/`commit()` in `calculator.ts`):
+  - While typing (`input`), the result updates visually. A half-typed or
+    out-of-range value dims the last result (`opacity-40`) rather than
+    flashing an error; leaving the field (`change`) runs
+    `resetBadInputs()`, which corrects it.
+  - A valid year with no figures for the chosen month (later months of
+    the current year, or its yearly average) shows a specific message in
+    `#result-missing` instead.
+  - Screen readers hear the result via the `role="status"` element
+    `#result-status`, updated only on `change` — not on every keystroke.
+  - `change` also mirrors the form into the URL (`?bedrag=…&van=…&naar=…
+    &maand=08|jaar`) with `replaceState`; defaults give a clean `/`. The
+    page reads these on load, so results can be shared. Canonical stays
+    `/`, so parameter URLs never compete in search.
+  - "Deel dit resultaat" uses the native share sheet
+    (`navigator.share`) where available, else copies the link.
+- Every focusable element needs a visible focus style: inputs use
+  `focus:outline-*`, buttons/links the `focusRing` classes in
+  `index.astro`. Field borders are `border-gray-500` (≥ 3:1 against
+  white). Lighthouse does not check either — it scored 100 while both
+  were missing.
 
 ## Calculation
 - Dataset: CBS 70936ned (`CBS_DATA_URL` / `CBS_DATASET_URL` in
@@ -174,8 +194,16 @@ these fail a build.
 ## SEO
 - All `<head>` metadata lives in `src/layouts/Layout.astro`: title and
   description (props), Open Graph / Twitter tags, canonical, icons, and
-  the `WebApplication` JSON-LD. Page-specific strings are passed in from
-  `index.astro`.
+  the `WebApplication` JSON-LD (free `offers`, `author`). `index.astro`
+  adds page-specific JSON-LD through the `schema` prop: `dateModified`
+  (CBS's own last-update date of the dataset — not the build date, which
+  changes daily and would misrepresent freshness) and `isBasedOn` (the
+  CBS dataset). No `meta keywords` — search engines ignore it.
+- Trust signals, visible on the page: the source line under the result
+  ("Bron: CBS, cijfers tot en met … (bijgewerkt op …)"), and the author
+  linking to https://nickhuijgen.nl/.
+- Each table row has an id (`#jaar-1980`) so a specific year can be
+  linked to directly; the targeted row is highlighted.
 - The social image is `public/og-image.png` (1200×630 PNG, a
   `summary_large_image` card). Its source is `design/og-image.html`, with
   the command to regenerate it in a comment at the top. The
@@ -212,9 +240,17 @@ registrar), so it's written down here.
 In the repo:
 - `wrangler.jsonc` — Worker name, `assets.directory: ./dist`, and
   `not_found_handling: "404-page"` (see Invariants).
-- `public/_headers` (Cloudflare syntax) caches `/_astro/*` for a year as
-  `immutable` — safe because every file there is content-hashed.
-  Everything else gets Cloudflare's default `max-age=0, must-revalidate`.
+- `public/_headers` (Cloudflare syntax): security headers on every
+  response (HSTS, `nosniff`, `Referrer-Policy`, `X-Frame-Options`,
+  `Permissions-Policy`), and a one-year `immutable` cache for `/_astro/*`
+  — safe because every file there is content-hashed. Everything else
+  gets Cloudflare's default `max-age=0, must-revalidate`. There is
+  deliberately no Content-Security-Policy: Cloudflare injects its own
+  scripts/headers (speculation rules), and a CSP that breaks those can't
+  be tested locally.
+- `public/_redirects`: `/sitemap.xml` → `/sitemap-index.xml` (the old
+  Nuxt sitemap URL) and `/index.html` → `/` as a 301 (Cloudflare would
+  otherwise answer with a 307).
 - `.node-version` — Node for Cloudflare's build.
 - CI is Cloudflare's build: its status shows on each commit in GitHub
   and in the Worker's Deployments tab.
@@ -260,22 +296,26 @@ Before calling a change done:
 - Load the built page (`npm run preview`) and exercise the calculator,
   not just the build: default result on load, a pre-2002 → post-2002
   calculation (`ƒ` → `€`), the swap button, Dutch input (`1.234,50` is
-  read as 1234.5 and reformatted on blur), amount `0` or text (shows
-  the invalid message; resets to `1,00` on blur), years outside
-  1963–latest (clamped on blur), and an empty year field.
+  read as 1234.5 and reformatted on blur), amount `0` or text (dims;
+  resets to `1,00` on blur), years outside 1963–latest (clamped on
+  blur), an empty year field, a month without data (e.g. December of
+  the current year: explains why), Enter in a field (must not reload),
+  a URL with parameters (`/?bedrag=250&van=1980&naar=2026&maand=08`)
+  loading that result, and the share button (stub `navigator.share`
+  and `navigator.clipboard` in the console rather than opening the real
+  share sheet). Tab through the form and check focus is always visible.
 - Check the static `dist/index.html` too — it's what search engines
   see first: the default result, the latest period and the table must
   all be there with real numbers. Astro drops the space at a line break
   that directly follows or precedes an `{expression}` or a tag in some
-  positions; this has already produced "vandeze dataset" and
-  "1963zie" once each, so read the rendered text around any
-  expression you add.
-- If you touched the fetch or loading states: block
-  `opendata.cbs.nl` and check the error message shows instead of an
-  endless "Aan het laden".
+  positions; this has already produced "vandeze dataset", "1963zie",
+  "deCBS-dataset", "dataugustus" and "Nu waarddaarnaast". Scan the built
+  HTML for text directly touching an inline tag
+  (`[letter]<a|strong|span|time` or `</a|strong|span|time>[letter]`)
+  after any copy change.
 - If you touched `inflation.ts`: the full old-vs-new diff described
   under Calculation.
-- If you touched `wrangler.jsonc`, `_headers` or the 404 page: run
+- If you touched `wrangler.jsonc`, `_headers`, `_redirects` or the 404 page: run
   `npx wrangler dev --port 8787 --local` against a fresh `npm run build`
   (`astro dev`/`astro preview` don't apply Cloudflare's asset handling)
   and check `/` is 200, an unknown path is 404 *with* the custom page's
