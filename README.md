@@ -43,7 +43,9 @@ All commands run from the project root:
 | :--- | :--- |
 | `npm install` | Install dependencies |
 | `npm run dev` | Start the dev server at `localhost:4321` |
-| `npm run build` | Type-check (`astro check`) and build the site to `./dist/` |
+| `npm run build` | Build the site to `./dist/` |
+| `npm run check` | Type-check `.astro`/`.ts` files (`astro check`) |
+| `npm run verify` | `check` then `build` — run this before pushing |
 | `npm run preview` | Preview the build locally |
 | `npm run lint` | Lint and auto-fix with ESLint |
 | `npx wrangler dev --port 8787 --local` | Serve `./dist/` the way Cloudflare does (404 page, `_headers`) — run `npm run build` first |

@@ -28,7 +28,8 @@ export const MONTHS: [string, string][] = [
 export const EURO_INTRODUCTION_YEAR = 2002;
 
 const guilderToEuroConversionRate = 0.453780;
-const euroToGuilderConversionRate = 2.20371;
+/** The fixed euro rate: 1 euro = 2,20371 gulden. */
+export const euroToGuilderConversionRate = 2.20371;
 
 export async function fetchInflationData(): Promise<InflationData> {
   const response = await fetch(CBS_DATA_URL);

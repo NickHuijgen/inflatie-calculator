@@ -47,8 +47,20 @@ function render(): void {
   element('result-output').textContent = formatMoney(output, endYear);
   element('result-start-year').textContent = String(startYear);
   element('result-end-year').textContent = String(endYear);
-  element('result-inflation').textContent = formatPercent(data.inflationPercentage(startYear, endYear, month));
-  element('result-average').textContent = formatPercent(data.averageInflation(startYear, endYear, month));
+
+  // Price change is always described forwards in time, from the earlier to
+  // the later year, whichever order the visitor entered them in.
+  const fromYear = Math.min(startYear, endYear);
+  const toYear = Math.max(startYear, endYear);
+  const inflation = data.inflationPercentage(fromYear, toYear, month);
+
+  element('result-change').hidden = fromYear === toYear;
+  element('result-same-year').hidden = fromYear !== toYear;
+  element('result-from-year').textContent = String(fromYear);
+  element('result-to-year').textContent = String(toYear);
+  element('result-direction').textContent = inflation < 0 ? 'daalden' : 'stegen';
+  element('result-inflation').textContent = formatPercent(Math.abs(inflation));
+  element('result-average').textContent = formatPercent(data.averageInflation(fromYear, toYear, month));
 
   showState('result');
 }
@@ -107,9 +119,7 @@ async function init(): Promise<void> {
     && [...monthSelect.options].every(option => option.selected === option.defaultSelected);
 
   if (data.latest) {
-    const period = data.latest.Perioden.substring(6, 8);
-
-    element('latest-period').textContent = (period !== '00' ? `${period}-` : '') + data.latestYear;
+    element('latest-period').textContent = data.latestPeriodLabel;
 
     if (untouched) {
       endYearInput.valueAsNumber = data.latestYear;

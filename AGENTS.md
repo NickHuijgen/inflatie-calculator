@@ -131,6 +131,12 @@ these fail a build.
   rounding (≤ ~0.1% across the whole dataset). Until September 2026 it
   multiplied by `1 − |mutation|` instead, which made €100 in 2026 →
   ƒ88.07 in 1990 rather than ≈ƒ91.3, and counted deflation as inflation.
+- The result describes the price change **forwards in time**, from the
+  earlier to the later year, whatever order the visitor entered the
+  years in ("Tussen 1990 en 2026 stegen de prijzen met 141,32%"). The
+  converted amount itself still goes in the direction entered. This
+  replaced a "totale inflatie van -58,58%" wording that read as
+  deflation when it just meant "going back in time".
 - **Known, not fixed:** "Gemiddeld per jaar" is the arithmetic mean of
   the yearly mutations, not the geometric (compound) average. It
   changes numbers visitors already see, so don't "fix" it incidentally —
@@ -253,9 +259,14 @@ Before calling a change done:
   tags and JSON-LD (see Priorities). A Lighthouse run in mobile mode is
   the quickest way to catch an SEO, performance or tap-target
   regression.
-- `npm run build` — runs `astro check` then `astro build`; both must
-  pass with 0 errors. CI runs the same command, so a type error blocks
-  the deploy.
+- `npm run verify` — `astro check` then `astro build`, the same setup as
+  the portfolio project. This is the normal way to run both: `check`
+  first, because `build` on its own is not a safety net for type errors
+  (`astro build` does not type-check). 0 errors, warnings and hints
+  expected. Deliberately *not* wired into `build` itself, matching the
+  portfolio — which means Cloudflare (which runs `npm run build`) will
+  deploy code that fails `check`, so run `verify` before every push.
+- `npm run check` / `npm run build` — the two halves on their own.
 - `npm run lint` — ESLint (flat config, `eslint-plugin-astro`,
   typescript-eslint). Note that it runs with `--fix`.
 - Load the built page (`npm run preview`) and exercise the calculator,

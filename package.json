@@ -8,8 +8,11 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
+    "verify": "astro check && astro build",
+    "astro": "astro",
     "lint": "eslint --fix"
   },
   "dependencies": {
