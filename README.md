@@ -33,7 +33,7 @@ without a rebuild.
 
 Deployed to Cloudflare as Workers static assets (`wrangler.jsonc`):
 Cloudflare builds and deploys every push to `master`. The domain's DNS is
-on Cloudflare; the registrar is Hostnet. See the Hosting section of
+on Cloudflare (`www` redirects to the apex); the registrar is Hostnet. See the Hosting section of
 [`AGENTS.md`](./AGENTS.md) for the full setup — it's the primary reference
 for working on this codebase, human or AI.
 

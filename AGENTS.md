@@ -34,9 +34,36 @@ ported unchanged on purpose and verified to produce identical output to
 the old Vue code for every year/month combination; the backwards
 calculation was fixed afterwards (see Calculation).
 
-Design and build mobile-first and accessibility-first. When a layout or
-interaction choice has a mobile/accessible default and a
-desktop/visual-only default, pick the former.
+## Priorities
+
+**SEO and mobile usability are the top priorities for this site.** It
+lives on organic search traffic (people searching "inflatie berekenen"
+and similar), and most of those visitors are on phones. When a change
+trades either of these off against anything else — visual polish, code
+elegance, a new feature — they win. If a request would hurt either one,
+say so before doing it.
+
+What that means in practice here:
+- **Content is static HTML.** Everything a search engine should read
+  (headings, the info text, the FAQ) is rendered at build time in
+  `index.astro`. Only the calculator's *numbers* depend on JS. Never move
+  indexable copy into client-side rendering or behind a fetch.
+- **Don't break the head.** Title, description, canonical, Open Graph and
+  JSON-LD (`Layout.astro`, see SEO) must survive every change. The same
+  goes for the sitemap and `robots.txt`, and the URL `/` itself: never
+  change the URL of an indexed page without a redirect.
+- **Speed is part of both.** Keep the page light: no client framework,
+  no new render-blocking resources, no web fonts or large images
+  without a clear reason. Don't let content shift around while the CBS
+  data loads.
+- **Mobile first.** Design and check at a real phone width (360–430px)
+  before desktop. Tap targets must be comfortably large, text readable
+  without zooming, and no horizontal scrolling. Inputs should bring up
+  the right keyboard (numeric for amounts and years).
+- **Accessible by default**, which overlaps with both: real labels,
+  real buttons, sufficient contrast. When a choice has a
+  mobile/accessible default and a desktop/visual-only default, pick the
+  former.
 
 ## Invariants
 
@@ -135,10 +162,11 @@ registrar), so it's written down here.
 | Piece | Where | Setting |
 |---|---|---|
 | Domain registration | Hostnet | `inflatie-berekenen.nl`. Only the nameservers are set here; they point at Cloudflare. |
-| DNS | Cloudflare (zone `inflatie-berekenen.nl`) | Records are managed by the Worker's custom domains — don't add A/CNAME records for the apex or `www` by hand. |
+| DNS | Cloudflare (zone `inflatie-berekenen.nl`) | The apex record is created and managed by the Worker's custom domain — don't add one by hand. `www` needs its own **proxied** (orange-cloud) record so the redirect below can act on it; it never reaches an origin, so a placeholder such as `AAAA www 100::` is enough. |
 | Hosting | Cloudflare Worker `inflatie-calculator` | Static assets only, configured by `wrangler.jsonc` (`name` must match the Worker's name in the dashboard). |
 | Build & deploy | Cloudflare Workers Builds, connected to the GitHub repo | Production branch `master`. Build command `npm run build`, deploy command `npx wrangler deploy`. Node version from `.node-version`. |
-| Custom domains | Worker → Settings → Domains & Routes | `inflatie-berekenen.nl`, plus `www.inflatie-berekenen.nl` (either as a second custom domain or redirected to the apex). |
+| Custom domain | Worker → Settings → Domains & Routes | `inflatie-berekenen.nl` only. |
+| `www` redirect | Zone → Rules → Redirect Rules | `www.inflatie-berekenen.nl/*` → `https://inflatie-berekenen.nl/${1}`, **301**, query string preserved (Cloudflare's "Redirect from WWW to root" template). The apex is the one canonical host — it's what `site` in `astro.config.mjs` and every canonical/og:url say, so `www` must redirect permanently rather than serve a duplicate copy. |
 
 In the repo:
 - `wrangler.jsonc` — Worker name, `assets.directory: ./dist`, and
@@ -156,12 +184,15 @@ In the repo:
   bypasses the Git-connected build; prefer pushing.
 
 **Migration status (2026-09-28):** moved off GitHub Pages in commit
-`ec95491`. Still to do: nameserver change at Hostnet propagating;
-then connect the repo in Workers Builds, attach the custom domains, and
-switch off GitHub Pages in the GitHub repo settings. Until the domain
-moves, `inflatie-berekenen.nl` is still served by GitHub Pages from the
-last build there (`6f85ca2`), and pushes don't deploy anywhere.
-Remove this paragraph once the migration is done.
+`ec95491`. Still to do, in order: the nameserver change at Hostnet
+propagating; connecting the repo in Workers Builds; attaching the apex
+custom domain; adding the `www` record and redirect rule; switching off
+GitHub Pages in the GitHub repo settings. Then check that `http://`,
+`https://www.` and `http://www.` all end up at
+`https://inflatie-berekenen.nl/` via 301s (one hop ideally, two at
+most). Until the domain moves, `inflatie-berekenen.nl` is still served
+by GitHub Pages from the last build there (`6f85ca2`), and pushes don't
+deploy anywhere. Remove this paragraph once the migration is done.
 
 ## Don't
 - Don't add dependencies without asking.
@@ -171,6 +202,12 @@ Remove this paragraph once the migration is done.
 ## Verification
 
 Before calling a change done:
+- If you touched anything visible or anything in `<head>`: check the page
+  at a phone width (~390px) as well as desktop, and confirm the built
+  `dist/index.html` still has its title, description, canonical, og:
+  tags and JSON-LD (see Priorities). A Lighthouse run in mobile mode is
+  the quickest way to catch an SEO, performance or tap-target
+  regression.
 - `npm run build` — runs `astro check` then `astro build`; both must
   pass with 0 errors. CI runs the same command, so a type error blocks
   the deploy.
