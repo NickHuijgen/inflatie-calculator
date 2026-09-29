@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "verify": "astro check && astro build",
+    "test": "node --test \"test/*.test.ts\"",
+    "verify": "astro check && npm test && astro build",
     "astro": "astro",
     "lint": "eslint --fix"
   },
