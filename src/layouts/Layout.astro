@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { SITE_NAME } from '../lib/schema';
 
 interface Props {
   title: string;
@@ -40,6 +41,7 @@ const imageUrl = new URL('/og-image.png', Astro.site);
         <meta property="og:title" content={socialTitle} />
         <meta property="og:description" content={socialDescription} />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={SITE_NAME} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:image:type" content="image/png" />

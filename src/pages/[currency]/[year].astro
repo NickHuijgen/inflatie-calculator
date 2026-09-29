@@ -12,7 +12,7 @@ import {
   formatMoney,
   formatPercent,
 } from '../../lib/inflation';
-import { SITE_NAME, breadcrumbSchema, webPageSchema } from '../../lib/schema';
+import { SITE_NAME, breadcrumbSchema, webPageSchema, websiteSchema } from '../../lib/schema';
 import { cardClass, focusRing, linkClass } from '../../lib/ui';
 import { currencyOf, yearPagePath, yearPageYears, type Currency } from '../../lib/year-pages';
 
@@ -89,8 +89,9 @@ const description = `${answer} De prijzen zijn sinds ${year} met ${formatPercent
 
 const pageUrl = new URL(Astro.url.pathname, Astro.site);
 const jsonLd = [
+  websiteSchema(Astro.site!),
   webPageSchema({ url: pageUrl, name: question, description, dateModified: datasetModified, site: Astro.site! }),
-  breadcrumbSchema([
+  breadcrumbSchema(pageUrl, [
     { name: SITE_NAME, url: new URL('/', Astro.site) },
     { name: question, url: pageUrl },
   ]),

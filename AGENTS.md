@@ -241,11 +241,33 @@ Two CBS datasets, both fetched at build time (URLs and titles in
 - All `<head>` metadata lives in `src/layouts/Layout.astro`: title and
   description (props), Open Graph / Twitter tags, canonical, icons, and
   whatever JSON-LD the page passes in its `jsonLd` prop. Every JSON-LD
-  object comes from `src/lib/schema.ts`: `WebApplication` on the
-  homepage (free `offers`, `author`), `WebPage` + `BreadcrumbList` on
-  year pages. Both carry `dateModified` (CBS's own last-update date of
-  the data — not the build date, which changes daily and would
-  misrepresent freshness) and `isBasedOn` (both CBS datasets). No
+  object comes from `src/lib/schema.ts`. The nodes are one graph, linked
+  by `@id` instead of repeating entities:
+  - `WebSite` (`/#website`) — on **every** indexable page, so the
+    `isPartOf` references resolve on the page itself. Google reads it on
+    the homepage to pick the site name it shows in results; the matching
+    signal in the head is `og:site_name`.
+  - Homepage: `WebPage` (`/#webpage`) → `mainEntity` → `WebApplication`
+    (`/#app`, free `offers`, `author`), which points back with
+    `mainEntityOfPage`.
+  - Year pages: `WebPage` (`<url>#webpage`) → `breadcrumb` →
+    `BreadcrumbList` (`<url>#breadcrumb`).
+
+  Two pairings have to hold, and **nothing checks them at build time**: a
+  page emitting `webPageSchema()` must emit `breadcrumbSchema()` too, and
+  `webApplicationSchema()` must be accompanied by `homePageSchema()`.
+  Drop one half and the other's `@id` reference points at a node that
+  isn't on the page.
+
+  `dateModified` (CBS's own last-update date of the data — not the build
+  date, which changes daily and would misrepresent freshness) is on every
+  node that has a body of content behind it. `isBasedOn` (both CBS
+  datasets) is on the `WebApplication` and on the year pages' `WebPage`;
+  the homepage's `WebPage` leaves it out because the `#app` node on that
+  same page already carries it. `WebSite` deliberately has no
+  `alternateName`: the bare domain is already Google's fallback for the
+  site name, and offering it as an alternate invites the SERP to show
+  `inflatie-berekenen.nl` instead of “Inflatie Berekenen”. No
   `meta keywords` — search engines ignore it.
 - `trailingSlash: 'always'` (astro.config.mjs): every page URL, canonical
   and sitemap entry ends in `/`, matching how Cloudflare serves
@@ -263,9 +285,12 @@ Two CBS datasets, both fetched at build time (URLs and titles in
 - Icons: `favicon.ico` (32×32) and `apple-touch-icon.png` (180×180) are
   both resized from `public/icon.png`.
 - Deliberately **not** used: FAQPage structured data (Google only shows
-  FAQ rich results for government and health sites) and ratings in the
-  JSON-LD (none are actually collected; adding them violates Google's
-  guidelines).
+  FAQ rich results for government and health sites), `QAPage` on the
+  year pages (Google scopes it to pages with user-submitted answers, so
+  self-authored content there is a guidelines risk), `potentialAction` /
+  SearchAction (the sitelinks searchbox was retired in 2024) and ratings
+  in the JSON-LD (none are actually collected; adding them violates
+  Google's guidelines).
 - The homepage's historical-values table is the overview for long-tail
   searches; each row links to that year's own page (see Routes), which
   is the page meant to rank for "wat is 100 gulden uit 1980 nu waard".

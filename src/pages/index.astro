@@ -14,7 +14,7 @@ import {
   euroToGuilderConversionRate,
   formatMoney,
 } from '../lib/inflation';
-import { webApplicationSchema } from '../lib/schema';
+import { homePageSchema, webApplicationSchema, websiteSchema } from '../lib/schema';
 import { focusRing, linkClass } from '../lib/ui';
 import { yearPagePath } from '../lib/year-pages';
 
@@ -44,16 +44,23 @@ const tableCaption = (currency: string) => `Waarde van ${currency} ${defaultAmou
 const guilderExample = historicalValues.find(row => row.year === 1980);
 const guilderRate = euroToGuilderConversionRate.toLocaleString('nl-NL', { maximumFractionDigits: 5 });
 
+const title = 'Inflatie Berekenen – Koopkracht van Gulden en Euro sinds 1900';
+const description = 'Bereken wat een bedrag van vroeger nu waard is. Gratis inflatiecalculator voor gulden en euro, met officiële CBS-cijfers van 1900 tot nu.';
+
 const datasetLinkText = `“${CBS_DATASET_TITLE}”`;
 const indexLinkText = `“${CBS_INDEX_TITLE}”`;
 ---
 
 <Layout
-  title="Inflatie Berekenen – Koopkracht van Gulden en Euro sinds 1900"
-  description="Bereken wat een bedrag van vroeger nu waard is. Gratis inflatiecalculator voor gulden en euro, met officiële CBS-cijfers van 1900 tot nu."
+  title={title}
+  description={description}
   socialTitle="Inflatie Berekenen – wat is je geld van vroeger nu waard?"
   socialDescription="Gratis inflatiecalculator voor gulden en euro, met officiële CBS-cijfers van 1900 tot nu."
-  jsonLd={[webApplicationSchema(Astro.site!, datasetModified)]}
+  jsonLd={[
+    websiteSchema(Astro.site!),
+    homePageSchema({ name: title, description, dateModified: datasetModified, site: Astro.site! }),
+    webApplicationSchema(Astro.site!, datasetModified),
+  ]}
 >
   <main class="flex items-center justify-center p-4 lg:px-6 lg:pt-6">
     <div class="container grid max-w-7xl gap-4 lg:gap-8 lg:grid-cols-2">
