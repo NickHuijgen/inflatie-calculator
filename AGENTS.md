@@ -60,7 +60,11 @@ What that means in practice here:
   data loads.
 - **Mobile first.** Design and check at a real phone width (360–430px)
   before desktop. Tap targets must be comfortably large, text readable
-  without zooming, and no horizontal scrolling. Inputs should bring up
+  without zooming, and no horizontal scrolling. Watch anything with a
+  `viewBox`: an SVG scales its text along with its geometry, so the
+  price chart is drawn at 380 units wide and capped there (`max-w`)
+  rather than drawn at 640 and scaled down, which rendered its axis
+  labels at ~5,8px on a phone. Inputs should bring up
   the right keyboard (numeric for amounts and years).
 - **Accessible by default**, which overlaps with both: real labels,
   real buttons, sufficient contrast. When a choice has a
@@ -70,16 +74,18 @@ What that means in practice here:
 ## Invariants
 
 Places that have to say the same thing or it silently breaks. None of
-these fail a build.
+these fail a build — but most are now checked by `npm test`
+(`test/invariants.test.ts`), marked **[test]** below. The unmarked ones
+are still on you.
 
 | If you change… | …also check | Why |
 |---|---|---|
-| An element `id` in `src/components/Calculator.astro` | The matching `element()` call in `src/scripts/calculator.ts` | The script looks every element up by id and casts the result. A renamed id is `null` at runtime and the script throws on load, leaving a dead calculator — `astro check` can't see it. Same reason there can be only **one** `<Calculator>` per page. |
-| An element `id` in `src/components/SalaryCalculator.astro` | The matching `element()` call in `src/scripts/salary.ts` | Exactly the same failure mode. Its ids are all `salary-`-prefixed so they can't collide with the other calculator's, but the two components still can't share a page: both embed the data as `<script id="cbs-data">`. **One data-embedding calculator per page.** |
-| An element the salary script writes into conditionally (the cao block, the keep-up block, the prompt that replaces it) | That `SalaryCalculator.astro` renders it **unconditionally** | The component hides those blocks with `hidden`, never with `{cond && …}`: an element that isn't in the static HTML is `null` when the script tries to fill it. Since "Salaris nu" ships empty, the keep-up sentences render with their value spans **blank** rather than with invented numbers — see the `keepUp` object in the frontmatter. The build throws instead if the defaults produce no figures at all. |
-| The nav links in `src/components/Header.astro` | That each `href` matches the page's real path, trailing slash and all | `aria-current="page"` is decided by comparing `Astro.url.pathname` with the link's own href (`trailingSlash: 'always'`), so a missing slash silently stops the current page from being marked. |
-| The year page URL scheme (`yearPagePath()` in `src/lib/year-pages.ts`) | The `/gulden/:year` and `/euro/:year` rules in `public/_redirects`, and `EURO_INTRODUCTION_YEAR` | Every link to a year page is built by `yearPagePath()`, and `getStaticPaths` uses the same `currencyOf()`, so those can't drift — but the redirects restate the two path prefixes by hand. |
-| The shareable URL parameters (`PARAMS` in `calculator.ts`: `bedrag`, `van`, `naar`, `maand`; `salary.ts` adds `nu`) | Nothing in code — but links people have already shared | Renaming a parameter silently breaks every shared link. Only ever add parameters; keep reading old names if one must change. The four shared names mean the same thing on both pages; keep it that way. |
+| **[test]** An element `id` in `src/components/Calculator.astro` | The matching `element()` call in `src/scripts/calculator.ts` | The script looks every element up by id and casts the result. A renamed id is `null` at runtime and the script throws on load, leaving a dead calculator — `astro check` can't see it. Same reason there can be only **one** `<Calculator>` per page. |
+| **[test]** An element `id` in `src/components/SalaryCalculator.astro` | The matching `element()` call in `src/scripts/salary.ts` | Exactly the same failure mode. Its ids are all `salary-`-prefixed so they can't collide with the other calculator's, but the two components still can't share a page: both embed the data as `<script id="cbs-data">`. **One data-embedding calculator per page.** |
+| **[test]** An element the salary script writes into conditionally (the cao block, the keep-up block, the prompt that replaces it) | That `SalaryCalculator.astro` renders it **unconditionally** | The component hides those blocks with `hidden`, never with `{cond && …}`: an element that isn't in the static HTML is `null` when the script tries to fill it. Since "Salaris nu" ships empty, the keep-up sentences render with their value spans **blank** rather than with invented numbers — see the `keepUp` object in the frontmatter. The build throws instead if the defaults produce no figures at all. |
+| **[test]** The nav links in `src/components/Header.astro` | That each `href` matches the page's real path, trailing slash and all | `aria-current="page"` is decided by comparing `Astro.url.pathname` with the link's own href (`trailingSlash: 'always'`), so a missing slash silently stops the current page from being marked. |
+| **[test]** The year page URL scheme (`yearPagePath()` in `src/lib/year-pages.ts`) | The `/gulden/:year` and `/euro/:year` rules in `public/_redirects`, and `EURO_INTRODUCTION_YEAR` | Every link to a year page is built by `yearPagePath()`, and `getStaticPaths` uses the same `currencyOf()`, so those can't drift — but the redirects restate the two path prefixes by hand. |
+| **[test]** The shareable URL parameters (`PARAMS` in `calculator.ts`: `bedrag`, `van`, `naar`, `maand`; `salary.ts` adds `nu`) | Nothing in code — but links people have already shared | Renaming a parameter silently breaks every shared link. Only ever add parameters; keep reading old names if one must change. The four shared names mean the same thing on both pages; keep it that way. |
 | `public/_redirects` | That the target exists in `dist/` | Cloudflare applies these before the static assets; a redirect to a missing file just becomes a redirect to a 404. |
 | The `<option>` values in the month `<select>` (`index.astro`) | The CBS `Perioden` format (`1963MM01`, `2025JJ00`) | Monthly lookups are `year + month` string concatenations against that key. `JJ00` means yearly average and goes to the `71905ned` index instead (`has()`, `priceFactor()`). |
 | The sitemap integration or its output name | The `Sitemap:` line in `public/robots.txt` | `@astrojs/sitemap` writes `sitemap-index.xml` (not `sitemap.xml`); robots.txt names it by hand. |
@@ -95,6 +101,33 @@ these fail a build.
   pieces both need — `element()`, the month↔URL-parameter mapping and
   `clampYear()` — live in `src/scripts/form.ts`. Everything that knows
   about a specific form's fields stays in that form's own script.
+- Internal imports inside `src/lib` and `src/scripts` carry the `.ts`
+  extension (`from './cao.ts'`). Vite and `astro check`
+  (`allowImportingTsExtensions`) both accept it, and it is what lets
+  `node --test` run the real modules without a loader or a bundler.
+  `.astro` files import without the extension, as before.
+- Every CBS request goes through `fetchJson()` in `src/lib/cbs.ts`, and
+  every JSON block embedded in a page through `embedJson()` in
+  `src/lib/embed.ts` (which escapes `<`, so a value containing
+  `</script>` could never end the block early).
+- **Nothing a CBS figure touches may reach a page as `NaN` or `∞`.**
+  `has()` asks whether the figure *parses*, not whether the key exists,
+  `output()` rejects a non-positive or non-finite amount and a
+  non-finite result, `inflationPercentage()` returns `NaN` rather than a
+  plausible-looking `-101` when a period is missing, and the guard in
+  `Calculator.astro` is `!(output > 0)` rather than `< 0` — `NaN` and
+  `Infinity` both pass a `< 0` test. This is deliberate: a blank figure
+  from CBS used to sail past every guard and publish "€ NaN", which is
+  exactly the case the "a CBS failure fails the build" rule exists for.
+- `latest`/`latestPeriodLabel` is the newest period; `latestMonthly`/
+  `latestMonthlyLabel` is the newest *month*. They differ for the few
+  weeks after CBS publishes a yearly figure, because a year's `JJ00`
+  row arrives with its December figure and sorts after it. **Copy that
+  promises a month has to use the monthly one**, or it spends every
+  January saying "maandcijfers tot en met 2025". `latest` is found by
+  comparing periods (`periodRank`), not by taking the last row: the
+  feed is chronological but not sorted, so a reordered feed would
+  otherwise yield a wrong-but-plausible site instead of a failure.
 - `src/lib/inflation.ts` is pure: no DOM access. All calculation lives
   there; `calculator.ts` only reads inputs, calls it, and writes text.
   Keep it that way so the logic stays testable outside a browser.
@@ -190,8 +223,10 @@ that guard.
 - Crossing 2002 applies the fixed guilder↔euro rate
   (`EURO_INTRODUCTION_YEAR`), and amounts before 2002 display as `ƒ`.
 - Going *backwards* in time (end year before start year) is the exact
-  inverse of going forwards (for months up to the per-step rounding,
-  ≤ ~0.1%). Until September 2026 it multiplied by `1 − |mutation|`
+  inverse of going forwards (for months up to the per-step rounding:
+  measured across the whole range at amount 1000, the worst round trip
+  is 0,118% — `1996→2024 MM10` — and only 10 of 64,520 combinations
+  exceed 0,1%; `test/inflation.test.ts` holds it under 0,12%). Until September 2026 it multiplied by `1 − |mutation|`
   instead, which made €100 in 2026 → ƒ88.07 in 1990 rather than
   ≈ƒ91.3, and counted deflation as inflation.
 - The result describes the price change **forwards in time**, from the
@@ -208,18 +243,31 @@ that guard.
   lagging the newest month by up to a year. The calculator covers the
   latest month. This was the owner's choice over a same-month table.
 - **Everything about a pay rise is measured forwards in time**, like the
-  price figures: `nominalChange` starts from whichever of the two amounts
-  belongs to the *earlier* year, not from whichever field was filled in
-  first. Measuring it in the entered order made the page call a fall a
-  rise as soon as the years were entered backwards — one click on the
-  swap button — and then held that inverted figure against a cao rise
-  running the other way, flipping the "meer/minder dan de cao-lonen"
-  verdict too. The keep-up sentences name their years ("In 2026 verdien
-  je …", "Ten opzichte van 2016 …") rather than saying "nu" and "sinds",
-  which only hold when the years run forwards.
+  price figures. Two salaries each belong to a year, so entering the
+  years backwards — one click on the swap button — does not turn the
+  question round; it only decides which field holds the earlier salary.
+  `salaryComparison()` therefore answers from whichever salary belongs
+  to the earlier year: `required`, `gap`, `realChange`, `realValue` and
+  `nominalChange` all run from `baseYear` to `targetYear`, which it
+  reports alongside `baseSalary`. **Both renderers take their years and
+  amounts from the comparison, never from the form** (`SalaryCalculator
+  .astro` and `salary.ts`) — otherwise the headline sentence names one
+  pair of years while the figure under it was computed for another.
+  Until September 2026 only `nominalChange` was normalised: the
+  purchasing-power half still answered in the entered order, so one
+  click of the swap button put "Je koopkracht is daarmee met 60,96%
+  gestegen" directly above "Jouw salaris daalde tussen 2016 en 2025 met
+  16,67%". `test/salary.test.ts` pins both halves to the same period.
+  With **one** salary there is nothing to run forwards to, so the
+  question keeps the direction it was asked in ("wat is mijn salaris van
+  2025 waard in 2016?") and `baseYear`/`targetYear` are simply the years
+  as entered. The keep-up sentences name their years ("In 2026 verdien
+  je …") rather than saying "nu" and "sinds", which only hold when the
+  years run forwards.
 - **Wages (`salary.ts`, for `/salaris`).** `salaryComparison()` asks
-  `InflationData` what the old salary has to be now (`output()`, which
-  already handles ƒ→€) and compares the entered current salary with it:
+  `InflationData` what the earlier salary has to be in the later year
+  (`output()`, which already handles ƒ→€) and compares the other salary
+  with it:
   the real change is `now / required − 1`, never the difference between
   two percentages. `realValue` runs the same conversion backwards, so
   it is only correct because the backwards calculation was fixed above.
@@ -249,13 +297,21 @@ that guard.
   `salary.ts` precisely because the component and the script both render
   these sentences and nothing checks that they agree.
 - Cao percentages are derived from the index levels without intermediate
-  rounding, like the yearly prices. CBS publishes the same figures
-  rounded to one decimal, so they can differ in the second decimal
-  (2025: 5,04% here, "5,0 procent" in CBS's own headline — checked
-  across 1972–2025, the gap never exceeds 0,05pp, which is the most
-  one-decimal rounding can ever account for). The note under the
-  table on `/salaris` says so; don't "fix" it by chaining rounded
-  percentages.
+  rounding, like the yearly prices. CBS publishes its own percentages
+  rounded to one decimal *and* the index levels this derives them from
+  rounded to one decimal, so the two can differ — and the further back,
+  the more: the 1972 level is 22,4, where one decimal is already ±0,22%.
+  Measured against CBS's published percentages over 1972–2025, **21 of 52
+  years differ by more than 0,05pp and the worst is 0,40pp** (1974: 14,80%
+  here, 14,4% at CBS). Inside the table `/salaris` prints (the last 15
+  years, levels near 100) the worst gap is 0,10pp, and 2025 is 5,04% here
+  against "5,0 procent" in CBS's headline. An earlier version of this
+  document claimed the gap never exceeds 0,05pp; it does, and the note
+  under the table now says "tot ongeveer een halve procentpunt" for the
+  oldest years. The long fallback the page's own default reaches
+  (1972–2025, cao 458,04%) is good to roughly ±1,5pp — quote it as a
+  round figure, not to two decimals. Deriving from the levels is still
+  the right method: don't "fix" this by chaining rounded percentages.
 - Any change to `inflation.ts` should be checked against the current
   behaviour across the whole data range, not a few spot checks: run
   old vs. new for every start year × end year × month (`JJ00`,
@@ -406,8 +462,10 @@ that guard.
   `/`, so don't remove that link.
 - Each table row has an id (`#jaar-1980`) so a specific year can be
   linked to directly; the targeted row is highlighted.
-- The social image is `public/og-image.png` (1200×630 PNG, a
-  `summary_large_image` card). Its source is `design/og-image.html`, with
+- The social image is `public/og-image.png` (1200×630 PNG, named by both
+  `og:image` and `twitter:image` — X falls back to `og:image`, but a
+  card that declares `summary_large_image` should say which image it
+  means). Its source is `design/og-image.html`, with
   the command to regenerate it in a comment at the top. The
   `og:image:width`/`height`/`type` meta in `Layout.astro` assume exactly
   that size and format.
@@ -487,13 +545,34 @@ Before calling a change done:
   tags and JSON-LD (see Priorities). A Lighthouse run in mobile mode is
   the quickest way to catch an SEO, performance or tap-target
   regression.
-- `npm run verify` — `astro check` then `astro build`, the same setup as
-  the portfolio project. This is the normal way to run both: `check`
-  first, because `build` on its own is not a safety net for type errors
-  (`astro build` does not type-check). 0 errors, warnings and hints
-  expected. Deliberately *not* wired into `build` itself, matching the
+- `npm run verify` — `astro check`, then `npm test`, then `astro build`.
+  This is the normal way to run all three: `check` first, because
+  `build` on its own is not a safety net for type errors (`astro build`
+  does not type-check). 0 errors, warnings and hints expected.
+  Deliberately *not* wired into `build` itself, matching the
   portfolio — which means Cloudflare (which runs `npm run build`) will
-  deploy code that fails `check`, so run `verify` before every push.
+  deploy code that fails `check` or the tests, so run `verify` before
+  every push.
+- `npm test` — `node --test test/`. No dependency and no network: the
+  suite runs the real modules against a **frozen** CBS snapshot
+  (`test/fixtures/cbs.json`, taken 2026-09-29), so the expected values
+  are facts rather than whatever CBS published this morning. Regenerate
+  the fixture only on purpose, and expect to update the expected values
+  with it. What it covers:
+  - `test/inflation.test.ts` — `parseAmount`/formatting, yearly averages
+    against the index ratio, the compound average, the round trip and
+    the 2002 crossing, missing figures (including a CBS period with no
+    usable value, which used to publish `€ NaN`), the latest period, and
+    that the compact copy the browser rebuilds from answers identically.
+  - `test/salary.test.ts` — the real-versus-nominal rules, the currency
+    conversion, and `wageComparison()`'s whole contract: cao and price
+    figures from one period, fallbacks yearly and inside the cao range,
+    the right `reason`, and no verdict outside an exact period.
+  - `test/invariants.test.ts` — the pairings in the table above, which
+    nothing else checks: every `element()` id exists in its component,
+    one data-embedding calculator per page, the JSON-LD pairing rules,
+    the header's trailing slashes, the shared URL parameter names, and
+    the year-page prefixes against `public/_redirects`.
 - `npm run check` / `npm run build` — the two halves on their own.
 - `npm run lint` — ESLint (flat config, `eslint-plugin-astro`,
   typescript-eslint). Note that it runs with `--fix`.
