@@ -2,17 +2,13 @@ import {
   FIRST_MONTHLY_YEAR,
   FIRST_YEAR,
   InflationData,
-  MONTHS,
   type CompactData,
   formatAmount,
   formatMoney,
   formatPercent,
   parseAmount,
 } from '../lib/inflation';
-
-function element<T extends HTMLElement>(id: string): T {
-  return document.getElementById(id) as T;
-}
+import { clampYear, element, monthLabel, monthToParam, paramToMonth } from './form';
 
 const amountInput = element<HTMLInputElement>('input-amount');
 const startYearInput = element<HTMLInputElement>('input-start-year');
@@ -33,20 +29,6 @@ const data = InflationData.fromCompact(JSON.parse(element('cbs-data').textConten
 
 // Shareable URLs: ?bedrag=100&van=1990&naar=2026&maand=08 (or maand=jaar).
 const PARAMS = { amount: 'bedrag', startYear: 'van', endYear: 'naar', month: 'maand' } as const;
-
-function monthToParam(month: string): string {
-  return month === 'JJ00' ? 'jaar' : month.substring(2);
-}
-
-function paramToMonth(value: string): string | undefined {
-  const month = value === 'jaar' ? 'JJ00' : `MM${value.padStart(2, '0')}`;
-
-  return MONTHS.some(([code]) => code === month) ? month : undefined;
-}
-
-function monthLabel(month: string): string {
-  return MONTHS.find(([code]) => code === month)?.[1].toLowerCase() ?? month;
-}
 
 /**
  * Recalculates and updates the result. Returns a one-sentence summary when
@@ -111,26 +93,12 @@ function render(): string | undefined {
   return `${formatMoney(amount, startYear)} uit ${startYear} heeft in ${endYear} een koopkracht van ${formatMoney(output, endYear)}.`;
 }
 
-function clampYear(input: HTMLInputElement): void {
-  let year = Math.round(input.valueAsNumber);
-
-  if (Number.isNaN(year) || year < FIRST_YEAR) {
-    year = FIRST_YEAR;
-  }
-
-  if (year > data.latestYear) {
-    year = data.latestYear;
-  }
-
-  input.valueAsNumber = year;
-}
-
 function resetBadInputs(): void {
   const amount = parseAmount(amountInput.value);
 
   amountInput.value = formatAmount(amount > 0 ? amount : 1);
-  clampYear(startYearInput);
-  clampYear(endYearInput);
+  clampYear(startYearInput, data.latestYear);
+  clampYear(endYearInput, data.latestYear);
 }
 
 /**

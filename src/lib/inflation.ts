@@ -343,3 +343,21 @@ export function parseAmount(input: string): number {
 export function currencySymbol(year: number): string {
   return year < EURO_INTRODUCTION_YEAR ? 'ƒ' : '€';
 }
+
+/**
+ * The same amount in the other year's currency, applying only the fixed
+ * guilder/euro rate -- no inflation. /salaris needs it to compare two
+ * salaries in nominal terms when one of them predates the euro; every
+ * purchasing-power calculation converts on its own.
+ */
+export function convertCurrency(amount: number, fromYear: number, toYear: number): number {
+  if (fromYear < EURO_INTRODUCTION_YEAR && toYear >= EURO_INTRODUCTION_YEAR) {
+    return amount * guilderToEuroConversionRate;
+  }
+
+  if (fromYear >= EURO_INTRODUCTION_YEAR && toYear < EURO_INTRODUCTION_YEAR) {
+    return amount * euroToGuilderConversionRate;
+  }
+
+  return amount;
+}

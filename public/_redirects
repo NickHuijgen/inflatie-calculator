@@ -12,3 +12,6 @@
 # 307). Only the exact /<currency>/<year> form matches, not /…/<year>/.
 /gulden/:year /gulden/:year/ 301
 /euro/:year /euro/:year/ 301
+
+# Same reason as the year pages: without this Cloudflare answers 307.
+/salaris /salaris/ 301

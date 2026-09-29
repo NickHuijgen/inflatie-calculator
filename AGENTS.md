@@ -75,8 +75,11 @@ these fail a build.
 | If you change… | …also check | Why |
 |---|---|---|
 | An element `id` in `src/components/Calculator.astro` | The matching `element()` call in `src/scripts/calculator.ts` | The script looks every element up by id and casts the result. A renamed id is `null` at runtime and the script throws on load, leaving a dead calculator — `astro check` can't see it. Same reason there can be only **one** `<Calculator>` per page. |
+| An element `id` in `src/components/SalaryCalculator.astro` | The matching `element()` call in `src/scripts/salary.ts` | Exactly the same failure mode. Its ids are all `salary-`-prefixed so they can't collide with the other calculator's, but the two components still can't share a page: both embed the data as `<script id="cbs-data">`. **One data-embedding calculator per page.** |
+| An element the salary script writes into conditionally (the cao block, the keep-up block, the prompt that replaces it) | That `SalaryCalculator.astro` renders it **unconditionally** | The component hides those blocks with `hidden`, never with `{cond && …}`: an element that isn't in the static HTML is `null` when the script tries to fill it. Since "Salaris nu" ships empty, the keep-up sentences render with their value spans **blank** rather than with invented numbers — see the `keepUp` object in the frontmatter. The build throws instead if the defaults produce no figures at all. |
+| The nav links in `src/components/Header.astro` | That each `href` matches the page's real path, trailing slash and all | `aria-current="page"` is decided by comparing `Astro.url.pathname` with the link's own href (`trailingSlash: 'always'`), so a missing slash silently stops the current page from being marked. |
 | The year page URL scheme (`yearPagePath()` in `src/lib/year-pages.ts`) | The `/gulden/:year` and `/euro/:year` rules in `public/_redirects`, and `EURO_INTRODUCTION_YEAR` | Every link to a year page is built by `yearPagePath()`, and `getStaticPaths` uses the same `currencyOf()`, so those can't drift — but the redirects restate the two path prefixes by hand. |
-| The shareable URL parameters (`PARAMS` in `calculator.ts`: `bedrag`, `van`, `naar`, `maand`) | Nothing in code — but links people have already shared | Renaming a parameter silently breaks every shared link. Only ever add parameters; keep reading old names if one must change. |
+| The shareable URL parameters (`PARAMS` in `calculator.ts`: `bedrag`, `van`, `naar`, `maand`; `salary.ts` adds `nu`) | Nothing in code — but links people have already shared | Renaming a parameter silently breaks every shared link. Only ever add parameters; keep reading old names if one must change. The four shared names mean the same thing on both pages; keep it that way. |
 | `public/_redirects` | That the target exists in `dist/` | Cloudflare applies these before the static assets; a redirect to a missing file just becomes a redirect to a 404. |
 | The `<option>` values in the month `<select>` (`index.astro`) | The CBS `Perioden` format (`1963MM01`, `2025JJ00`) | Monthly lookups are `year + month` string concatenations against that key. `JJ00` means yearly average and goes to the `71905ned` index instead (`has()`, `priceFactor()`). |
 | The sitemap integration or its output name | The `Sitemap:` line in `public/robots.txt` | `@astrojs/sitemap` writes `sitemap-index.xml` (not `sitemap.xml`); robots.txt names it by hand. |
@@ -85,21 +88,31 @@ these fail a build.
 
 ## Constraints
 - `.astro` components only. No React, Vue, or any client framework.
-- Client-side JS is vanilla TypeScript: `src/scripts/calculator.ts`,
-  imported from a processed `<script>` in `index.astro` (so it's
-  bundled and type-checked, unlike an `is:inline` script).
+- Client-side JS is vanilla TypeScript: `src/scripts/calculator.ts` for
+  `/` and the year pages, `src/scripts/salary.ts` for `/salaris`, each
+  imported from a processed `<script>` in its component (so it's
+  bundled and type-checked, unlike an `is:inline` script). The handful of
+  pieces both need — `element()`, the month↔URL-parameter mapping and
+  `clampYear()` — live in `src/scripts/form.ts`. Everything that knows
+  about a specific form's fields stays in that form's own script.
 - `src/lib/inflation.ts` is pure: no DOM access. All calculation lives
   there; `calculator.ts` only reads inputs, calls it, and writes text.
   Keep it that way so the logic stays testable outside a browser.
-- CBS data is fetched **only at build time** (`fetchInflationData()` and
-  `fetchDatasetModified()` in `index.astro`'s frontmatter). That one copy
+  `src/lib/salary.ts` (the wage maths) and `src/lib/cao.ts` (the cao
+  dataset) follow the same rule, and `salary.ts` builds entirely on
+  `InflationData` — it contains no second inflation calculation.
+- CBS data is fetched **only at build time**, once per build, by
+  `loadBuildData()` in `src/lib/build-data.ts` (the ~127 pages would
+  otherwise make hundreds of requests). That one copy
   renders the default result, the "Wat is geld van vroeger nu waard?"
   table, the dates, and is embedded in the page as compact JSON
   (`<script type="application/json" id="cbs-data">`, via
-  `InflationData.toCompact()`/`fromCompact()`) for the calculator. The
+  `InflationData.toCompact()`/`fromCompact()`) for the calculator;
+  `/salaris` embeds the cao index the same way as `#cao-data`. The
   browser never contacts CBS: the calculator works instantly and doesn't
   break when CBS is slow or down. A CBS failure fails the *build* on
-  purpose, so the previous deployment stays live. The daily scheduled
+  purpose, so the previous deployment stays live — that now goes for the
+  cao dataset too. The daily scheduled
   rebuild (see Hosting) keeps the data at most a day behind — which is
   what the FAQ's "Worden de cijfers bijgewerkt?" promises; keep them in
   sync.
@@ -138,13 +151,23 @@ these fail a build.
   were missing.
 
 ## Calculation
-Two CBS datasets, both fetched at build time (URLs and titles in
-`inflation.ts`):
+Three CBS datasets, all fetched at build time (URLs and titles in
+`inflation.ts`, and in `cao.ts` for the third):
 
 | Dataset | Contents | Used for |
 |---|---|---|
 | `70936ned` | Year-on-year CPI change in % per month and per year (`JaarmutatieCPI_1`, a space-padded string), from January 1963, updated monthly | Every comparison **by month** (`MM01`–`MM12`) |
 | `71905ned` | Yearly price index, 1900=100 (`CPI_1`), from 1900, updated once a year (around February) | Every comparison of **yearly averages** (`JJ00`), and the table |
+| `85663ned` | Cao-loonindex, 2020=100 (`CaoLonenPerMaandInclBijzBeloningen_2`, incl. bijzondere beloningen — the figure CBS quotes), yearly from 1972, **monthly only from 2020**, updated monthly | The wage comparison on `/salaris` only |
+
+CBS retires these tables when the base year changes — `85663ned` replaced
+`82838ned` (2010=100) in December 2023 — and the dimension keys in
+`CAO_FILTER` go with them (`Versie eq 'A045600   '` really does carry three
+trailing spaces). When that happens the request still succeeds and simply
+matches nothing, so `fetchCaoData()` throws by name instead: without it
+`latestYearlyYear` is `-Infinity` and the table loop in `salaris.astro`
+spins forever, **hanging** the Cloudflare build rather than failing it. Keep
+that guard.
 
 - **Yearly averages** use the exact ratio of CBS's own index levels
   (`priceFactor()`), without intermediate rounding: matches the index to
@@ -184,6 +207,55 @@ Two CBS datasets, both fetched at build time (URLs and titles in
   (`historicalValues()`): exact and from one source, at the cost of
   lagging the newest month by up to a year. The calculator covers the
   latest month. This was the owner's choice over a same-month table.
+- **Everything about a pay rise is measured forwards in time**, like the
+  price figures: `nominalChange` starts from whichever of the two amounts
+  belongs to the *earlier* year, not from whichever field was filled in
+  first. Measuring it in the entered order made the page call a fall a
+  rise as soon as the years were entered backwards — one click on the
+  swap button — and then held that inverted figure against a cao rise
+  running the other way, flipping the "meer/minder dan de cao-lonen"
+  verdict too. The keep-up sentences name their years ("In 2026 verdien
+  je …", "Ten opzichte van 2016 …") rather than saying "nu" and "sinds",
+  which only hold when the years run forwards.
+- **Wages (`salary.ts`, for `/salaris`).** `salaryComparison()` asks
+  `InflationData` what the old salary has to be now (`output()`, which
+  already handles ƒ→€) and compares the entered current salary with it:
+  the real change is `now / required − 1`, never the difference between
+  two percentages. `realValue` runs the same conversion backwards, so
+  it is only correct because the backwards calculation was fixed above.
+  The nominal change needs `convertCurrency()` — a salary from before
+  2002 is in guilders, and comparing it with a euro amount without the
+  fixed rate is meaningless.
+- **Never pair cao figures with prices from another period.**
+  `wageComparison()` returns the period it actually used and the page
+  prints it. It first tries the exact two periods the visitor asked
+  about; because cao figures per month only start in 2020, that usually
+  fails, so it falls back to the **yearly averages** of those years
+  clamped into 1972…the latest complete cao year, and says so in a note.
+  Both its cao and its price figure always come from that one period. It
+  returns nothing when even the fallback is impossible (both years
+  before 1972), and the block hides.
+  The visitor's own rise is the one figure that can't be recomputed for
+  a fallback period, so that sentence always names its own years, and
+  the "meer/minder dan de cao-lonen" verdict is shown **only** when the
+  periods match exactly (`exact`). Dropping that guard would compare a
+  2016–2026 salary rise with a 2016–2025 cao rise.
+  `wageComparison()` also reports **why** the period moved (`reason`), and
+  `caoPeriodNote()` turns that into the sentence. There are three reasons —
+  the month has no cao figures, the start year predates 1972, the end year
+  has no complete cao year yet — and the note used to blame the first one
+  every time, which is plainly false when the visitor already chose
+  Jaargemiddelde. `comparedToCao()` and `caoPeriodNote()` live in
+  `salary.ts` precisely because the component and the script both render
+  these sentences and nothing checks that they agree.
+- Cao percentages are derived from the index levels without intermediate
+  rounding, like the yearly prices. CBS publishes the same figures
+  rounded to one decimal, so they can differ in the second decimal
+  (2025: 5,04% here, "5,0 procent" in CBS's own headline — checked
+  across 1972–2025, the gap never exceeds 0,05pp, which is the most
+  one-decimal rounding can ever account for). The note under the
+  table on `/salaris` says so; don't "fix" it by chaining rounded
+  percentages.
 - Any change to `inflation.ts` should be checked against the current
   behaviour across the whole data range, not a few spot checks: run
   old vs. new for every start year × end year × month (`JJ00`,
@@ -194,6 +266,35 @@ Two CBS datasets, both fetched at build time (URLs and titles in
 
 ## Routes
 - `/` — the calculator (`src/pages/index.astro`).
+- `/salaris/` — the wage page (`src/pages/salaris.astro`), answering "is
+  mijn salaris meegegroeid met de inflatie?". Its own calculator
+  (`SalaryCalculator.astro` + `scripts/salary.ts`) takes a salary from an
+  earlier year, an optional current salary, and reports what the salary
+  would have to be now, how far the real one is from that, and how the
+  average cao-lonen moved over the same period. Then a table of
+  cao-loonstijging vs. inflatie per year, a table of salaries corrected
+  to now, an explanation and a FAQ — all rendered from build-time data.
+  - **Why it exists.** It targets a search cluster `/` does not serve
+    ("salaris inflatie berekenen", "reële loonstijging", "loonsverhoging
+    inflatie"). The cao comparison is the part no competitor has and the
+    reason it deserves its own URL rather than being `/` with a salary
+    label — keep it, and keep `/salaris` from competing with `/` for
+    plain "inflatie berekenen": the headline, the H1 and the copy are
+    about *loon*, not about converting a loose amount.
+  - It is bruto/netto- and maand/jaar-agnostic on purpose: it corrects an
+    amount for inflation and says so. No tax, no toeslagen — those change
+    for reasons that have nothing to do with the CPI.
+  - **"Salaris nu" ships empty.** `currentSalary` is an optional prop and
+    `salaris.astro` doesn't pass it: a prefilled value made the static page
+    state "Je verdient nu € 3.600,00" before the visitor had typed
+    anything, which is the one number on the page that wouldn't be a fact.
+    The result card shows a prompt instead, and the keep-up block plus the
+    cao "jouw salaris" line appear once a salary is entered. Everything
+    still indexed is real: the required amount, the price rise and the cao
+    comparison.
+  - No breadcrumb: the header is the way back to `/`. The year pages keep
+    theirs, so `webPageSchema()` takes a `breadcrumb` flag (see SEO).
+  - `/salaris` without the trailing slash 301s (`_redirects`).
 - `/gulden/<year>/` (1900–2001) and `/euro/<year>/` (2002 up to the year
   before `latestYearlyYear`) — one page per year,
   `src/pages/[currency]/[year].astro`, answering "Wat is 100 gulden uit
@@ -229,13 +330,27 @@ Two CBS datasets, both fetched at build time (URLs and titles in
   `index.astro`, not a component or `@apply`.
 - Visual design was kept as-is from the Nuxt version (bordered cards in
   a two-column grid on `lg`, one column below).
+- `src/components/Header.astro` (rendered by `Layout.astro` on every
+  page) follows the header on nickhuijgen.nl: wordmark left, links
+  right, **no background fill, no border, not sticky** — it scrolls away
+  with the page rather than sitting on top of the result on a phone.
+  Two links only; the year pages are reached from the homepage table.
+  The footer lives in `Layout.astro` too, so no page repeats either.
 
 ## Accessibility
 - The swap control is a real `<button>` with an `aria-label`, and the
   icon inside it is `aria-hidden`.
-- The results container is `aria-live="polite"`, so recalculations
-  are announced.
+- Recalculations are announced through the `role="status"` element
+  (`#result-status`, `#salary-result-status`), updated only on `change`
+  so a screen reader isn't interrupted on every keystroke. The results
+  container itself is **not** `aria-live` — this doc claimed it was for a
+  while, and neither calculator has ever worked that way.
 - Every input has a `<label for>`.
+- Nothing is signalled by colour alone: whether a salary kept up with
+  inflation is carried by the words ("gedaald"/"gestegen", "meer"/
+  "minder"), not by a red or green number.
+- Header and nav links are ≥ 44px tall and mark the current page with
+  `aria-current="page"` (plus an underline, so it isn't colour-only).
 
 ## SEO
 - All `<head>` metadata lives in `src/layouts/Layout.astro`: title and
@@ -254,10 +369,16 @@ Two CBS datasets, both fetched at build time (URLs and titles in
     `BreadcrumbList` (`<url>#breadcrumb`).
 
   Two pairings have to hold, and **nothing checks them at build time**: a
-  page emitting `webPageSchema()` must emit `breadcrumbSchema()` too, and
-  `webApplicationSchema()` must be accompanied by `homePageSchema()`.
-  Drop one half and the other's `@id` reference points at a node that
-  isn't on the page.
+  page emitting `webPageSchema()` must emit `breadcrumbSchema()` too
+  *unless* it passes `breadcrumb: false`, and `webApplicationSchema()`
+  must be accompanied by `homePageSchema()`. Drop one half and the
+  other's `@id` reference points at a node that isn't on the page.
+  `breadcrumb: false` exists for `/salaris`, which shows no trail:
+  structured data has to describe what is actually on the page, so a
+  `BreadcrumbList` for a breadcrumb the visitor can't see is the same
+  kind of guidelines risk as the `FAQPage` and `QAPage` markup below.
+  If a visible trail is ever added back, add `breadcrumbSchema()` with
+  it.
 
   `dateModified` (CBS's own last-update date of the data — not the build
   date, which changes daily and would misrepresent freshness) is on every
@@ -275,6 +396,14 @@ Two CBS datasets, both fetched at build time (URLs and titles in
 - Trust signals, visible on the page: the source line under the result
   ("Bron: CBS, cijfers tot en met … (bijgewerkt op …)"), and the author
   linking to https://nickhuijgen.nl/.
+- `/salaris` emits `WebPage` only — no `BreadcrumbList`, because the
+  owner removed the visible trail (see above). It passes
+  `datasetsWithCao` as `isBasedOn` (the `isBasedOn` prop on
+  `webPageSchema()` exists for exactly that) so it cites the cao dataset
+  as well. Its `dateModified` is the later of the price and cao update
+  dates. It is deliberately not a second `WebApplication`: that node's
+  `@id` is the homepage's `/#app`. The header is its only way back to
+  `/`, so don't remove that link.
 - Each table row has an id (`#jaar-1980`) so a specific year can be
   linked to directly; the targeted row is highlighted.
 - The social image is `public/og-image.png` (1200×630 PNG, a
@@ -323,8 +452,9 @@ In the repo:
   scripts/headers (speculation rules), and a CSP that breaks those can't
   be tested locally.
 - `public/_redirects`: `/sitemap.xml` → `/sitemap-index.xml` (the old
-  Nuxt sitemap URL) and `/index.html` → `/` as a 301 (Cloudflare would
-  otherwise answer with a 307).
+  Nuxt sitemap URL), `/index.html` → `/`, and the trailing-slash rules
+  for `/salaris` and the year pages, all 301 (Cloudflare would otherwise
+  answer with a 307).
 - `.node-version` — Node for Cloudflare's build.
 - CI is Cloudflare's build: its status shows on each commit in GitHub
   and in the Worker's Deployments tab.
@@ -403,7 +533,28 @@ Before calling a change done:
   1963 (monthly data starts), 2001/2002 (currency switch) and the newest
   year (where "keer zo duur" wording would be silly).
 - If you touched `inflation.ts`: the full old-vs-new diff described
-  under Calculation.
+  under Calculation. Adding an export counts — run it anyway; it takes
+  seconds and proves the existing output is untouched (209,677
+  combinations, expect **0** differences).
+- If you touched anything under `/salaris`, run its own pass of the
+  browser checklist above against the salary form, plus:
+  - `Salaris nu` left empty must show the headline answer with the
+    keep-up block hidden — not an error; garbage in that field clears it
+    rather than inventing a salary.
+  - A comparison whose cao period had to fall back (any month
+    comparison starting before 2020, so including the page's own
+    default) must print the cao period it used, the note explaining it,
+    and **no** "meer/minder dan de cao-lonen" verdict. A yearly
+    comparison inside 1972–latest must print the verdict.
+  - A period with no cao figures at all (both years before 1972) hides
+    the whole cao block.
+  - Check `wageComparison()` across every year pair × month: cao and
+    price figures always from the same period, fallbacks always yearly
+    and inside the cao range.
+- Because the header and footer now live in `Layout.astro`, a change to
+  either touches all ~127 pages: check one of each kind (`/`,
+  `/salaris/`, a year page, `404.html`) for the right
+  `aria-current="page"` and a footer.
 - If you touched `wrangler.jsonc`, `_headers`, `_redirects` or the 404 page: run
   `npx wrangler dev --port 8787 --local` against a fresh `npm run build`
   (`astro dev`/`astro preview` don't apply Cloudflare's asset handling)

@@ -1,0 +1,260 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SalaryCalculator from '../components/SalaryCalculator.astro';
+import { loadBuildData } from '../lib/build-data';
+import { CBS_CAO_DATASET_URL, CBS_CAO_TITLE, FIRST_CAO_MONTHLY_YEAR, FIRST_CAO_YEAR } from '../lib/cao';
+import {
+  CBS_DATASET_TITLE,
+  CBS_DATASET_URL,
+  CBS_INDEX_DATASET_URL,
+  CBS_INDEX_TITLE,
+  FIRST_MONTHLY_YEAR,
+  formatMoney,
+  formatPercent,
+} from '../lib/inflation';
+import { realWageChange, salaryComparison } from '../lib/salary';
+import { datasetsWithCao, webPageSchema, websiteSchema } from '../lib/schema';
+import { cardClass, linkClass } from '../lib/ui';
+
+// The wage page: what a salary from an earlier year has to be today, and
+// whether the visitor's own salary kept up — with the average cao-loonstijging
+// next to it, which is the thing / cannot answer. See Routes in AGENTS.md.
+const { data, cao, datasetModified, caoModified } = await loadBuildData();
+
+const endYear = data.latestYear;
+const startYear = endYear - 10;
+const month = data.latestMonth;
+const defaultSalary = 3000;
+// "Salaris nu" is deliberately left empty: prefilling it would make the page
+// state a salary the visitor doesn't have before they've typed anything.
+
+const modified = new Date(Math.max(datasetModified.getTime(), caoModified.getTime()));
+const updatedOn = modified.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Amsterdam' });
+
+const example = salaryComparison(data, defaultSalary, startYear, endYear, month)!;
+
+// Cao wages against prices, per year, for the last decade and a half.
+const caoLatestYear = cao.latestYearlyYear;
+const YEARS_IN_TABLE = 15;
+const yearlyRows = [];
+for (let year = caoLatestYear - YEARS_IN_TABLE + 1; year <= caoLatestYear; year++) {
+  const wage = cao.yearlyChange(year);
+  const prices = data.yearlyChange(year);
+
+  if (wage !== undefined && prices !== undefined) {
+    yearlyRows.push({ year, wage, prices, real: realWageChange(wage, prices) });
+  }
+}
+const yearsAhead = yearlyRows.filter(row => row.real > 0).length;
+
+// What a range of salaries from the start year has to be now.
+const salaries = [2000, 2500, 3000, 3500, 4000, 5000, 6000];
+const salaryRows = salaries.map(salary => ({ salary, required: data.output(salary, startYear, endYear, month) }));
+
+const requiredRise = formatPercent(Math.abs(example.inflation));
+const latestPeriod = data.latestPeriodLabel;
+
+const title = 'Salaris Inflatie Berekenen – Is je loon meegegroeid?';
+const description = `Bereken wat je salaris van vroeger nu waard is en of je loonsverhoging de inflatie bijhield. Vergelijk je eigen stijging met de cao-lonen, met officiële CBS-cijfers.`;
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site);
+const jsonLd = [
+  websiteSchema(Astro.site!),
+  // No breadcrumb node: the page shows no trail, so `breadcrumb: false`
+  // keeps webPageSchema() from referencing one that isn't here.
+  webPageSchema({ url: pageUrl, name: title, description, dateModified: modified, site: Astro.site!, isBasedOn: datasetsWithCao, breadcrumb: false }),
+];
+
+const caoLinkText = `“${CBS_CAO_TITLE}”`;
+const indexLinkText = `“${CBS_INDEX_TITLE}”`;
+const datasetLinkText = `“${CBS_DATASET_TITLE}”`;
+---
+
+<Layout
+  title={title}
+  description={description}
+  socialTitle="Is je salaris meegegroeid met de inflatie?"
+  socialDescription="Bereken wat je salaris van vroeger nu waard is en vergelijk je loonstijging met de cao-lonen en de prijzen."
+  jsonLd={jsonLd}
+>
+  <main class="flex items-center justify-center p-4 lg:px-6 lg:pt-6">
+    <div class="container grid max-w-7xl gap-4 lg:grid-cols-2 lg:gap-8">
+      <SalaryCalculator
+        data={data}
+        cao={cao}
+        datasetModified={datasetModified}
+        caoModified={caoModified}
+        amount={defaultSalary}
+        startYear={startYear}
+        endYear={endYear}
+        month={month}
+        heading="Salaris en inflatie berekenen"
+        intro="Kijk wat je salaris van vroeger vandaag waard is, en of je loon de prijzen heeft bijgehouden."
+      />
+
+      <section class={`flex ${cardClass} lg:col-span-2`} aria-labelledby="cao-title">
+        <div class="flex-1 p-6 lg:p-8">
+          <h2 id="cao-title" class="mb-2 text-xl font-bold">Stegen de cao-lonen harder dan de prijzen?</h2>
+          <p class="mb-2 max-w-3xl">
+            {`Het CBS houdt bij hoeveel de lonen in collectieve arbeidsovereenkomsten stijgen. Dat is niet jouw salaris, maar wel de beste maatstaf voor wat een gemiddelde werknemer in Nederland erbij kreeg. Zet je die naast de inflatie, dan zie je of er koopkracht bij kwam of af ging: in ${yearsAhead} van de laatste ${yearlyRows.length} jaar stegen de cao-lonen harder dan de prijzen.`}
+          </p>
+          <p class="mb-6 max-w-3xl text-gray-700">
+            <strong>Reëel</strong> is wat er van de loonstijging overblijft na inflatie. Dat is niet het verschil tussen de twee percentages: 5% meer loon bij 3% hogere prijzen levert 1,94% op, niet 2%.
+          </p>
+
+          <div class="max-w-3xl">
+            <table class="w-full text-left tabular-nums">
+              <caption class="sr-only">{`Cao-loonstijging, inflatie en de reële loonstijging per jaar, ${yearlyRows[0]?.year}–${caoLatestYear}`}</caption>
+              <thead>
+                <tr class="border-b border-blue-200">
+                  <th scope="col" class="py-2 pr-2 font-semibold">Jaar</th>
+                  <th scope="col" class="py-2 pr-2 text-right font-semibold">Cao-lonen</th>
+                  <th scope="col" class="py-2 pr-2 text-right font-semibold">Prijzen</th>
+                  <th scope="col" class="py-2 text-right font-semibold">Reëel</th>
+                </tr>
+              </thead>
+              <tbody>
+                {yearlyRows.map(row => (
+                  <tr id={`loonjaar-${row.year}`} class="border-b border-gray-100 target:bg-yellow-50">
+                    <th scope="row" class="py-1.5 pr-2 font-normal">{row.year}</th>
+                    <td class="py-1.5 pr-2 text-right">{formatPercent(row.wage)}%</td>
+                    <td class="py-1.5 pr-2 text-right">{formatPercent(row.prices)}%</td>
+                    <td class="py-1.5 text-right font-semibold">{formatPercent(row.real)}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p class="mt-4 max-w-3xl text-sm text-gray-600">
+            {`Cao-lonen per maand inclusief bijzondere beloningen, jaargemiddelden tot en met ${caoLatestYear}. Beide percentages zijn berekend uit de indexcijfers zelf, zonder tussentijds af te ronden; het CBS publiceert ze afgerond op één decimaal, dus achter de komma kan een klein verschil zitten.`}
+          </p>
+        </div>
+      </section>
+
+      <section class={`flex ${cardClass} lg:col-span-2`} aria-labelledby="salaries-title">
+        <div class="flex-1 p-6 lg:p-8">
+          <h2 id="salaries-title" class="mb-2 text-xl font-bold">{`Wat had je salaris in ${endYear} moeten zijn?`}</h2>
+          <p class="mb-6 max-w-3xl">
+            {`Verdiende je in ${startYear} een van deze bedragen, dan heb je er in ${latestPeriod} dit voor nodig om hetzelfde te kunnen kopen. De prijzen stegen in die periode met ${requiredRise}%.`}
+          </p>
+
+          <div class="max-w-md">
+            <table class="w-full text-left tabular-nums">
+              <caption class="sr-only">{`Salarissen uit ${startYear} en wat ze in ${endYear} moeten zijn voor dezelfde koopkracht`}</caption>
+              <thead>
+                <tr class="border-b border-blue-200">
+                  <th scope="col" class="py-2 pr-2 font-semibold">{`In ${startYear}`}</th>
+                  <th scope="col" class="py-2 font-semibold">{`Nodig in ${endYear}`}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {salaryRows.map(row => (
+                  <tr class="border-b border-gray-100">
+                    <th scope="row" class="py-1.5 pr-2 font-normal">{formatMoney(row.salary, startYear)}</th>
+                    <td class="py-1.5 font-semibold">{formatMoney(row.required, endYear)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p class="mt-4 max-w-3xl">
+            Voor een ander jaar of bedrag gebruik je de calculator bovenaan. Wil je weten wat een los bedrag van vroeger nu waard is, dan is de <a href="/" class={linkClass}>inflatiecalculator</a> handiger.
+          </p>
+        </div>
+      </section>
+
+      <section class={`flex ${cardClass} lg:col-span-2`} aria-labelledby="about-title">
+        <div class="flex-1 p-6 lg:p-8">
+          <h2 id="about-title" class="text-xl font-bold">Hoe deze berekening werkt</h2>
+          <div class="mt-2 max-w-3xl">
+            <p class="mb-2">
+              Je salaris stijgt nominaal: het bedrag op je loonstrook wordt groter. Of je er ook echt op vooruitgaat, hangt af van de prijzen. Stijgen die harder, dan koop je voor dat grotere bedrag minder dan voorheen. Wat er na inflatie overblijft, heet je reële loonstijging, en die bepaalt je koopkracht.
+            </p>
+
+            <p class="mb-2">
+              De calculator rekent je salaris van vroeger om met de consumentenprijsindex van het CBS. Vul je ook je huidige salaris in, dan zet hij dat naast het bedrag dat je nodig zou hebben en laat hij het verschil zien, in euro's en in procenten.
+            </p>
+
+            <p class="mb-2">
+              Het bedrag mag bruto of netto zijn, per maand of per jaar: de berekening corrigeert alleen voor inflatie en maakt geen onderscheid. Vul in beide velden wel hetzelfde soort bedrag in, anders vergelijk je appels met peren. Belasting, toeslagen en pensioenpremies blijven buiten beschouwing; die veranderen los van de inflatie.
+            </p>
+
+            <p class="mb-2">
+              {`De cao-lonen komen uit een aparte CBS-tabel, `}<a href={CBS_CAO_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{caoLinkText}</a>{`. Die volgt de lonen die in collectieve arbeidsovereenkomsten zijn afgesproken, vanaf ${FIRST_CAO_YEAR} per jaar en vanaf ${FIRST_CAO_MONTHLY_YEAR} ook per maand. Het is een gemiddelde over alle sectoren: jouw eigen cao, een promotie of een persoonlijke verhoging staan er niet in.`}
+            </p>
+
+            <p>
+              {`De prijzen komen uit `}<a href={CBS_INDEX_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{indexLinkText}</a>{` en `}<a href={CBS_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{datasetLinkText}</a>{`. De `}<a href="https://github.com/NickHuijgen/inflatie-calculator" target="_blank" rel="noopener noreferrer" class={linkClass}>volledige berekening staat op GitHub</a>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class={`flex ${cardClass} lg:col-span-2`} aria-labelledby="faq-title">
+        <div class="flex-1 p-6 lg:p-8">
+          <h2 id="faq-title" class="mb-4 text-xl font-bold">Veelgestelde vragen over salaris en inflatie</h2>
+
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div>
+              <h3 class="font-semibold">Hoeveel loonsverhoging heb ik nodig om de inflatie bij te houden?</h3>
+              <p>
+                {`Precies evenveel procent als de prijzen zijn gestegen. Bleef je salaris sinds ${startYear} gelijk, dan is er tot ${latestPeriod} ${requiredRise}% bij nodig om weer hetzelfde te kunnen kopen. Over één jaar gaat het om de inflatie van dat jaar: is die 3%, dan houdt 3% meer loon je precies gelijk.`}
+              </p>
+            </div>
+
+            <div>
+              <h3 class="font-semibold">Wat is reële loonstijging?</h3>
+              <p>
+                De loonstijging na aftrek van de inflatie: wat er echt aan koopkracht bij komt. Krijg je 5% meer loon terwijl de prijzen met 3% stijgen, dan is je reële loonstijging 1,94%. Bij een hogere inflatie dan je loonstijging is die negatief en ga je er in koopkracht op achteruit, ook al staat er een groter bedrag op je loonstrook.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="font-semibold">Krijg ik automatisch inflatiecorrectie?</h3>
+              <p>
+                Meestal niet. Alleen in een paar sectoren, zoals de bouw, de landbouw en de havens, staat in de cao dat de lonen automatisch met de prijzen meestijgen. Verder is loonsverhoging iets wat in cao-onderhandelingen of met je werkgever zelf wordt afgesproken; een werkgever is niet verplicht om de inflatie te compenseren.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="font-semibold">Geldt dit voor bruto of netto salaris?</h3>
+              <p>
+                Voor allebei, zolang je hetzelfde soort bedrag in beide velden invult. De calculator corrigeert alleen voor inflatie en rekent geen belasting. Wil je weten wat je netto overhoudt, vul dan twee nettobedragen in; wil je je brutosalaris vergelijken, gebruik dan twee brutobedragen.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="font-semibold">Waarom wijkt mijn salaris af van de cao-lonen?</h3>
+              <p>
+                De cao-index is een gemiddelde over alle sectoren en alleen van wat er in cao's is afgesproken. Promoties, periodieken, bonussen en individuele afspraken zitten er niet in, en tussen sectoren lopen de stijgingen flink uiteen. De vergelijking laat dus zien hoe je het deed ten opzichte van het landelijke gemiddelde, niet ten opzichte van je eigen cao.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="font-semibold">Over welke periode kan ik rekenen?</h3>
+              <p>
+                {`Met jaargemiddelden van prijzen vanaf 1900, en per maand vanaf januari ${FIRST_MONTHLY_YEAR} tot en met ${latestPeriod}. De cao-lonen gaan terug tot ${FIRST_CAO_YEAR}; voor jaren daarvoor toont de calculator alleen de prijsvergelijking.`}
+              </p>
+            </div>
+
+            <div>
+              <h3 class="font-semibold">Waar komen de cijfers vandaan?</h3>
+              <p>
+                {`Van het Centraal Bureau voor de Statistiek, de officiële statistische dienst van Nederland: de consumentenprijsindex voor de prijzen en de cao-loonindex voor de lonen. Beide worden elke dag opnieuw opgehaald; de laatste update van het CBS was op ${updatedOn}.`}
+              </p>
+            </div>
+
+            <div>
+              <h3 class="font-semibold">Wat als mijn salaris van vóór de euro is?</h3>
+              <p>
+                {`Dan vul je het gewoon in guldens in. De calculator rekent bedragen van vóór 2002 om tegen de vaste koers en houdt daarnaast rekening met de inflatie. Wat losse bedragen uit die tijd nu waard zijn, staat op de `}<a href="/#historical-values-title" class={linkClass}>pagina met alle jaren sinds 1900</a>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>
