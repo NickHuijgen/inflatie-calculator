@@ -1,0 +1,44 @@
+---
+import { SITE_NAME } from '../lib/schema';
+import { focusRing } from '../lib/ui';
+
+// Rendered by Layout.astro on every page, so the two calculators can reach
+// each other from anywhere and /salaris has a site-wide entry point.
+//
+// Deliberately absent, following the header on nickhuijgen.nl: no background
+// fill, no bottom border, no sticky positioning. A bar that follows you down
+// the page is permanent visual weight, and on a phone -- where most visitors
+// are -- it would eat the top of the result. This scrolls away with
+// everything else.
+//
+// Only two links: the site is two calculators. The year pages are reached
+// from the homepage table, which is their natural context, and the author
+// link lives in the footer.
+//
+// The wordmark deliberately carries no aria-current: it is site identity,
+// not a nav item, even though it points at the same page as "Calculator".
+//
+// trailingSlash: 'always' (astro.config.mjs), so these compare against the
+// trailing-slash forms.
+const path = Astro.url.pathname;
+
+const links = [
+  { href: '/', label: 'Calculator' },
+  { href: '/salaris/', label: 'Salaris' },
+];
+
+// Matching main's container in index.astro and [year].astro, so the wordmark
+// sits on the same left edge as the cards below it.
+const linkClasses = `inline-flex min-h-11 items-center text-sm text-gray-600 hover:text-gray-900 hover:underline hover:underline-offset-4 aria-[current=page]:text-gray-900 aria-[current=page]:underline aria-[current=page]:underline-offset-4 ${focusRing}`;
+---
+
+<header class="flex justify-center px-4 pt-2 lg:px-6 lg:pt-4">
+  <nav class="container flex max-w-7xl items-center justify-between gap-2" aria-label="Hoofdnavigatie">
+    <a href="/" class={`inline-flex min-h-11 items-center font-semibold ${focusRing}`}>{SITE_NAME}</a>
+    <div class="flex items-center gap-4">
+      {links.map(link => (
+        <a href={link.href} class={linkClasses} aria-current={path === link.href ? 'page' : undefined}>{link.label}</a>
+      ))}
+    </div>
+  </nav>
+</header>

@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
+import Header from '../components/Header.astro';
 import { SITE_NAME } from '../lib/schema';
+import { linkClass } from '../lib/ui';
 
 interface Props {
   title: string;
@@ -58,6 +60,12 @@ const imageUrl = new URL('/og-image.png', Astro.site);
     )}
   </head>
   <body>
+    <Header />
     <slot />
+    <footer class="mb-4 flex w-full justify-center">
+      <p class="w-fit text-gray-700">
+        Gemaakt door <a href="https://nickhuijgen.nl/" class={linkClass}>Nick Huijgen</a>
+      </p>
+    </footer>
   </body>
 </html>
