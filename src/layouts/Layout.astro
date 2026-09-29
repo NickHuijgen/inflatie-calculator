@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import { SITE_NAME } from '../lib/schema';
+import { embedJson } from '../lib/embed';
 import { linkClass } from '../lib/ui';
 
 interface Props {
@@ -54,8 +55,10 @@ const imageUrl = new URL('/og-image.png', Astro.site);
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={socialTitle} />
         <meta name="twitter:description" content={socialDescription} />
+        <meta name="twitter:image" content={imageUrl} />
+        <meta name="twitter:image:alt" content="Inflatie Berekenen: wat is je geld van vroeger nu waard?" />
         <link rel="canonical" href={canonicalUrl} />
-        {jsonLd.map(item => <script type="application/ld+json" set:html={JSON.stringify(item)} />)}
+        {jsonLd.map(item => <script type="application/ld+json" set:html={embedJson(item)} />)}
       </>
     )}
   </head>

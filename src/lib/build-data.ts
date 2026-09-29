@@ -1,5 +1,5 @@
-import { fetchCaoData, fetchCaoModified, type CaoData } from './cao';
-import { fetchDatasetModified, fetchInflationData, type InflationData } from './inflation';
+import { fetchCaoData, fetchCaoModified, type CaoData } from './cao.ts';
+import { fetchDatasetModified, fetchInflationData, type InflationData } from './inflation.ts';
 
 export interface BuildData {
   data: InflationData;

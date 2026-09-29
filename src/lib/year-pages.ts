@@ -1,4 +1,4 @@
-import { EURO_INTRODUCTION_YEAR, FIRST_YEAR, type InflationData } from './inflation';
+import { EURO_INTRODUCTION_YEAR, FIRST_YEAR, type InflationData } from './inflation.ts';
 
 // The per-year pages: /gulden/<year>/ for 1900–2001 and /euro/<year>/ from
 // 2002, one for every year with a yearly average before the latest one

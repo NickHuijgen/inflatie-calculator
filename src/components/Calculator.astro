@@ -10,6 +10,7 @@ import {
   type InflationData,
 } from '../lib/inflation';
 import { cardClass, focusRing, hintClass, inputClass, labelClass } from '../lib/ui';
+import { embedJson } from '../lib/embed';
 
 // The calculator form and its result card: two grid children, rendered with
 // the given defaults as static HTML (search engines and no-JS visitors see a
@@ -33,18 +34,28 @@ const { data, datasetModified, amount, startYear, endYear, month, heading, headi
 const maxYear = data.latestYear;
 const updatedOn = datasetModified.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Amsterdam' });
 
-const inflation = data.inflationPercentage(startYear, endYear, month);
-const result = {
-  input: formatMoney(amount, startYear),
-  output: formatMoney(data.output(amount, startYear, endYear, month), endYear),
-  direction: inflation < 0 ? 'daalden' : 'stegen',
-  inflation: formatPercent(Math.abs(inflation)),
-  average: formatPercent(data.averageInflation(startYear, endYear, month)),
-};
+const output = data.output(amount, startYear, endYear, month);
 
-if (data.output(amount, startYear, endYear, month) < 0) {
+// `!(output > 0)` rather than `< 0`: a missing figure returns -1, but NaN and
+// Infinity fail a `< 0` test and would reach the page as "€ NaN" / "€ ∞".
+if (!(output > 0)) {
   throw new Error(`Calculator defaults have no CBS figures: ${startYear} → ${endYear}, ${month}`);
 }
+
+// Like the script (calculator.ts), the price change is described forwards in
+// time whichever order the years arrive in -- the spans below are labelled
+// with min/max, so computing it in the given order would make the static HTML
+// contradict itself the moment the years were passed the other way round.
+const fromYear = Math.min(startYear, endYear);
+const toYear = Math.max(startYear, endYear);
+const inflation = data.inflationPercentage(fromYear, toYear, month);
+const result = {
+  input: formatMoney(amount, startYear),
+  output: formatMoney(output, endYear),
+  direction: inflation < 0 ? 'daalden' : 'stegen',
+  inflation: formatPercent(Math.abs(inflation)),
+  average: formatPercent(data.averageInflation(fromYear, toYear, month)),
+};
 ---
 
 <section class={`flex flex-col ${cardClass}`} aria-labelledby="calculator-title">
@@ -96,11 +107,11 @@ if (data.output(amount, startYear, endYear, month) < 0) {
       <span id="result-input" class="font-semibold">{result.input}</span> uit <span id="result-start-year">{startYear}</span> heeft in <span id="result-end-year">{endYear}</span> een koopkracht van
     </p>
     <p id="result-output" class="mt-1 text-4xl font-bold tracking-tight text-blue-900 lg:text-5xl">{result.output}</p>
-    <p id="result-change" class="mt-4">
-      Tussen <span id="result-from-year">{Math.min(startYear, endYear)}</span> en <span id="result-to-year">{Math.max(startYear, endYear)}</span> <span id="result-direction">{result.direction}</span> de prijzen met <strong><span id="result-inflation">{result.inflation}</span>%</strong>,
+    <p id="result-change" class="mt-4" hidden={fromYear === toYear}>
+      Tussen <span id="result-from-year">{fromYear}</span> en <span id="result-to-year">{toYear}</span> <span id="result-direction">{result.direction}</span> de prijzen met <strong><span id="result-inflation">{result.inflation}</span>%</strong>,
       gemiddeld <strong><span id="result-average">{result.average}</span>%</strong> per jaar.
     </p>
-    <p id="result-same-year" class="mt-4" hidden>Begin- en eindjaar zijn hetzelfde, dus er is geen verschil in koopkracht.</p>
+    <p id="result-same-year" class="mt-4" hidden={fromYear !== toYear}>Begin- en eindjaar zijn hetzelfde, dus er is geen verschil in koopkracht.</p>
   </div>
   <p id="result-missing" class="mt-3" hidden></p>
   <p id="result-note" class="mt-3 text-sm text-gray-700" hidden></p>
@@ -114,11 +125,11 @@ if (data.output(amount, startYear, endYear, month) < 0) {
   </div>
 
   <p class="mt-6 text-sm text-gray-600">
-    Bron: CBS, maandcijfers tot en met {data.latestPeriodLabel} en jaarcijfers tot en met {data.latestYearlyYear} (bijgewerkt op <time datetime={datasetModified.toISOString()}>{updatedOn}</time>).
+    Bron: CBS, maandcijfers tot en met {data.latestMonthlyLabel} en jaarcijfers tot en met {data.latestYearlyYear} (bijgewerkt op <time datetime={datasetModified.toISOString()}>{updatedOn}</time>).
   </p>
 </section>
 
-<script type="application/json" id="cbs-data" set:html={JSON.stringify(data.toCompact())} />
+<script type="application/json" id="cbs-data" set:html={embedJson(data.toCompact())} />
 
 <script>
   import '../scripts/calculator';

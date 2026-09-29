@@ -7,8 +7,8 @@ import {
   formatMoney,
   formatPercent,
   parseAmount,
-} from '../lib/inflation';
-import { clampYear, element, monthLabel, monthToParam, paramToMonth } from './form';
+} from '../lib/inflation.ts';
+import { clampYear, element, isUnchanged, monthLabel, monthToParam, paramToMonth } from './form.ts';
 
 const amountInput = element<HTMLInputElement>('input-amount');
 const startYearInput = element<HTMLInputElement>('input-start-year');
@@ -133,7 +133,7 @@ function adjustForYearlyOnly(): void {
 }
 
 function isDefault(): boolean {
-  return [amountInput, startYearInput, endYearInput].every(input => parseAmount(input.value) === parseAmount(input.defaultValue))
+  return [amountInput, startYearInput, endYearInput].every(isUnchanged)
     && [...monthSelect.options].every(option => option.selected === option.defaultSelected);
 }
 
@@ -168,7 +168,12 @@ function commit(): void {
 
   updateUrl();
   shareFeedback.textContent = '';
-  resultStatus.textContent = [summary ?? resultMissing.textContent, resultNote.hidden ? '' : resultNote.textContent].filter(Boolean).join(' ');
+  // `resultMissing` keeps its last message while hidden, so only read it when
+  // it is the thing on screen -- otherwise a dimmed result would be announced
+  // with an explanation that no longer applies.
+  const missing = resultMissing.hidden ? '' : resultMissing.textContent;
+
+  resultStatus.textContent = [summary ?? missing, resultNote.hidden ? '' : resultNote.textContent].filter(Boolean).join(' ');
 }
 
 function applyUrlParams(): void {

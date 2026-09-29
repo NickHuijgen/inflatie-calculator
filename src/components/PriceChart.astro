@@ -27,9 +27,18 @@ const series = points.map(point => ({ year: point.year, value: (point.level / ba
 const first = series[0];
 const last = series[series.length - 1];
 
-const width = 640;
-const height = 260;
-const pad = { top: 16, right: 64, bottom: 28, left: 52 };
+// The drawing scales with the container, and so does every label in it: at
+// 640 wide the ticks rendered at ~5,8px on a phone (390px viewport, ~310px of
+// chart). The geometry is therefore sized for the narrowest case and the
+// chart is capped at that width on desktop (max-w below) instead, which keeps
+// the rendered text between ~11 and 13px everywhere.
+const width = 380;
+const height = 220;
+// The right margin holds the value at the end of the line ("3.755" on the
+// 1900 page, the widest there is) and the left one the y labels; both are
+// clipped by the viewBox rather than overflowing, so they get a few units of
+// slack.
+const pad = { top: 12, right: 52, bottom: 26, left: 48 };
 const plotWidth = width - pad.left - pad.right;
 const plotHeight = height - pad.top - pad.bottom;
 
@@ -43,7 +52,7 @@ const yTicks = Array.from({ length: yMax / step + 1 }, (_, i) => i * step);
 
 // X ticks on round years, at most ~6.
 const span = last.year - first.year;
-const xStep = [1, 2, 5, 10, 20, 25, 50].find(s => span / s <= 6) ?? 50;
+const xStep = [1, 2, 5, 10, 20, 25, 50].find(s => span / s <= 4) ?? 50;
 const xTicks = [first.year];
 for (let year = Math.ceil((first.year + 1) / xStep) * xStep; year < last.year; year += xStep) {
   if (year - first.year >= xStep / 2 && last.year - year >= xStep / 2) {
@@ -66,24 +75,24 @@ const captionId = `chart-caption-${first.year}`;
 ---
 
 <figure class="m-0">
-  <svg viewBox={`0 0 ${width} ${height}`} class="h-auto w-full" role="img" aria-labelledby={`${titleId} ${captionId}`}>
+  <svg viewBox={`0 0 ${width} ${height}`} class="h-auto w-full max-w-[380px]" role="img" aria-labelledby={`${titleId} ${captionId}`}>
     <title id={titleId}>{title}</title>
 
     {yTicks.map(tick => (
       <g>
         <line x1={pad.left} x2={width - pad.right} y1={y(tick)} y2={y(tick)} stroke="#e5e7eb" stroke-width="1" />
-        <text x={pad.left - 8} y={y(tick)} text-anchor="end" dominant-baseline="middle" class="fill-gray-600 text-[12px] tabular-nums">{number.format(tick)}</text>
+        <text x={pad.left - 8} y={y(tick)} text-anchor="end" dominant-baseline="middle" class="fill-gray-600 text-[13px] tabular-nums">{number.format(tick)}</text>
       </g>
     ))}
 
     {xTicks.map(tick => (
-      <text x={x(tick)} y={height - 8} text-anchor="middle" class="fill-gray-600 text-[12px] tabular-nums">{tick}</text>
+      <text x={x(tick)} y={height - 8} text-anchor="middle" class="fill-gray-600 text-[13px] tabular-nums">{tick}</text>
     ))}
 
     <path d={areaPath} fill="#1447e6" fill-opacity="0.1" />
     <path d={linePath} fill="none" stroke="#1447e6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
     <circle cx={x(last.year)} cy={y(last.value)} r="4" fill="#1447e6" stroke="#fff" stroke-width="2" />
-    <text x={x(last.year) + 10} y={y(last.value)} dominant-baseline="middle" class="fill-gray-900 text-[13px] font-semibold">{number.format(last.value)}</text>
+    <text x={x(last.year) + 10} y={y(last.value)} dominant-baseline="middle" class="fill-gray-900 text-[14px] font-semibold">{number.format(last.value)}</text>
 
     {series.map(point => (
       <g class="group">

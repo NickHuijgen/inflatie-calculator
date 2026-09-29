@@ -1,4 +1,5 @@
-import { MONTHS } from './inflation';
+import { fetchJson } from './cbs.ts';
+import { MONTHS } from './inflation.ts';
 
 // The third CBS dataset, used only by /salaris (see Calculation in
 // AGENTS.md): the index of collectively agreed wages. Deliberately kept out
@@ -91,16 +92,6 @@ export class CaoData {
 
     return !month || month[0] === 'JJ00' ? latest.substring(0, 4) : `${month[1].toLowerCase()} ${latest.substring(0, 4)}`;
   }
-}
-
-async function fetchJson<T>(url: string): Promise<T> {
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`CBS request failed: ${response.status} ${response.statusText} (${url})`);
-  }
-
-  return await response.json() as T;
 }
 
 export async function fetchCaoData(): Promise<CaoData> {

@@ -1,3 +1,5 @@
+import { fetchJson } from './cbs.ts';
+
 export interface YearData {
   ID: number;
   Perioden: string;
@@ -47,16 +49,6 @@ const guilderToEuroConversionRate = 0.453780;
 /** The fixed euro rate: 1 euro = 2,20371 gulden. */
 export const euroToGuilderConversionRate = 2.20371;
 
-async function fetchJson<T>(url: string): Promise<T> {
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`CBS request failed: ${response.status} ${response.statusText} (${url})`);
-  }
-
-  return await response.json() as T;
-}
-
 export async function fetchInflationData(): Promise<InflationData> {
   const [mutations, index] = await Promise.all([
     fetchJson<{ value: YearData[] }>(CBS_DATA_URL),
@@ -97,18 +89,26 @@ export class InflationData {
 
   constructor(items: YearData[], yearlyIndex: [number, number][]) {
     this.byPeriod = new Map(items.map(item => [item.Perioden, item]));
-    this.latest = items[items.length - 1];
+    // Not `items[items.length - 1]`: the feed happens to be chronological, but
+    // its periods are not sorted (each year's JJ00 follows that year's MM12),
+    // so a reordered feed would silently yield a wrong "latest" -- and a wrong
+    // period everywhere the page names one -- instead of failing.
+    this.latest = items.reduce<YearData | undefined>((latest, item) => (!latest || periodRank(item.Perioden) > periodRank(latest.Perioden) ? item : latest), undefined);
     this.yearlyIndex = yearlyIndex;
     this.levels = new Map(yearlyIndex);
 
     // 71905ned is published once a year, a few weeks after 70936ned has the
     // same year's yearly change. Extend the index with those changes so the
-    // yearly average never lags behind the monthly data.
+    // yearly average never lags behind the monthly data. A period CBS has
+    // published without a usable figure stops the chain: carrying a NaN
+    // forward would put "€ NaN" on every page instead of failing the build.
     let year = Math.max(...this.levels.keys()) + 1;
+    let change = this.mutation(year, 'JJ00');
 
-    while (this.byPeriod.has(`${year}JJ00`)) {
-      this.levels.set(year, this.levels.get(year - 1)! * (1 + this.mutation(year, 'JJ00')! / 100));
+    while (change !== undefined) {
+      this.levels.set(year, this.levels.get(year - 1)! * (1 + change / 100));
       year++;
+      change = this.mutation(year, 'JJ00');
     }
   }
 
@@ -153,14 +153,18 @@ export class InflationData {
   }
 
   has(year: number, month: string): boolean {
-    return month === 'JJ00' ? this.levels.has(year) : this.byPeriod.has(year + month);
+    // Deliberately not `byPeriod.has()`: CBS publishing a period without a
+    // usable figure would pass that test and then produce NaN all the way to
+    // the page, which no guard downstream catches (NaN fails every `< 0`).
+    return month === 'JJ00' ? Number.isFinite(this.levels.get(year)) : this.mutation(year, month) !== undefined;
   }
 
   /** Yearly CPI mutation in percent for the given period (70936ned). */
   private mutation(year: number, month: string): number | undefined {
     const item = this.byPeriod.get(year + month);
+    const value = item ? parseFloat(String(item.JaarmutatieCPI_1).replace(/\s/g, '')) : NaN;
 
-    return item ? parseFloat(item.JaarmutatieCPI_1.replace(/\s/g, '')) : undefined;
+    return Number.isFinite(value) ? value : undefined;
   }
 
   /**
@@ -244,14 +248,28 @@ export class InflationData {
   output(amount: number, startYear: number, endYear: number, month: string): number {
     const factor = this.calculateCPIMutation(startYear, endYear, month);
 
-    if (amount <= 0 || factor < 0) {
+    // `!(amount > 0)` rather than `amount <= 0`, so NaN is rejected too, and a
+    // finite check on the way out: an amount just below the double limit
+    // (307 digits) multiplies into Infinity, which renders as "€ ∞".
+    if (!(amount > 0) || factor < 0) {
       return -1;
     }
 
-    return parseFloat(round(amount * (factor / 100)).toFixed(2));
+    const value = round(amount * (factor / 100));
+
+    return Number.isFinite(value) ? parseFloat(value.toFixed(2)) : -1;
   }
 
+  /**
+   * Total price change between the two periods in percent, in the direction
+   * given. NaN when either period has no figures: the -1 the calculation uses
+   * for "no figures" would come out of here as a plausible-looking -101%.
+   */
   inflationPercentage(startYear: number, endYear: number, month: string): number {
+    if (!this.has(startYear, month) || !this.has(endYear, month)) {
+      return NaN;
+    }
+
     return parseFloat((this.calculateCPIMutation(startYear, endYear, month, false) - 100).toFixed(2));
   }
 
@@ -294,22 +312,71 @@ export class InflationData {
 
   /** Human-readable latest period, e.g. "augustus 2026" or "2025". */
   get latestPeriodLabel(): string {
-    const month = MONTHS.find(([value]) => value === this.latestMonth);
-
-    return this.latestMonth === 'JJ00' || !month ? String(this.latestYear) : `${month[1].toLowerCase()} ${this.latestYear}`;
+    return periodLabel(this.latest?.Perioden) ?? String(this.latestYear);
   }
+
+  /**
+   * The newest period that is an actual month, as [year, month].
+   *
+   * Not the same as `latest`: a year's JJ00 row arrives with its December
+   * figure and sorts after it, so for the few weeks until the next month is
+   * published the newest period *is* a year. Copy that promises a month
+   * ("maandcijfers tot en met …") has to ask for one, or it spends every
+   * January naming a year instead.
+   */
+  get latestMonthly(): [number, string] | undefined {
+    let latest: string | undefined;
+
+    for (const period of this.byPeriod.keys()) {
+      if (period.substring(4, 6) === 'MM' && (!latest || periodRank(period) > periodRank(latest)) && this.has(parseInt(period), period.substring(4, 8))) {
+        latest = period;
+      }
+    }
+
+    return latest ? [parseInt(latest), latest.substring(4, 8)] : undefined;
+  }
+
+  /** Human-readable newest month, e.g. "augustus 2026". */
+  get latestMonthlyLabel(): string {
+    const monthly = this.latestMonthly;
+
+    return monthly ? periodLabel(monthly[0] + monthly[1])! : String(this.latestYear);
+  }
+}
+
+/**
+ * Sortable rank for a CBS period. The feed's own order is year, then the
+ * twelve months, then the yearly average -- which is not the order the strings
+ * sort in ("1963JJ00" < "1963MM01"), so comparisons need this.
+ */
+function periodRank(period: string): number {
+  const month = period.substring(4, 8);
+
+  return parseInt(period) * 100 + (month === 'JJ00' ? 13 : parseInt(month.substring(2)));
+}
+
+/** "2026MM08" -> "augustus 2026", "2025JJ00" -> "2025". */
+function periodLabel(period: string | undefined): string | undefined {
+  if (!period) {
+    return undefined;
+  }
+
+  const month = MONTHS.find(([value]) => value === period.substring(4, 8));
+
+  return !month || month[0] === 'JJ00' ? period.substring(0, 4) : `${month[1].toLowerCase()} ${period.substring(0, 4)}`;
 }
 
 export function round(number: number, decimals: number = 2): number {
   return parseFloat((Math.round(number * 10000) / 10000).toFixed(decimals));
 }
 
-const amountFormat = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const percentFormat = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// Amounts and percentages are both shown with exactly two decimals in Dutch
+// notation, so they share one formatter.
+const twoDecimals = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 /** Dutch notation: 1234.5 → "1.234,50". */
 export function formatAmount(number: number): string {
-  return amountFormat.format(number);
+  return twoDecimals.format(number);
 }
 
 /** "€ 1.234,50", or "ƒ 1.234,50" for years before the euro. */
@@ -319,7 +386,7 @@ export function formatMoney(number: number, year: number): string {
 
 /** Dutch notation, always two decimals: 39.28 → "39,28", 3.3 → "3,30". */
 export function formatPercent(number: number): string {
-  return percentFormat.format(number);
+  return twoDecimals.format(number);
 }
 
 /**

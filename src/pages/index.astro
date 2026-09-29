@@ -26,7 +26,9 @@ const defaultAmount = 100;
 const endYear = data.latestYear;
 const startYear = endYear - 10;
 const month = data.latestMonth;
-const latestPeriod = data.latestPeriodLabel;
+// The newest *month*, which is not always the newest period: see
+// latestMonthly() in inflation.ts. Copy that says "maand" needs this one.
+const latestMonth = data.latestMonthlyLabel;
 const latestYearlyYear = data.latestYearlyYear;
 const updatedOn = datasetModified.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Amsterdam' });
 
@@ -124,7 +126,7 @@ const indexLinkText = `“${CBS_INDEX_TITLE}”`;
             <p class="mb-2">
               De berekening gebruikt de officiële cijfers van het Centraal Bureau voor de Statistiek (CBS).
               Voor jaargemiddelden vanaf {FIRST_YEAR} is dat de prijsindex <a href={CBS_INDEX_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{indexLinkText}</a>.
-              Voor maanden, vanaf januari {FIRST_MONTHLY_YEAR} tot en met {latestPeriod}, zijn dat de cijfers uit <a href={CBS_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{datasetLinkText}</a>.
+              Voor maanden, vanaf januari {FIRST_MONTHLY_YEAR} tot en met {latestMonth}, zijn dat de cijfers uit <a href={CBS_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{datasetLinkText}</a>.
               Bedragen van vóór {EURO_INTRODUCTION_YEAR} worden omgerekend naar euro's tegen de vaste koers van {guilderRate} gulden per euro.
             </p>
 
@@ -214,7 +216,7 @@ const indexLinkText = `“${CBS_INDEX_TITLE}”`;
               <h3 class="font-semibold">Over welke periode kan ik rekenen?</h3>
               <p>
                 Met jaargemiddelden van {FIRST_YEAR} tot en met {latestYearlyYear}.
-                Per maand van januari {FIRST_MONTHLY_YEAR} tot en met de meest recente maand die het CBS heeft gepubliceerd; nu is dat {latestPeriod}.
+                Per maand van januari {FIRST_MONTHLY_YEAR} tot en met de meest recente maand die het CBS heeft gepubliceerd; nu is dat {latestMonth}.
               </p>
             </div>
 

@@ -53,6 +53,7 @@ const salaryRows = salaries.map(salary => ({ salary, required: data.output(salar
 
 const requiredRise = formatPercent(Math.abs(example.inflation));
 const latestPeriod = data.latestPeriodLabel;
+const latestMonth = data.latestMonthlyLabel;
 
 const title = 'Salaris Inflatie Berekenen – Is je loon meegegroeid?';
 const description = `Bereken wat je salaris van vroeger nu waard is en of je loonsverhoging de inflatie bijhield. Vergelijk je eigen stijging met de cao-lonen, met officiële CBS-cijfers.`;
@@ -127,7 +128,7 @@ const datasetLinkText = `“${CBS_DATASET_TITLE}”`;
           </div>
 
           <p class="mt-4 max-w-3xl text-sm text-gray-600">
-            {`Cao-lonen per maand inclusief bijzondere beloningen, jaargemiddelden tot en met ${caoLatestYear}. Beide percentages zijn berekend uit de indexcijfers zelf, zonder tussentijds af te ronden; het CBS publiceert ze afgerond op één decimaal, dus achter de komma kan een klein verschil zitten.`}
+            {`Cao-lonen per maand inclusief bijzondere beloningen, jaargemiddelden tot en met ${caoLatestYear}. Beide percentages zijn berekend uit de indexcijfers zelf, zonder tussentijds af te ronden; het CBS publiceert zowel de percentages als de indexcijfers afgerond op één decimaal, dus ze kunnen een fractie afwijken van de cijfers in de CBS-publicatie — bij de oudste jaren, waar het indexcijfer nog klein is, tot ongeveer een halve procentpunt.`}
           </p>
         </div>
       </section>
@@ -235,7 +236,7 @@ const datasetLinkText = `“${CBS_DATASET_TITLE}”`;
             <div>
               <h3 class="font-semibold">Over welke periode kan ik rekenen?</h3>
               <p>
-                {`Met jaargemiddelden van prijzen vanaf 1900, en per maand vanaf januari ${FIRST_MONTHLY_YEAR} tot en met ${latestPeriod}. De cao-lonen gaan terug tot ${FIRST_CAO_YEAR}; voor jaren daarvoor toont de calculator alleen de prijsvergelijking.`}
+                {`Met jaargemiddelden van prijzen vanaf 1900, en per maand vanaf januari ${FIRST_MONTHLY_YEAR} tot en met ${latestMonth}. De cao-lonen gaan terug tot ${FIRST_CAO_YEAR}; voor jaren daarvoor toont de calculator alleen de prijsvergelijking.`}
               </p>
             </div>
 

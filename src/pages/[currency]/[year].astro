@@ -50,11 +50,14 @@ const priceLevelText = factor >= 2
 const direction = inflation < 0 ? 'daalden' : 'stegen';
 
 // Same month in both years, for years with monthly figures: the most recent
-// comparison possible, next to the yearly one above.
-const month = data.latestMonth;
-const monthName = MONTHS.find(([code]) => code === month)?.[1].toLowerCase();
-const monthlyValue = year >= FIRST_MONTHLY_YEAR && month !== 'JJ00' && data.has(year, month)
-  ? data.output(amount, year, data.latestYear, month)
+// comparison possible, next to the yearly one above. Deliberately the newest
+// *month* rather than the newest period -- for the few weeks a year that the
+// newest period is a yearly average, asking for `latestMonth` would drop this
+// paragraph from all 125 pages (see latestMonthly() in inflation.ts).
+const latestMonthly = data.latestMonthly;
+const monthName = latestMonthly && MONTHS.find(([code]) => code === latestMonthly[1])?.[1].toLowerCase();
+const monthlyValue = latestMonthly && year >= FIRST_MONTHLY_YEAR && data.has(year, latestMonthly[1])
+  ? data.output(amount, year, latestMonthly[0], latestMonthly[1])
   : undefined;
 
 // This year's own inflation, in context.
@@ -123,7 +126,7 @@ const navLinkClass = `rounded-md border border-blue-700 px-3 py-2 font-semibold 
         </p>
         {monthlyValue !== undefined && (
           <p class="mt-2 max-w-3xl">
-            Vergelijk je {monthName} {year} met {data.latestPeriodLabel}, dan is {formatMoney(amount, year)} nu {formatMoney(monthlyValue, data.latestYear)} waard.
+            Vergelijk je {monthName} {year} met {data.latestMonthlyLabel}, dan is {formatMoney(amount, year)} nu {formatMoney(monthlyValue, latestMonthly![0])} waard.
           </p>
         )}
         <p class="mt-4 text-sm text-gray-600">
@@ -199,12 +202,12 @@ const navLinkClass = `rounded-md border border-blue-700 px-3 py-2 font-semibold 
           {nextYear && <a href={yearPagePath(nextYear)} class={navLinkClass}>{formatMoney(amount, nextYear)} uit {nextYear} →</a>}
         </div>
         <p class="mt-4 font-semibold">De jaren {decade}–{decade + 9}</p>
-        <ul class="mt-2 flex flex-wrap gap-x-4 gap-y-2">
+        <ul class="mt-1 flex flex-wrap gap-x-4">
           {decadeYears.map(y => (
             <li>
               {y === year
-                ? <span aria-current="page" class="font-semibold">{y}</span>
-                : <a href={yearPagePath(y)} class={linkClass}>{y}</a>}
+                ? <span aria-current="page" class="inline-flex min-h-11 items-center font-semibold">{y}</span>
+                : <a href={yearPagePath(y)} class={`inline-flex min-h-11 items-center ${linkClass}`}>{y}</a>}
             </li>
           ))}
         </ul>

@@ -1,5 +1,5 @@
-import { CBS_CAO_DATASET_URL, CBS_CAO_TITLE } from './cao';
-import { CBS_DATASET_TITLE, CBS_DATASET_URL, CBS_INDEX_DATASET_URL, CBS_INDEX_TITLE } from './inflation';
+import { CBS_CAO_DATASET_URL, CBS_CAO_TITLE } from './cao.ts';
+import { CBS_DATASET_TITLE, CBS_DATASET_URL, CBS_INDEX_DATASET_URL, CBS_INDEX_TITLE } from './inflation.ts';
 
 // JSON-LD builders. Every indexable page passes its list to Layout.astro's
 // `jsonLd` prop; nothing else writes structured data.
