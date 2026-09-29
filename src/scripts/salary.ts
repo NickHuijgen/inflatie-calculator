@@ -1,4 +1,4 @@
-import { CaoData, type CompactCaoData } from '../lib/cao';
+import { CaoData, type CompactCaoData } from '../lib/cao.ts';
 import {
   FIRST_MONTHLY_YEAR,
   FIRST_YEAR,
@@ -8,9 +8,9 @@ import {
   formatMoney,
   formatPercent,
   parseAmount,
-} from '../lib/inflation';
-import { caoPeriodNote, comparedToCao, salaryComparison, wageComparison } from '../lib/salary';
-import { clampYear, element, monthLabel, monthToParam, paramToMonth } from './form';
+} from '../lib/inflation.ts';
+import { caoPeriodNote, comparedToCao, salaryComparison, wageComparison } from '../lib/salary.ts';
+import { clampYear, element, isUnchanged, monthLabel, monthToParam, paramToMonth } from './form.ts';
 
 // Makes SalaryCalculator.astro interactive. Same division of labour as
 // calculator.ts: this file only reads the form, calls src/lib/salary.ts and
@@ -89,12 +89,15 @@ function render(): string | undefined {
     return undefined;
   }
 
-  const { required, inflation, average, actual } = comparison;
+  // The comparison decides which salary and which years it answered about:
+  // with two salaries it runs forwards in time, so the base is whichever
+  // field holds the earlier year (see salaryComparison).
+  const { baseSalary, baseYear, targetYear, required, inflation, average, actual } = comparison;
 
-  element('salary-result-then').textContent = formatMoney(amount, startYear);
-  element('salary-result-start-year').textContent = String(startYear);
-  element('salary-result-end-year').textContent = String(endYear);
-  element('salary-result-required').textContent = formatMoney(required, endYear);
+  element('salary-result-then').textContent = formatMoney(baseSalary, baseYear);
+  element('salary-result-start-year').textContent = String(baseYear);
+  element('salary-result-end-year').textContent = String(targetYear);
+  element('salary-result-required').textContent = formatMoney(required, targetYear);
 
   // Prices are always described forwards in time, whichever order the years
   // were entered in.
@@ -114,15 +117,15 @@ function render(): string | undefined {
   keepUpPrompt.hidden = !!actual;
 
   if (actual) {
-    element('salary-keepup-end-year').textContent = String(endYear);
-    element('salary-keepup-salary').textContent = formatMoney(actual.salary, endYear);
-    element('salary-keepup-gap').textContent = formatMoney(Math.abs(actual.gap), endYear);
+    element('salary-keepup-end-year').textContent = String(targetYear);
+    element('salary-keepup-salary').textContent = formatMoney(actual.salary, targetYear);
+    element('salary-keepup-gap').textContent = formatMoney(Math.abs(actual.gap), targetYear);
     element('salary-keepup-gap-direction').textContent = actual.gap < 0 ? 'minder' : 'meer';
     element('salary-keepup-real').textContent = formatPercent(Math.abs(actual.realChange));
     element('salary-keepup-real-direction').textContent = actual.realChange < 0 ? 'gedaald' : 'gestegen';
-    element('salary-keepup-real-value').textContent = formatMoney(actual.realValue, startYear);
-    element('salary-keepup-start-year').textContent = String(startYear);
-    element('salary-keepup-start-year-2').textContent = String(startYear);
+    element('salary-keepup-real-value').textContent = formatMoney(actual.realValue, baseYear);
+    element('salary-keepup-start-year').textContent = String(baseYear);
+    element('salary-keepup-start-year-2').textContent = String(baseYear);
   }
 
   renderCao(startYear, endYear, month, actual?.nominalChange);
@@ -131,10 +134,10 @@ function render(): string | undefined {
   result.classList.remove('opacity-40');
   resultMissing.hidden = true;
 
-  const summary = `${formatMoney(amount, startYear)} uit ${startYear} komt in ${endYear} overeen met ${formatMoney(required, endYear)}.`;
+  const summary = `${formatMoney(baseSalary, baseYear)} uit ${baseYear} komt in ${targetYear} overeen met ${formatMoney(required, targetYear)}.`;
 
   return actual
-    ? `${summary} In ${endYear} verdien je ${formatMoney(actual.salary, endYear)}: ${formatMoney(Math.abs(actual.gap), endYear)} ${actual.gap < 0 ? 'minder' : 'meer'} dan nodig om dezelfde koopkracht te houden als in ${startYear}.`
+    ? `${summary} In ${targetYear} verdien je ${formatMoney(actual.salary, targetYear)}: ${formatMoney(Math.abs(actual.gap), targetYear)} ${actual.gap < 0 ? 'minder' : 'meer'} dan nodig om dezelfde koopkracht te houden als in ${baseYear}.`
     : summary;
 }
 
@@ -222,7 +225,7 @@ function adjustForYearlyOnly(): void {
 }
 
 function isDefault(): boolean {
-  return [thenInput, nowInput, startYearInput, endYearInput].every(input => input.value === input.defaultValue)
+  return [thenInput, nowInput, startYearInput, endYearInput].every(isUnchanged)
     && [...monthSelect.options].every(option => option.selected === option.defaultSelected);
 }
 
@@ -259,7 +262,10 @@ function commit(): void {
 
   updateUrl();
   shareFeedback.textContent = '';
-  resultStatus.textContent = [summary ?? resultMissing.textContent, resultNote.hidden ? '' : resultNote.textContent].filter(Boolean).join(' ');
+  // Only when it is actually on screen: see the same guard in calculator.ts.
+  const missing = resultMissing.hidden ? '' : resultMissing.textContent;
+
+  resultStatus.textContent = [summary ?? missing, resultNote.hidden ? '' : resultNote.textContent].filter(Boolean).join(' ');
 }
 
 function applyUrlParams(): void {

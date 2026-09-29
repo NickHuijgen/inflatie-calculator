@@ -1,5 +1,5 @@
-import { FIRST_CAO_MONTHLY_YEAR, FIRST_CAO_YEAR, type CaoData } from './cao';
-import { convertCurrency, round, type InflationData } from './inflation';
+import { FIRST_CAO_MONTHLY_YEAR, FIRST_CAO_YEAR, type CaoData } from './cao.ts';
+import { convertCurrency, round, type InflationData } from './inflation.ts';
 
 // The maths behind /salaris. Pure, like inflation.ts: no DOM access, so the
 // page and its script can share it. Every purchasing-power figure comes from
@@ -22,7 +22,18 @@ export interface ActualSalary {
 }
 
 export interface SalaryComparison {
-  /** What the salary has to be in the end year for the same purchasing power. */
+  /**
+   * The salary the answer starts from and the year it belongs to. With two
+   * salaries this is always the one from the earlier year, whichever field it
+   * was typed in; with one it is simply what was entered. Every renderer takes
+   * its years and its amounts from here rather than from the form, so the
+   * sentences describe the comparison that was actually made.
+   */
+  baseSalary: number;
+  baseYear: number;
+  /** The year the answer is about. */
+  targetYear: number;
+  /** What `baseSalary` has to be in `targetYear` for the same purchasing power. */
   required: number;
   /** Total price change between the two years, forwards in time, in percent. */
   inflation: number;
@@ -45,7 +56,32 @@ export function salaryComparison(
   month: string,
   currentSalary?: number,
 ): SalaryComparison | undefined {
-  const required = data.output(salary, startYear, endYear, month);
+  // Prices are always described forwards in time, whichever order the years
+  // were entered in -- the same rule the calculator on / follows.
+  const fromYear = Math.min(startYear, endYear);
+  const toYear = Math.max(startYear, endYear);
+
+  // So is everything else here, once there are two salaries to compare. Each
+  // salary belongs to a year, so entering the years backwards (or one click
+  // of the swap button) does not turn the question round -- it only decides
+  // which field holds the earlier salary. Measuring the purchasing power in
+  // the entered order while the pay rise ran forwards put two contradictory
+  // sentences in the same card: "koopkracht 60,96% gestegen" above "salaris
+  // daalde 16,67%".
+  //
+  // With a single salary there is nothing to run forwards to, so the question
+  // is answered the way it was asked: what that amount is worth in the other
+  // year, earlier or later.
+  const current = currentSalary !== undefined && currentSalary > 0 ? currentSalary : undefined;
+
+  const [baseSalary, later]: [number, number | undefined] = current === undefined
+    ? [salary, undefined]
+    : startYear <= endYear ? [salary, current] : [current, salary];
+
+  const baseYear = current === undefined ? startYear : fromYear;
+  const targetYear = current === undefined ? endYear : toYear;
+
+  const required = data.output(baseSalary, baseYear, targetYear, month);
 
   // Same guard as the calculator on /: anything that isn't a positive result
   // is a missing figure or a half-typed amount, never something to show.
@@ -53,33 +89,23 @@ export function salaryComparison(
     return undefined;
   }
 
-  // Prices are always described forwards in time, whichever order the years
-  // were entered in -- the same rule the calculator on / follows.
-  const fromYear = Math.min(startYear, endYear);
-  const toYear = Math.max(startYear, endYear);
-
   const comparison: SalaryComparison = {
+    baseSalary,
+    baseYear,
+    targetYear,
     required,
     inflation: data.inflationPercentage(fromYear, toYear, month),
     average: data.averageInflation(fromYear, toYear, month),
   };
 
-  if (currentSalary !== undefined && currentSalary > 0) {
-    // Like the price figures, the pay rise is measured forwards in time, from
-    // the earlier year to the later one -- so whichever of the two amounts
-    // belongs to the earlier year is the one it starts from. Measuring it in
-    // the order the fields happen to be filled in would describe a fall as a
-    // rise whenever the years are entered backwards, and would then be
-    // compared against a cao figure running the other way.
-    const [earlier, later] = startYear <= endYear ? [salary, currentSalary] : [currentSalary, salary];
-
+  if (later !== undefined) {
     comparison.actual = {
-      salary: currentSalary,
-      realValue: data.output(currentSalary, endYear, startYear, month),
-      gap: round(currentSalary - required),
-      realChange: round((currentSalary / required - 1) * 100),
+      salary: later,
+      realValue: data.output(later, targetYear, baseYear, month),
+      gap: round(later - required),
+      realChange: round((later / required - 1) * 100),
       // Nominally, guilders and euros can only be compared at the fixed rate.
-      nominalChange: round((later / convertCurrency(earlier, fromYear, toYear) - 1) * 100),
+      nominalChange: round((later / convertCurrency(baseSalary, baseYear, targetYear) - 1) * 100),
     };
   }
 

@@ -11,6 +11,7 @@ import {
 import type { CaoData } from '../lib/cao';
 import { caoPeriodNote, comparedToCao, salaryComparison, wageComparison } from '../lib/salary';
 import { cardClass, focusRing, hintClass, inputClass, labelClass } from '../lib/ui';
+import { embedJson } from '../lib/embed';
 
 // The /salaris form and its result card, built the same way as
 // Calculator.astro: two grid children, rendered as a complete static result
@@ -57,7 +58,10 @@ if (!comparison || !wages) {
   throw new Error(`SalaryCalculator defaults have no CBS figures: ${startYear} → ${endYear}, ${month}`);
 }
 
-const { required, inflation, average, actual } = comparison;
+// Years and amounts come from the comparison, not from the props: with two
+// salaries it answers forwards in time, so the earlier salary is whichever
+// field holds the earlier year (see salaryComparison).
+const { baseSalary, baseYear, targetYear, required, inflation, average, actual } = comparison;
 
 
 // `comparedToCao` is only ever shown for an exact period: over a fallback the
@@ -69,12 +73,12 @@ const rose = (value: number) => (value < 0 ? 'daalden' : 'stegen');
 // in AGENTS.md) — so the sentences render with their values left blank
 // rather than with invented ones.
 const keepUp = {
-  salary: actual ? formatMoney(actual.salary, endYear) : '',
-  gap: actual ? formatMoney(Math.abs(actual.gap), endYear) : '',
+  salary: actual ? formatMoney(actual.salary, targetYear) : '',
+  gap: actual ? formatMoney(Math.abs(actual.gap), targetYear) : '',
   gapDirection: actual && actual.gap < 0 ? 'minder' : actual ? 'meer' : '',
   real: actual ? formatPercent(Math.abs(actual.realChange)) : '',
   realDirection: actual && actual.realChange < 0 ? 'gedaald' : actual ? 'gestegen' : '',
-  realValue: actual ? formatMoney(actual.realValue, startYear) : '',
+  realValue: actual ? formatMoney(actual.realValue, baseYear) : '',
   nominal: actual ? formatPercent(Math.abs(actual.nominalChange)) : '',
   nominalDirection: actual && actual.nominalChange < 0 ? 'daalde' : actual ? 'steeg' : '',
   compared: actual ? comparedToCao(actual.nominalChange, wages.cao) : '',
@@ -134,9 +138,9 @@ const keepUp = {
   <h2 id="salary-result-title" class="text-xl font-bold">Resultaat</h2>
   <div id="salary-result" class="mt-3 transition-opacity">
     <p class="text-gray-800">
-      Om in <span id="salary-result-end-year">{endYear}</span> net zoveel te kunnen kopen als met <span id="salary-result-then" class="font-semibold">{formatMoney(amount, startYear)}</span> in <span id="salary-result-start-year">{startYear}</span>, heb je nodig
+      Om in <span id="salary-result-end-year">{targetYear}</span> net zoveel te kunnen kopen als met <span id="salary-result-then" class="font-semibold">{formatMoney(baseSalary, baseYear)}</span> in <span id="salary-result-start-year">{baseYear}</span>, heb je nodig
     </p>
-    <p id="salary-result-required" class="mt-1 text-4xl font-bold tracking-tight text-blue-900 lg:text-5xl">{formatMoney(required, endYear)}</p>
+    <p id="salary-result-required" class="mt-1 text-4xl font-bold tracking-tight text-blue-900 lg:text-5xl">{formatMoney(required, targetYear)}</p>
 
     <p id="salary-result-change" class="mt-4">
       Tussen <span id="salary-result-from-year">{Math.min(startYear, endYear)}</span> en <span id="salary-result-to-year">{Math.max(startYear, endYear)}</span> <span id="salary-result-direction">{rose(inflation)}</span> de prijzen met <strong><span id="salary-result-inflation">{formatPercent(Math.abs(inflation))}</span>%</strong>, gemiddeld <strong><span id="salary-result-average">{formatPercent(average)}</span>%</strong> per jaar.
@@ -151,10 +155,10 @@ const keepUp = {
 
     <div id="salary-keepup" class="mt-4 border-t border-blue-200 pt-4" hidden={!actual}>
       <p>
-        In <span id="salary-keepup-end-year">{endYear}</span> verdien je <strong><span id="salary-keepup-salary">{keepUp.salary}</span></strong>: <strong><span id="salary-keepup-gap">{keepUp.gap}</span> <span id="salary-keepup-gap-direction">{keepUp.gapDirection}</span></strong> dan nodig om dezelfde koopkracht te houden als in <span id="salary-keepup-start-year">{startYear}</span>.
+        In <span id="salary-keepup-end-year">{targetYear}</span> verdien je <strong><span id="salary-keepup-salary">{keepUp.salary}</span></strong>: <strong><span id="salary-keepup-gap">{keepUp.gap}</span> <span id="salary-keepup-gap-direction">{keepUp.gapDirection}</span></strong> dan nodig om dezelfde koopkracht te houden als in <span id="salary-keepup-start-year">{baseYear}</span>.
       </p>
       <p class="mt-2">
-        Je koopkracht is daarmee met <strong><span id="salary-keepup-real">{keepUp.real}</span>%</strong> <span id="salary-keepup-real-direction">{keepUp.realDirection}</span>. In geld van <span id="salary-keepup-start-year-2">{startYear}</span> is dat <strong><span id="salary-keepup-real-value">{keepUp.realValue}</span></strong>.
+        Je koopkracht is daarmee met <strong><span id="salary-keepup-real">{keepUp.real}</span>%</strong> <span id="salary-keepup-real-direction">{keepUp.realDirection}</span>. In geld van <span id="salary-keepup-start-year-2">{baseYear}</span> is dat <strong><span id="salary-keepup-real-value">{keepUp.realValue}</span></strong>.
       </p>
     </div>
 
@@ -184,8 +188,8 @@ const keepUp = {
   </p>
 </section>
 
-<script type="application/json" id="cbs-data" set:html={JSON.stringify(data.toCompact())} />
-<script type="application/json" id="cao-data" set:html={JSON.stringify(cao.toCompact())} />
+<script type="application/json" id="cbs-data" set:html={embedJson(data.toCompact())} />
+<script type="application/json" id="cao-data" set:html={embedJson(cao.toCompact())} />
 
 <script>
   import '../scripts/salary';
