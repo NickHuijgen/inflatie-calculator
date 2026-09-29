@@ -337,7 +337,12 @@ export function parseAmount(input: string): number {
     value = value.replace(/\./g, '');
   }
 
-  return /^\d*\.?\d+$|^\d+\.$/.test(value) ? parseFloat(value) : NaN;
+  // `Number.isFinite` rejects the absurd as well as the malformed: 310 digits
+  // parse to Infinity, which passes every `> 0` guard downstream and renders
+  // as "€ ∞".
+  const amount = /^\d*\.?\d+$|^\d+\.$/.test(value) ? parseFloat(value) : NaN;
+
+  return Number.isFinite(amount) ? amount : NaN;
 }
 
 export function currencySymbol(year: number): string {
