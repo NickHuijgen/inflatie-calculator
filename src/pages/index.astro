@@ -46,8 +46,11 @@ const tableCaption = (currency: string) => `Waarde van ${currency} ${defaultAmou
 const guilderExample = historicalValues.find(row => row.year === 1980);
 const guilderRate = euroToGuilderConversionRate.toLocaleString('nl-NL', { maximumFractionDigits: 5 });
 
-const title = 'Inflatie Berekenen – Koopkracht van Gulden en Euro sinds 1900';
-const description = 'Bereken wat een bedrag van vroeger nu waard is. Gratis inflatiecalculator voor gulden en euro, met officiële CBS-cijfers van 1900 tot nu.';
+// Worded after the searches that actually reach the site (Search Console,
+// summer 2026): "inflatie berekenen", "inflatiecalculator", "inflatie
+// calculator nederland", "inflatie berekenen tussen 2 data".
+const title = 'Inflatie Berekenen – Inflatiecalculator Nederland sinds 1900';
+const description = 'Bereken inflatie tussen twee jaren of maanden: wat is een bedrag van vroeger nu waard? Gratis inflatiecalculator voor Nederland, in gulden en euro, met CBS-cijfers.';
 
 const datasetLinkText = `“${CBS_DATASET_TITLE}”`;
 const indexLinkText = `“${CBS_INDEX_TITLE}”`;
@@ -124,6 +127,12 @@ const indexLinkText = `“${CBS_INDEX_TITLE}”`;
             </p>
 
             <p class="mb-2">
+              Je berekent de inflatie tussen twee data naar keuze: tussen twee jaren, of tussen dezelfde maand in
+              twee jaren. Zo werkt de calculator als een rekenmachine voor de geldwaarde van vroeger en nu, in beide
+              richtingen: van een oud bedrag naar vandaag, of van vandaag terug naar vroeger.
+            </p>
+
+            <p class="mb-2">
               De berekening gebruikt de officiële cijfers van het Centraal Bureau voor de Statistiek (CBS).
               Voor jaargemiddelden vanaf {FIRST_YEAR} is dat de prijsindex <a href={CBS_INDEX_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{indexLinkText}</a>.
               Voor maanden, vanaf januari {FIRST_MONTHLY_YEAR} tot en met {latestMonth}, zijn dat de cijfers uit <a href={CBS_DATASET_URL} target="_blank" rel="noopener noreferrer" class={linkClass}>{datasetLinkText}</a>.
@@ -144,6 +153,16 @@ const indexLinkText = `“${CBS_INDEX_TITLE}”`;
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
+              <h3 class="font-semibold">Hoe bereken ik inflatie tussen twee data?</h3>
+              <p>
+                Vul een bedrag in, kies een beginjaar en een eindjaar, en kies daarna een maand of het jaargemiddelde.
+                Met een maand vergelijkt de calculator dezelfde maand in beide jaren, bijvoorbeeld augustus 1990 met
+                augustus {latestYearlyYear}. Je ziet dan meteen wat het bedrag in het eindjaar waard is, hoeveel de prijzen
+                in totaal stegen en wat de inflatie gemiddeld per jaar was.
+              </p>
+            </div>
+
+            <div>
               <h3 class="font-semibold">Wat is inflatie?</h3>
               <p>
                 Inflatie is de stijging van prijzen in de loop van de tijd. Daardoor wordt je geld minder waard:
@@ -157,6 +176,16 @@ const indexLinkText = `“${CBS_INDEX_TITLE}”`;
                 Inflatie bepaalt wat je inkomen en spaargeld echt waard zijn. Stijgen je loon of je spaarrente minder
                 hard dan de prijzen, dan ga je er in koopkracht op achteruit, ook als het bedrag op papier gelijk blijft.
                 Op de pagina <a href="/salaris/" class={linkClass}>salaris en inflatie</a> reken je uit of je loon de prijzen heeft bijgehouden.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="font-semibold">Hoe bereken ik inflatiecorrectie?</h3>
+              <p>
+                Vul het oorspronkelijke bedrag en het jaar in, en als eindjaar het jaar waarnaar je wilt corrigeren.
+                De uitkomst is het bedrag met inflatiecorrectie: wat je in dat jaar nodig hebt voor dezelfde koopkracht.
+                Zo corrigeer je bijvoorbeeld een oud spaarbedrag of een prijs van vroeger voor inflatie. Voor een loon
+                gebruik je <a href="/salaris/" class={linkClass}>salaris en inflatie</a>, waar je ook ziet hoe de cao-lonen stegen.
               </p>
             </div>
 
