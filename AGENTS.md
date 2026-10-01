@@ -441,7 +441,11 @@ that guard.
   node that has a body of content behind it. `isBasedOn` (both CBS
   datasets) is on the `WebApplication` and on the year pages' `WebPage`;
   the homepage's `WebPage` leaves it out because the `#app` node on that
-  same page already carries it. `WebSite` deliberately has no
+  same page already carries it. The datasets in `isBasedOn` are typed
+  `CreativeWork`, **not** `Dataset`: Google treats every `Dataset` node
+  as a Dataset Search item hosted on our page and flagged every page in
+  Search Console for the missing `description` (September 2026). We cite
+  CBS's data, we don't publish it. `WebSite` deliberately has no
   `alternateName`: the bare domain is already Google's fallback for the
   site name, and offering it as an alternate invites the SERP to show
   `inflatie-berekenen.nl` instead of “Inflatie Berekenen”. No

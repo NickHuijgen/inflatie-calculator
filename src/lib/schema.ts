@@ -19,15 +19,19 @@ export const SITE_NAME = 'Inflatie Berekenen';
 const author = { '@type': 'Person', 'name': 'Nick Huijgen', 'url': 'https://nickhuijgen.nl/' };
 const cbs = { '@type': 'Organization', 'name': 'Centraal Bureau voor de Statistiek', 'url': 'https://www.cbs.nl/' };
 
+// The CBS sources, cited by `isBasedOn`. Deliberately CreativeWork, not
+// Dataset: Google reads every Dataset node as a Dataset Search item for *this*
+// page, requires a 50+ character description on it, and flagged every page in
+// Search Console without one. We cite these datasets; we don't publish them.
 export const datasets = [
-  { '@type': 'Dataset', 'name': CBS_DATASET_TITLE, 'url': CBS_DATASET_URL, 'creator': cbs },
-  { '@type': 'Dataset', 'name': CBS_INDEX_TITLE, 'url': CBS_INDEX_DATASET_URL, 'creator': cbs },
+  { '@type': 'CreativeWork', 'name': CBS_DATASET_TITLE, 'url': CBS_DATASET_URL, 'creator': cbs },
+  { '@type': 'CreativeWork', 'name': CBS_INDEX_TITLE, 'url': CBS_INDEX_DATASET_URL, 'creator': cbs },
 ];
 
 /** The two price datasets plus the cao-loonindex, for /salaris. */
 export const datasetsWithCao = [
   ...datasets,
-  { '@type': 'Dataset', 'name': CBS_CAO_TITLE, 'url': CBS_CAO_DATASET_URL, 'creator': cbs },
+  { '@type': 'CreativeWork', 'name': CBS_CAO_TITLE, 'url': CBS_CAO_DATASET_URL, 'creator': cbs },
 ];
 
 const websiteId = (site: URL) => new URL('/#website', site).href;
