@@ -222,3 +222,44 @@ export function comparedToCao(nominalChange: number, caoChange: number): 'meer' 
 export function realWageChange(wageChange: number, priceChange: number): number {
   return round(((1 + wageChange / 100) / (1 + priceChange / 100) - 1) * 100);
 }
+
+export interface PurchasingPowerPoint {
+  year: number;
+  /** Cao wages, `FIRST_CAO_YEAR` = 100. */
+  wages: number;
+  /** Prices, `FIRST_CAO_YEAR` = 100. */
+  prices: number;
+  /** What the average cao wage buys, `FIRST_CAO_YEAR` = 100. */
+  purchasingPower: number;
+}
+
+/**
+ * The purchasing power of the average cao wage per year, from
+ * `FIRST_CAO_YEAR` up to the last year with both a cao and a price figure.
+ * Yearly averages only, so cao and prices always come from the same period,
+ * and exact ratios of the index levels without intermediate rounding.
+ * Empty when the first year itself has no figures.
+ */
+export function caoPurchasingPower(data: InflationData, cao: CaoData): PurchasingPowerPoint[] {
+  const baseWage = cao.level(FIRST_CAO_YEAR, 'JJ00');
+  const basePrice = data.priceLevel(FIRST_CAO_YEAR);
+  const lastYear = Math.min(cao.latestYearlyYear, data.latestYearlyYear);
+  const points = [];
+
+  if (baseWage === undefined || basePrice === undefined) {
+    return [];
+  }
+
+  for (let year = FIRST_CAO_YEAR; year <= lastYear; year++) {
+    const wage = cao.level(year, 'JJ00');
+    const price = data.priceLevel(year);
+
+    if (wage !== undefined && price !== undefined) {
+      const wages = (wage / baseWage) * 100;
+      const prices = (price / basePrice) * 100;
+      points.push({ year, wages, prices, purchasingPower: (wages / prices) * 100 });
+    }
+  }
+
+  return points;
+}

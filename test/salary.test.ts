@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { FIRST_CAO_YEAR } from '../src/lib/cao.ts';
 import { FIRST_YEAR, MONTHS } from '../src/lib/inflation.ts';
-import { caoPeriodNote, comparedToCao, realWageChange, salaryComparison, wageComparison } from '../src/lib/salary.ts';
+import { caoPeriodNote, caoPurchasingPower, comparedToCao, realWageChange, salaryComparison, wageComparison } from '../src/lib/salary.ts';
 import { LATEST_MONTHLY, LATEST_YEARLY_YEAR, caoData, inflationData } from './data.ts';
 
 const data = inflationData();
@@ -209,5 +209,23 @@ describe('cao figures', () => {
     // larger the gap (up to ~0,4pp in the 1970s; see AGENTS.md).
     assert.ok(Math.abs(cao.yearlyChange(2025)! - 5.0) <= 0.05, `${cao.yearlyChange(2025)}`);
     assert.ok(Math.abs(cao.yearlyChange(2016)! - 1.9) <= 0.15, `${cao.yearlyChange(2016)}`);
+  });
+});
+
+describe('caoPurchasingPower', () => {
+  const points = caoPurchasingPower(data, cao);
+
+  it('runs from the first cao year, indexed to 100, up to the last year with both figures', () => {
+    assert.equal(points[0].year, FIRST_CAO_YEAR);
+    assert.deepEqual([points[0].wages, points[0].prices, points[0].purchasingPower], [100, 100, 100]);
+    assert.equal(points.at(-1)!.year, Math.min(cao.latestYearlyYear, LATEST_YEARLY_YEAR));
+  });
+
+  it('agrees with the cao growth and the price change over the same years', () => {
+    for (const point of points) {
+      const wages = 1 + cao.growth(FIRST_CAO_YEAR, point.year, 'JJ00')! / 100;
+      const prices = data.priceLevel(point.year)! / data.priceLevel(FIRST_CAO_YEAR)!;
+      assert.ok(Math.abs(point.purchasingPower - (wages / prices) * 100) < 1e-9, String(point.year));
+    }
   });
 });

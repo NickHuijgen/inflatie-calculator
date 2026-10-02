@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PurchasingPowerChart from '../components/PurchasingPowerChart.astro';
 import SalaryCalculator from '../components/SalaryCalculator.astro';
 import { loadBuildData } from '../lib/build-data';
 import { CBS_CAO_DATASET_URL, CBS_CAO_TITLE, FIRST_CAO_MONTHLY_YEAR, FIRST_CAO_YEAR } from '../lib/cao';
@@ -12,7 +13,7 @@ import {
   formatMoney,
   formatPercent,
 } from '../lib/inflation';
-import { realWageChange, salaryComparison } from '../lib/salary';
+import { caoPurchasingPower, realWageChange, salaryComparison } from '../lib/salary';
 import { datasetsWithCao, webPageSchema, websiteSchema } from '../lib/schema';
 import { cardClass, linkClass } from '../lib/ui';
 
@@ -46,6 +47,25 @@ for (let year = caoLatestYear - YEARS_IN_TABLE + 1; year <= caoLatestYear; year+
   }
 }
 const yearsAhead = yearlyRows.filter(row => row.real > 0).length;
+
+// The purchasing power of cao wages over the whole cao range, as a chart.
+// The summary rounds: the oldest cao levels are only good to about half a
+// percentage point a year (see the note under the table), so two decimals
+// over half a century would be false precision.
+const purchasingPower = caoPurchasingPower(data, cao);
+if (purchasingPower.length < 2) {
+  throw new Error('No cao and price figures to chart purchasing power with');
+}
+const powerFirst = purchasingPower[0];
+const powerLast = purchasingPower.at(-1)!;
+const powerPeak = purchasingPower.reduce((a, b) => (b.purchasingPower > a.purchasingPower ? b : a));
+const powerLowAfterPeak = purchasingPower.filter(point => point.year > powerPeak.year).reduce((a, b) => (b.purchasingPower < a.purchasingPower ? b : a), powerLast);
+// The year purchasing power fell most, which is by definition a year in
+// which prices rose faster than cao wages.
+const powerDrops = purchasingPower.slice(1).map((point, i) => ({ year: point.year, change: point.purchasingPower / purchasingPower[i].purchasingPower - 1 }));
+const biggestDrop = powerDrops.reduce((a, b) => (b.change < a.change ? b : a));
+const roundTo10 = (value: number) => Math.round(value / 10) * 10;
+const powerChange = Math.round(powerLast.purchasingPower - 100);
 
 // What a range of salaries from the start year has to be now.
 const salaries = [2000, 2500, 3000, 3500, 4000, 5000, 6000];
@@ -96,8 +116,34 @@ const datasetLinkText = `“${CBS_DATASET_TITLE}”`;
       <section class={`flex ${cardClass} lg:col-span-2`} aria-labelledby="cao-title">
         <div class="flex-1 p-6 lg:p-8">
           <h2 id="cao-title" class="mb-2 text-xl font-bold">Stegen de cao-lonen harder dan de prijzen?</h2>
+          <div class="mt-2 grid gap-6 lg:grid-cols-2 lg:gap-8">
+            <div class="max-w-xl">
+              <p class="mb-2">
+                {`Het CBS houdt bij hoeveel de lonen in collectieve arbeidsovereenkomsten stijgen. Dat is niet jouw salaris, maar wel de beste maatstaf voor wat een gemiddelde werknemer in Nederland erbij kreeg. Zet je die naast de inflatie, dan zie je of er koopkracht bij kwam of af ging.`}
+              </p>
+              <p class="mb-2">
+                {`Van ${powerFirst.year} tot en met ${powerLast.year} stegen de cao-lonen met ongeveer ${roundTo10(powerLast.wages - 100)}% en de prijzen met ongeveer ${roundTo10(powerLast.prices - 100)}%. Een gemiddeld cao-loon kon in ${powerLast.year} daardoor ongeveer ${Math.abs(powerChange)}% ${powerChange < 0 ? 'minder' : 'meer'} kopen dan in ${powerFirst.year}.`}
+              </p>
+              {powerPeak.year !== powerLast.year && (
+                <p>
+                  {`Dat ging niet gelijkmatig. De koopkracht was het hoogst in ${powerPeak.year} en zakte daarna weer, tot het laagste punt in ${powerLowAfterPeak.year}. De grootste daling in één jaar was in ${biggestDrop.year}: toen stegen de prijzen zoveel harder dan de cao-lonen dat een cao-loon ongeveer ${Math.round(-biggestDrop.change * 100)}% minder kon kopen dan een jaar eerder.`}
+                </p>
+              )}
+            </div>
+            <PurchasingPowerChart
+              points={purchasingPower}
+              title={`Koopkracht van de cao-lonen, ${powerFirst.year}–${powerLast.year} (${powerFirst.year} = 100)`}
+              caption={`Wat een gemiddeld cao-loon kan kopen, met ${powerFirst.year} als 100. Boven de 100 kan een cao-loon meer kopen dan in ${powerFirst.year}, eronder minder. In ${powerLast.year} was het ${Math.round(powerLast.purchasingPower)}.`}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class={`flex ${cardClass} lg:col-span-2`} aria-labelledby="cao-years-title">
+        <div class="flex-1 p-6 lg:p-8">
+          <h2 id="cao-years-title" class="mb-2 text-xl font-bold">Cao-loonstijging en inflatie per jaar</h2>
           <p class="mb-2 max-w-3xl">
-            {`Het CBS houdt bij hoeveel de lonen in collectieve arbeidsovereenkomsten stijgen. Dat is niet jouw salaris, maar wel de beste maatstaf voor wat een gemiddelde werknemer in Nederland erbij kreeg. Zet je die naast de inflatie, dan zie je of er koopkracht bij kwam of af ging: in ${yearsAhead} van de laatste ${yearlyRows.length} jaar stegen de cao-lonen harder dan de prijzen.`}
+            {`Hoeveel stegen de cao-lonen en de prijzen in elk van de laatste ${yearlyRows.length} jaar? In ${yearsAhead} van die jaren stegen de cao-lonen harder dan de prijzen.`}
           </p>
           <p class="mb-6 max-w-3xl text-gray-700">
             <strong>Reëel</strong> is wat er van de loonstijging overblijft na inflatie. Dat is niet het verschil tussen de twee percentages: 5% meer loon bij 3% hogere prijzen levert 1,94% op, niet 2%.

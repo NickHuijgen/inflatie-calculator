@@ -335,6 +335,18 @@ that guard.
   average cao-lonen moved over the same period. Then a table of
   cao-loonstijging vs. inflatie per year, a table of salaries corrected
   to now, an explanation and a FAQ — all rendered from build-time data.
+  - The cao comparison is two cards: "Stegen de cao-lonen harder dan de
+    prijzen?" answers it over the whole cao range with a chart of the
+    **purchasing power of cao wages**, 1972 = 100 (`PurchasingPowerChart.astro`, data from
+    `caoPurchasingPower()` in `salary.ts`, yearly averages only). One
+    ratio line on purpose, not cao wages and prices as two lines: indexed
+    to 1972 they end within ~10% of each other (558 vs 516), so on a shared
+    axis they draw as one line. Its summary rounds (the oldest cao levels
+    are only good to ~0,5pp) and states only what the data shows: don't
+    give its low points a cause — the 1985 low came with 2,25% inflation.
+    The per-year detail (the last 15 years, the "Reëel" explanation and
+    the CBS rounding footnote) is the second card, "Cao-loonstijging en
+    inflatie per jaar", with its own H2 for per-year searches.
   - **Why it exists.** It targets a search cluster `/` does not serve
     ("salaris inflatie berekenen", "reële loonstijging", "loonsverhoging
     inflatie"). The cao comparison is the part no competitor has and the

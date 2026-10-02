@@ -1,0 +1,123 @@
+---
+// Line chart of what the average cao wage buys per year, with the first
+// year as 100. Rendered at build time as plain SVG, like PriceChart: no
+// chart library, no client JS, the same hover layer (a full-height hit area
+// per year with a native tooltip and a CSS-revealed dot + crosshair) and the
+// same numbers in a collapsed table below it.
+//
+// One line rather than cao wages and prices side by side: indexed to the
+// same year the two end within ~10% of each other, so on a shared axis from
+// zero they draw as one line and the difference, which is the point, is
+// invisible. The ratio shows it directly. Its axis therefore does not start
+// at zero (there is no area wash, which would imply that it did); the 100
+// line, "as much as in the first year", is drawn darker than the grid.
+import type { PurchasingPowerPoint } from '../lib/salary';
+import { focusRing } from '../lib/ui';
+
+interface Props {
+  points: PurchasingPowerPoint[];
+  title: string;
+  caption: string;
+}
+
+const { points, title, caption } = Astro.props;
+
+const first = points[0];
+const last = points[points.length - 1];
+
+// Drawn at the narrowest width it is shown at and capped there (max-w
+// below), so the labels stay ~11–13px on a phone: see PriceChart.
+const width = 380;
+const height = 220;
+const pad = { top: 12, right: 40, bottom: 32, left: 40 };
+const plotWidth = width - pad.left - pad.right;
+const plotHeight = height - pad.top - pad.bottom;
+
+// The domain is padded to a multiple of 5 and always includes 100.
+const values = points.map(point => point.purchasingPower);
+const yMin = Math.min(95, Math.floor(Math.min(...values) / 5) * 5);
+const yMax = Math.max(105, Math.ceil(Math.max(...values) / 5) * 5);
+const yStep = yMax - yMin > 40 ? 10 : 5;
+const yTicks = [];
+for (let tick = Math.ceil(yMin / yStep) * yStep; tick <= yMax; tick += yStep) {
+  yTicks.push(tick);
+}
+
+// X ticks on round years, as in PriceChart.
+const span = last.year - first.year;
+const xStep = [1, 2, 5, 10, 20, 25, 50].find(s => span / s <= 4) ?? 50;
+const xTicks = [first.year];
+for (let year = Math.ceil((first.year + 1) / xStep) * xStep; year < last.year; year += xStep) {
+  if (year - first.year >= xStep / 2 && last.year - year >= xStep / 2) {
+    xTicks.push(year);
+  }
+}
+xTicks.push(last.year);
+
+const x = (year: number) => pad.left + (span === 0 ? 0 : ((year - first.year) / span) * plotWidth);
+const y = (value: number) => pad.top + ((yMax - value) / (yMax - yMin)) * plotHeight;
+
+const linePath = points.map((point, i) => `${i === 0 ? 'M' : 'L'}${x(point.year).toFixed(1)},${y(point.purchasingPower).toFixed(1)}`).join(' ');
+
+const number = new Intl.NumberFormat('nl-NL', { maximumFractionDigits: 0 });
+const oneDecimal = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const hitWidth = span === 0 ? plotWidth : plotWidth / span;
+const titleId = 'purchasing-power-chart-title';
+const captionId = 'purchasing-power-chart-caption';
+---
+
+<figure class="m-0">
+  <svg viewBox={`0 0 ${width} ${height}`} class="h-auto w-full max-w-[380px]" role="img" aria-labelledby={`${titleId} ${captionId}`}>
+    <title id={titleId}>{title}</title>
+
+    {yTicks.map(tick => (
+      <g>
+        <line x1={pad.left} x2={width - pad.right} y1={y(tick)} y2={y(tick)} stroke={tick === 100 ? '#6b7280' : '#e5e7eb'} stroke-width="1" />
+        <text x={pad.left - 8} y={y(tick)} text-anchor="end" dominant-baseline="middle" class="fill-gray-600 text-[13px] tabular-nums">{number.format(tick)}</text>
+      </g>
+    ))}
+
+    {xTicks.map(tick => (
+      <text x={x(tick)} y={height - 8} text-anchor="middle" class="fill-gray-600 text-[13px] tabular-nums">{tick}</text>
+    ))}
+
+    <path d={linePath} fill="none" stroke="#1447e6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+    <circle cx={x(last.year)} cy={y(last.purchasingPower)} r="4" fill="#1447e6" stroke="#fff" stroke-width="2" />
+    <text x={x(last.year) + 10} y={y(last.purchasingPower)} dominant-baseline="middle" class="fill-gray-900 text-[14px] font-semibold tabular-nums">{number.format(last.purchasingPower)}</text>
+
+    {points.map(point => (
+      <g class="group">
+        <rect x={x(point.year) - hitWidth / 2} y={pad.top} width={hitWidth} height={plotHeight} fill="transparent" />
+        <line x1={x(point.year)} x2={x(point.year)} y1={pad.top} y2={pad.top + plotHeight} stroke="#9ca3af" stroke-width="1" class="opacity-0 group-hover:opacity-100" />
+        <circle cx={x(point.year)} cy={y(point.purchasingPower)} r="4" fill="#1447e6" stroke="#fff" stroke-width="2" class="opacity-0 group-hover:opacity-100" />
+        <title>{point.year}: koopkracht {oneDecimal.format(point.purchasingPower)} ({first.year} = 100)</title>
+      </g>
+    ))}
+  </svg>
+  <figcaption id={captionId} class="mt-2 text-sm text-gray-700">{caption}</figcaption>
+
+  <details class="mt-2">
+    <summary class={`cursor-pointer py-2 text-sm font-semibold text-blue-700 ${focusRing}`}>Toon als tabel</summary>
+    <table class="text-left text-sm tabular-nums">
+      <caption class="sr-only">{`Cao-lonen, prijzen en koopkracht per jaar, ${first.year} = 100`}</caption>
+      <thead>
+        <tr class="border-b border-blue-200">
+          <th scope="col" class="py-1 pr-4 font-semibold">Jaar</th>
+          <th scope="col" class="py-1 pr-4 text-right font-semibold">Cao-lonen</th>
+          <th scope="col" class="py-1 pr-4 text-right font-semibold">Prijzen</th>
+          <th scope="col" class="py-1 text-right font-semibold">Koopkracht</th>
+        </tr>
+      </thead>
+      <tbody>
+        {points.toReversed().map(point => (
+          <tr class="border-b border-gray-100">
+            <th scope="row" class="py-1 pr-4 font-normal">{point.year}</th>
+            <td class="py-1 pr-4 text-right">{oneDecimal.format(point.wages)}</td>
+            <td class="py-1 pr-4 text-right">{oneDecimal.format(point.prices)}</td>
+            <td class="py-1 text-right">{oneDecimal.format(point.purchasingPower)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </details>
+</figure>
