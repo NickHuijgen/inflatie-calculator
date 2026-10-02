@@ -1,0 +1,114 @@
+---
+// Column chart of the inflation in each year, around a zero baseline so
+// deflation reads as columns below it. Rendered at build time as plain SVG,
+// like PriceChart: no chart library, no client JS. Hover: every year has a
+// full-height hit area with a native tooltip (<title>) that darkens its
+// column. The same numbers are available as a table below it (collapsed),
+// and the caption states the headline in words.
+//
+// One series, one hue (#1447e6, Tailwind blue-700, as in PriceChart): the
+// sign is carried by position above or below the baseline, not by colour.
+// At ~125 years the columns are ~2 units wide, too narrow for rounded ends
+// or the usual 2px gap, so they are plain rects with a proportional gap.
+// Only the latest value is labelled; the rest is in the ticks, the
+// tooltips and the table.
+import { formatPercent } from '../lib/inflation';
+import { focusRing } from '../lib/ui';
+
+interface Props {
+  points: { year: number; change: number }[];
+  title: string;
+  caption: string;
+}
+
+const { points, title, caption } = Astro.props;
+
+const last = points[points.length - 1];
+
+// Drawn at the narrowest width it is shown at and capped there (max-w
+// below), so the labels stay ~11–13px on a phone: see PriceChart.
+const width = 380;
+const height = 220;
+// The right margin holds the latest value next to the last column.
+const pad = { top: 12, right: 46, bottom: 26, left: 40 };
+const plotWidth = width - pad.left - pad.right;
+const plotHeight = height - pad.top - pad.bottom;
+
+// The domain is padded to a multiple of 5 and always includes 0; labels sit
+// on multiples of 10 so there are only ever a handful of them.
+const changes = points.map(point => point.change);
+const yMin = Math.min(0, Math.floor(Math.min(...changes) / 5) * 5);
+const yMax = Math.max(5, Math.ceil(Math.max(...changes) / 5) * 5);
+const yTicks = [];
+for (let tick = Math.ceil(yMin / 10) * 10; tick <= yMax; tick += 10) {
+  yTicks.push(tick);
+}
+
+const slot = plotWidth / points.length;
+const barWidth = slot * 0.7;
+const x = (i: number) => pad.left + i * slot;
+const y = (value: number) => pad.top + ((yMax - value) / (yMax - yMin)) * plotHeight;
+
+// X labels on round quarter-centuries, centred under their column.
+const xTicks = points.map((point, i) => ({ year: point.year, i })).filter(({ year }) => year % 25 === 0);
+
+const percent = (value: number) => `${formatPercent(value)}%`;
+const oneDecimal = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const titleId = 'inflation-chart-title';
+const captionId = 'inflation-chart-caption';
+---
+
+<figure class="m-0">
+  <svg viewBox={`0 0 ${width} ${height}`} class="h-auto w-full max-w-[380px]" role="img" aria-labelledby={`${titleId} ${captionId}`}>
+    <title id={titleId}>{title}</title>
+
+    {yTicks.map(tick => (
+      <g>
+        <line x1={pad.left} x2={width - pad.right} y1={y(tick)} y2={y(tick)} stroke={tick === 0 ? '#6b7280' : '#e5e7eb'} stroke-width="1" />
+        <text x={pad.left - 8} y={y(tick)} text-anchor="end" dominant-baseline="middle" class="fill-gray-600 text-[13px] tabular-nums">{tick}%</text>
+      </g>
+    ))}
+
+    {xTicks.map(({ year, i }) => (
+      <text x={x(i) + slot / 2} y={height - 8} text-anchor="middle" class="fill-gray-600 text-[13px] tabular-nums">{year}</text>
+    ))}
+
+    {points.map((point, i) => (
+      <g class="group">
+        <rect x={x(i)} y={pad.top} width={slot} height={plotHeight} fill="transparent" />
+        <rect
+          x={x(i) + (slot - barWidth) / 2}
+          y={y(Math.max(point.change, 0))}
+          width={barWidth}
+          height={Math.abs(y(point.change) - y(0))}
+          class="fill-blue-700 group-hover:fill-blue-950"
+        />
+        <title>{point.year}: {point.change < 0 ? 'prijsdaling' : 'inflatie'} {percent(Math.abs(point.change))}</title>
+      </g>
+    ))}
+
+    <text x={x(points.length - 1) + slot + 6} y={y(last.change)} dominant-baseline="middle" class="fill-gray-900 text-[14px] font-semibold tabular-nums">{oneDecimal.format(last.change)}%</text>
+  </svg>
+  <figcaption id={captionId} class="mt-2 text-sm text-gray-700">{caption}</figcaption>
+
+  <details class="mt-2">
+    <summary class={`cursor-pointer py-2 text-sm font-semibold text-blue-700 ${focusRing}`}>Toon als tabel</summary>
+    <table class="text-left text-sm tabular-nums">
+      <caption class="sr-only">{title}</caption>
+      <thead>
+        <tr class="border-b border-blue-200">
+          <th scope="col" class="py-1 pr-6 font-semibold">Jaar</th>
+          <th scope="col" class="py-1 font-semibold">Inflatie</th>
+        </tr>
+      </thead>
+      <tbody>
+        {points.toReversed().map(point => (
+          <tr class="border-b border-gray-100">
+            <th scope="row" class="py-1 pr-6 font-normal">{point.year}</th>
+            <td class="py-1">{percent(point.change)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </details>
+</figure>

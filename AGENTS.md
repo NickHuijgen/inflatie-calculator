@@ -321,7 +321,12 @@ that guard.
   amount).
 
 ## Routes
-- `/` — the calculator (`src/pages/index.astro`).
+- `/` — the calculator (`src/pages/index.astro`). Above the table, an
+  "Inflatie per jaar in Nederland" card: a column chart of every year's
+  inflation (`InflationChart.astro`, build-time SVG like `PriceChart`,
+  from `yearlyChange()`, so yearly averages like the table) beside a
+  short summary computed from the same figures. One chart, no toggle:
+  the cumulative view already exists per year on the year pages.
 - `/salaris/` — the wage page (`src/pages/salaris.astro`), answering "is
   mijn salaris meegegroeid met de inflatie?". Its own calculator
   (`SalaryCalculator.astro` + `scripts/salary.ts`) takes a salary from an

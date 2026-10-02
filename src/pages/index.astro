@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Calculator from '../components/Calculator.astro';
+import InflationChart from '../components/InflationChart.astro';
 import ValueTable from '../components/ValueTable.astro';
 import { loadBuildData } from '../lib/build-data';
 import {
@@ -13,6 +14,7 @@ import {
   FIRST_YEAR,
   euroToGuilderConversionRate,
   formatMoney,
+  formatPercent,
 } from '../lib/inflation';
 import { homePageSchema, webApplicationSchema, websiteSchema } from '../lib/schema';
 import { focusRing, linkClass } from '../lib/ui';
@@ -41,6 +43,22 @@ const euroRows = historicalValues.filter(row => row.year >= EURO_INTRODUCTION_YE
 const guilderRows = historicalValues.filter(row => row.year < EURO_INTRODUCTION_YEAR && row.year >= OLDER_GUILDER_YEARS_BEFORE);
 const olderGuilderRows = historicalValues.filter(row => row.year < OLDER_GUILDER_YEARS_BEFORE);
 const tableCaption = (currency: string) => `Waarde van ${currency} ${defaultAmount} per jaar, omgerekend naar ${latestYearlyYear}`;
+
+// Inflation per year (yearly averages, like the table), from the first year
+// that has a previous one to compare with.
+const yearlyChanges = [];
+for (let year = FIRST_YEAR + 1; year <= latestYearlyYear; year++) {
+  const change = data.yearlyChange(year);
+  if (change !== undefined) {
+    yearlyChanges.push({ year, change });
+  }
+}
+const latestChange = yearlyChanges.at(-1)!;
+const highestChange = yearlyChanges.reduce((a, b) => (b.change > a.change ? b : a));
+const lowestChange = yearlyChanges.reduce((a, b) => (b.change < a.change ? b : a));
+const deflationYears = yearlyChanges.filter(row => row.change < 0).length;
+const longTermAverage = data.averageInflation(FIRST_YEAR, latestYearlyYear, 'JJ00');
+const firstChartYear = yearlyChanges[0].year;
 
 // A concrete example for the gulden question in the FAQ.
 const guilderExample = historicalValues.find(row => row.year === 1980);
@@ -79,6 +97,30 @@ const indexLinkText = `“${CBS_INDEX_TITLE}”`;
         heading="Inflatie Berekenen"
         intro={`Bereken wat een bedrag van vroeger nu waard is, in guldens en euro's, met officiële CBS-cijfers sinds ${FIRST_YEAR}.`}
       />
+
+      <section class="flex rounded-md border border-blue-200 lg:col-span-2" aria-labelledby="inflation-per-year-title">
+        <div class="flex-1 p-6 lg:p-8 grid gap-6 lg:grid-cols-2 lg:gap-8">
+          <div>
+            <h2 id="inflation-per-year-title" class="text-xl font-bold mb-2">Inflatie per jaar in Nederland</h2>
+            <p class="mb-2">
+              In {latestChange.year} {latestChange.change < 0 ? 'daalden' : 'stegen'} de prijzen gemiddeld met <strong>{formatPercent(Math.abs(latestChange.change))}%</strong> ten opzichte van {latestChange.year - 1}.
+              Sinds {FIRST_YEAR} was de inflatie gemiddeld {formatPercent(longTermAverage)}% per jaar.
+            </p>
+            <p class="mb-2">
+              Het hoogst was de inflatie in {highestChange.year}, met {formatPercent(highestChange.change)}%.
+              In {deflationYears} jaren daalden de prijzen juist; het sterkst in {lowestChange.year}, met {formatPercent(Math.abs(lowestChange.change))}%.
+            </p>
+            <p class="text-gray-700">
+              De grafiek toont de jaarinflatie op basis van jaargemiddelden van het CBS, dezelfde cijfers als de tabel hieronder.
+            </p>
+          </div>
+          <InflationChart
+            points={yearlyChanges}
+            title={`Inflatie per jaar in Nederland, ${firstChartYear}–${latestChange.year}`}
+            caption={`Inflatie per jaar sinds ${firstChartYear}. Een staaf onder de nullijn betekent dat de prijzen dat jaar daalden. In ${latestChange.year} was de inflatie ${formatPercent(latestChange.change)}%.`}
+          />
+        </div>
+      </section>
 
       <section class="flex rounded-md border border-blue-200 lg:col-span-2" aria-labelledby="historical-values-title">
         <div class="flex-1 p-6 lg:p-8">
