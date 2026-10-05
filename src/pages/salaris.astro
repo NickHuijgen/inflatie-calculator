@@ -16,6 +16,7 @@ import {
 import { caoPurchasingPower, realWageChange, salaryComparison } from '../lib/salary';
 import { datasetsWithCao, webPageSchema, websiteSchema } from '../lib/schema';
 import { cardClass, linkClass } from '../lib/ui';
+import { yearPagePath, yearPageYears } from '../lib/year-pages';
 
 // The wage page: what a salary from an earlier year has to be today, and
 // whether the visitor's own salary kept up — with the average cao-loonstijging
@@ -47,6 +48,8 @@ for (let year = caoLatestYear - YEARS_IN_TABLE + 1; year <= caoLatestYear; year+
   }
 }
 const yearsAhead = yearlyRows.filter(row => row.real > 0).length;
+// Each year links to its own year page — except the newest, which has none yet.
+const yearsWithPage = new Set(yearPageYears(data));
 
 // The purchasing power of cao wages over the whole cao range, as a chart.
 // The summary rounds: the oldest cao levels are only good to about half a
@@ -163,7 +166,9 @@ const datasetLinkText = `“${CBS_DATASET_TITLE}”`;
               <tbody>
                 {yearlyRows.map(row => (
                   <tr id={`loonjaar-${row.year}`} class="border-b border-gray-100 target:bg-yellow-50">
-                    <th scope="row" class="py-1.5 pr-2 font-normal">{row.year}</th>
+                    <th scope="row" class="py-1.5 pr-2 font-normal">
+                      {yearsWithPage.has(row.year) ? <a href={yearPagePath(row.year)} class={linkClass}>{row.year}</a> : row.year}
+                    </th>
                     <td class="py-1.5 pr-2 text-right">{formatPercent(row.wage)}%</td>
                     <td class="py-1.5 pr-2 text-right">{formatPercent(row.prices)}%</td>
                     <td class="py-1.5 text-right font-semibold">{formatPercent(row.real)}%</td>
