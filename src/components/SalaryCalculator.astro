@@ -10,7 +10,7 @@ import {
 } from '../lib/inflation';
 import type { CaoData } from '../lib/cao';
 import { caoPeriodNote, comparedToCao, salaryComparison, wageComparison } from '../lib/salary';
-import { cardClass, focusRing, hintClass, inputClass, labelClass } from '../lib/ui';
+import { cardClass, focusRing, hintClass, inputClass, labelClass, selectClass } from '../lib/ui';
 import { embedJson } from '../lib/embed';
 
 // The /salaris form and its result card, built the same way as
@@ -125,7 +125,7 @@ const keepUp = {
 
       <div>
         <label for="salary-select-month" class={labelClass}>Vergelijk op</label>
-        <select id="salary-select-month" name="maand" aria-describedby="salary-hint-month" class={inputClass}>
+        <select id="salary-select-month" name="maand" aria-describedby="salary-hint-month" class={selectClass}>
           {MONTHS.map(([value, label]) => <option value={value} selected={value === month}>{label}</option>)}
         </select>
         <p id="salary-hint-month" class={hintClass}>Dezelfde maand in beide jaren (vanaf {FIRST_MONTHLY_YEAR}), of het gemiddelde van het hele jaar.</p>

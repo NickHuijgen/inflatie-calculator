@@ -9,7 +9,7 @@ import {
   formatPercent,
   type InflationData,
 } from '../lib/inflation';
-import { cardClass, focusRing, hintClass, inputClass, labelClass } from '../lib/ui';
+import { cardClass, focusRing, hintClass, inputClass, labelClass, selectClass } from '../lib/ui';
 import { embedJson } from '../lib/embed';
 
 // The calculator form and its result card: two grid children, rendered with
@@ -91,7 +91,7 @@ const result = {
 
       <div>
         <label for="select-month" class={labelClass}>Vergelijk op</label>
-        <select id="select-month" name="maand" aria-describedby="hint-month" class={inputClass}>
+        <select id="select-month" name="maand" aria-describedby="hint-month" class={selectClass}>
           {MONTHS.map(([value, label]) => <option value={value} selected={value === month}>{label}</option>)}
         </select>
         <p id="hint-month" class={hintClass}>Dezelfde maand in beide jaren (vanaf {FIRST_MONTHLY_YEAR}), of het gemiddelde van het hele jaar.</p>
